@@ -2,7 +2,6 @@
 import type { GlobalTheme } from 'naive-ui'
 
 const theme = ref<GlobalTheme | null>(null)
-
 </script>
 
 <template>
@@ -10,4 +9,3 @@ const theme = ref<GlobalTheme | null>(null)
     <RouterView />
   </n-config-provider>
 </template>
-

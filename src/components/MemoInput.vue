@@ -17,21 +17,16 @@
 </template>
 
 <script setup lang="ts">
-const state = reactive({
-  visibilityOptions: [
-    {
-      label: '所有人可见',
-      value: 'PUBLIC',
-    },
-    {
-      label: '登录用户可见',
-      value: 'PROTECT',
-    },
-    {
-      label: '自己可见',
-      value: 'PRIVATE',
-    },
-  ],
+import { getVisbilitys } from '@/types/memo'
+import type { SelectOption } from 'naive-ui'
+
+interface State {
+  visibilityOptions: Array<SelectOption>
+  visbility: string
+}
+
+const state: State = reactive({
+  visibilityOptions: getVisbilitys(),
   visbility: 'PUBLIC',
 })
 </script>

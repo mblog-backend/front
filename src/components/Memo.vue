@@ -2,21 +2,28 @@
   <div class="memo">
     <div class="header">
       <div class="date">2023-05-08 17:56</div>
-      <div class="author">@JerryWang</div>
+      <div class="author">{{ props.memo.authorName }}</div>
+      <div class="author" @click="searchMemosBus.emit({ visibility: props.memo.visibility })">
+        {{ getVisbilityDesc(props.memo.visibility) }}
+      </div>
     </div>
     <div class="content" v-text="props.memo.content"></div>
     <div class="tags">
-      <div class="tag">#yoyo</div>
+      <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { MemoDTO } from '@/types/memo'
+import { type MemoDTO, getVisbilityDesc } from '@/types/memo'
+import { searchMemosBus } from '@/event/event'
 const props = defineProps<{
   memo: MemoDTO
-  fold: boolean
 }>()
+
+const tags = computed(() => {
+  return props.memo.tags?.split(',')
+})
 </script>
 
 <style scoped lang="scss">
@@ -32,10 +39,10 @@ const props = defineProps<{
   }
 
   .tags {
-    @apply fr gap-2 text-xs text-gray-500 pb-2 px-2;
+    @apply fr gap-2 text-xs text-gray-500 pb-2 px-2 items-center;
 
     .tag {
-      @apply cursor-pointer  px-2 hover:text-blue-5;
+      @apply cursor-pointer   hover:text-blue-5;
     }
   }
 }
