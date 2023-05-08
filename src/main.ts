@@ -1,5 +1,5 @@
 import './style.css'
-
+import '@unocss/reset/normalize.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import generatedRoutes from '~pages'
@@ -13,9 +13,9 @@ const routes = setupLayouts(generatedRoutes)
 const pinia = createPinia()
 
 const router = createRouter({
-    routes,
-    history: createWebHistory()
-});
+  routes,
+  history: createWebHistory(),
+})
 
 app.use(router)
 app.use(pinia)

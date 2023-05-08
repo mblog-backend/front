@@ -1,31 +1,31 @@
 <template>
-    <div class="main">
-        <div class="left">
-            <LeftNav />
-        </div>
-        <div class="middle">
-            <RouterView />
-        </div>
-        <div class="right">
-
-        </div>
+  <div class="main">
+    <div class="header">
+      <HeaderNav />
     </div>
+    <div class="fc">
+      <div class="middle">
+        <RouterView />
+      </div>
+      <div class="right"></div>
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .main {
-    @apply flex flex-row gap-2 lg: w-300 mx-auto;
+  @apply flex flex-col gap-2 lg:w-200 mx-auto;
 
-    .left {
-        @apply ;
-    }
+  .left {
+    @apply;
+  }
 
-    .middle {}
+  .middle {
+  }
 
-    .right {}
+  .right {
+  }
 }
 </style>
