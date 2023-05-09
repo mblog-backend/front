@@ -30,14 +30,24 @@ export interface ListMemoResponse {
 export interface MemoSearchParam {
   tag?: string
   userId?: number
+  username?: string
   visibility?: string
   page: number
   size: number
+  begin?: Date
+  end?: Date
 }
 
+export interface MemoSaveParam {
+  id?: number
+  content: string
+  publicIds: Array<string>
+  visibility?: string
+  top: boolean
+}
 export enum MemoVisibility {
   PUBLIC = '所有人可见',
-  PROTECTED = '登录用户可见',
+  PROTECT = '登录用户可见',
   PRIVATE = '自己可见',
 }
 
@@ -52,4 +62,14 @@ export const getVisbilitys = () => {
       value: key,
     }
   })
+}
+
+export interface StatisticsDTO {
+  totalMemos: number
+  totalDays: number
+  totalTags: number
+  items: Array<{
+    date: string
+    total: number
+  }>
 }

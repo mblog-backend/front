@@ -27,9 +27,10 @@ export default defineConfig({
         'vue-router',
         '@vueuse/core',
         {
-          'naive-ui': ['useDialog', 'useMessage', 'useNotification', 'useLoadingBar'],
+          'naive-ui': ['useDialog', 'createDiscreteApi', 'useNotification', 'useLoadingBar'],
         },
       ],
+      dirs: ['src/api', 'src/event', 'src/types'],
       dts: 'src/auto-imports.d.ts',
       vueTemplate: true,
     }),
