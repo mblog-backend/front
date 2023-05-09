@@ -1,5 +1,5 @@
 <template>
-  <div class="fc gap-2">
+  <div class="fc gap-2 sticky top-0">
     <Mine />
     <Statistics />
   </div>

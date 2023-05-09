@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-white rd fc gap-2">
+  <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99">
     <n-input
       type="textarea"
       placeholder="输入你要记录的吧"
@@ -80,16 +80,18 @@ let uploadFiles = ref<Array<UploadItem>>([])
 
 const visibilityOptions = getVisbilitys()
 
-const saveMemo = async () => {
+const saveMemo = () => {
   const url = memoSaveParam.id ? '/api/memo/update' : '/api/memo/save'
-  await useMyFetch(url).post(memoSaveParam).json()
-  memoSaveParam.id = undefined
-  memoSaveParam.content = ''
-  memoSaveParam.publicIds = []
-  memoSaveParam.visibility = 'PUBLIC'
-  memoSaveParam.top = false
-  uploadFiles.value = []
-  changedMemoBus.emit()
+  const { error } = useMyFetch(url).post(memoSaveParam).json()
+  if (!error.value) {
+    memoSaveParam.id = undefined
+    memoSaveParam.content = ''
+    memoSaveParam.publicIds = []
+    memoSaveParam.visibility = 'PUBLIC'
+    memoSaveParam.top = false
+    uploadFiles.value = []
+    changedMemoBus.emit()
+  }
 }
 
 editMemoBus.on((memo: MemoDTO) => {
@@ -101,7 +103,7 @@ editMemoBus.on((memo: MemoDTO) => {
   uploadFiles.value = structuredClone(toRaw(memo.resources))
 })
 
-const customRequest = async ({ file }: UploadCustomRequestOptions) => {
+const customRequest = ({ file }: UploadCustomRequestOptions) => {
   const uploadUrl = `${import.meta.env.VITE_BASE_URL}/api/resource/upload`
   const uploadHeaders = {
     token: useStorage('userinfo', { token: '' }).value.token,
@@ -109,15 +111,17 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
   const formData = new FormData()
   formData.append('files', file.file as File)
 
-  const { data } = await useMyFetch(uploadUrl, {
+  const { data, error } = useMyFetch(uploadUrl, {
     body: formData,
     headers: uploadHeaders,
   })
     .post()
     .json()
-  uploadFiles.value.push(...data.value)
-  memoSaveParam.publicIds = uploadFiles.value.map((r) => r.publicId)
-  uploadRef.value?.clear()
+  if (!error.value) {
+    uploadFiles.value.push(...data.value)
+    memoSaveParam.publicIds = uploadFiles.value.map((r) => r.publicId)
+    uploadRef.value?.clear()
+  }
 }
 
 const deleteResource = (publicId: string) => {

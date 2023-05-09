@@ -9,3 +9,12 @@ export interface User {
   role: string
   avatarUrl: string
 }
+
+export interface RegisterUserDTO {
+  username: string
+  password: string
+  repeatPassword: string
+  displayName: string
+  bio: string
+  email: string
+}

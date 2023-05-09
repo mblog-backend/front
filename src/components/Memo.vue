@@ -92,11 +92,13 @@ const tags = computed(() => {
 const popoverShow = ref(false)
 
 const removeMemo = async (id: number) => {
-  await useMyFetch(`/api/memo/remove?id=${id}`).post().json()
-  const { message } = createDiscreteApi(['message'])
-  message.success('删除成功')
-  changedMemoBus.emit()
-  reloadMemosBus.emit()
+  const { error } = await useMyFetch(`/api/memo/remove?id=${id}`).post().json()
+  if (!error.value) {
+    const { message } = createDiscreteApi(['message'])
+    message.success('删除成功')
+    changedMemoBus.emit()
+    reloadMemosBus.emit()
+  }
 }
 
 const editMemo = () => {

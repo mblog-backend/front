@@ -7,9 +7,6 @@
       <div class="middle">
         <RouterView />
       </div>
-      <div class="right">
-        <RightNav v-if="userinfo.token" />
-      </div>
     </div>
   </div>
 </template>
@@ -28,10 +25,6 @@ const userinfo = useStorage('userinfo', { username: '', token: '' })
 
   .middle {
     @apply flex-1;
-  }
-
-  .right {
-    @apply w-50;
   }
 }
 </style>

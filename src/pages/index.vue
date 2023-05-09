@@ -18,6 +18,13 @@
       </n-space>
     </div>
     <memo :memo="item" v-for="item in state.memos" :key="item.id" />
+    <div
+      class="flex items-center justify-center text-gray-500 text-sm cursor-pointer my-4 hover:text-blue-300"
+      v-if="state.search.page < state.totalPage"
+      @click="++state.search.page"
+    >
+      点击继续加载更多...
+    </div>
   </div>
 </template>
 
@@ -31,6 +38,7 @@ interface State {
   memos: Array<MemoDTO>
   search: MemoSearchParam
   total: number
+  totalPage: number
 }
 
 const state: State = reactive({
@@ -42,7 +50,7 @@ const state: State = reactive({
     end: dayjs().endOf('d').toDate(),
   },
   total: 0,
-  page: 1,
+  totalPage: 0,
 })
 
 watch(
@@ -60,9 +68,18 @@ onMounted(async () => {
 })
 
 const reload = async () => {
-  const { data } = await useMyFetch('/api/memo/list').post(state.search).json()
-  const response = data.value as ListMemoResponse
-  state.memos = response.items
+  const { data, error } = await useMyFetch('/api/memo/list').post(state.search).json()
+  console.log('memo reload error', error.value)
+  if (!error.value) {
+    const response = data.value as ListMemoResponse
+    if (state.search.page > 1) {
+      state.memos.push(...response.items)
+    } else {
+      state.memos = response.items
+    }
+    state.total = response.total
+    state.totalPage = response.totalPage
+  }
 }
 
 searchMemosBus.on(async (params) => {

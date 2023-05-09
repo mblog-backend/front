@@ -1,5 +1,6 @@
 import { createFetch } from '@vueuse/core'
 import { createDiscreteApi } from 'naive-ui'
+const { message } = createDiscreteApi(['message'])
 
 export const useMyFetch = createFetch({
   baseUrl: import.meta.env.VITE_BASE_URL,
@@ -13,13 +14,15 @@ export const useMyFetch = createFetch({
       }
       return { options }
     },
-    async afterFetch({ response, data }) {
-      const { message } = createDiscreteApi(['message'])
-      if (response.status !== 200 || data.code !== 0) {
-        message.error(data.msg || '系统异常')
-        return Promise.reject({ response, data })
+    async afterFetch(ctx) {
+      if (ctx.response.status !== 200 || ctx.data.code !== 0) {
+        return Promise.reject(new Error(ctx.data.msg || '系统异常'))
       }
-      return { response, data: data.data }
+      return Promise.resolve({ data: ctx.data.data })
+    },
+    async onFetchError(ctx) {
+      message.error(ctx.data.msg || '系统异常')
+      return Promise.resolve(ctx)
     },
   },
   fetchOptions: {

@@ -17,6 +17,21 @@ const router = createRouter({
   history: createWebHistory(),
 })
 
+router.beforeEach((to, from, next) => {
+  const userinfo = useStorage('userinfo', { username: '', token: '' })
+  if (userinfo.value.token) {
+    if (to.path === '/login') {
+      return next('/')
+    }
+  } else {
+    if (['/', '/register', '/login'].includes(to.path)) {
+      return next()
+    } else {
+      return next('/login?redirect=' + to.path)
+    }
+  }
+  next()
+})
 app.use(router)
 app.use(pinia)
 app.mount('#app')

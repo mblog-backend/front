@@ -26,8 +26,10 @@ const created = computed(() => {
 })
 
 const reload = async () => {
-  const { data } = await useMyFetch('/api/user/current').post().json()
-  user.value = data.value
+  const { data, error } = await useMyFetch('/api/user/current').post().json()
+  if (!error.value) {
+    user.value = data.value
+  }
 }
 </script>
 

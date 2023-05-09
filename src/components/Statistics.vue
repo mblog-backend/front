@@ -48,8 +48,10 @@ const req = ref<Request>({
 
 let statisticsDTO = ref<Partial<StatisticsDTO>>({})
 const reload = async () => {
-  const { data } = await useMyFetch('/api/memo/statistics').post(req).json()
-  statisticsDTO.value = data.value
+  const { data, error } = await useMyFetch('/api/memo/statistics').post(req).json()
+  if (!error.value) {
+    statisticsDTO.value = data.value
+  }
 }
 
 changedMemoBus.on(reload)

@@ -1,6 +1,12 @@
+@import 'https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.7.0/lxgwwenkaiscreen.min.css';
+
 html,
 body,
 #app {
   height: 100%;
   background-color: #f4f4f5;
+}
+
+* {
+  font-family: LXGW WenKai Screen, sans-serif;
 }
