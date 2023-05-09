@@ -8,6 +8,7 @@ declare global {
   const MemoVisibility: typeof import('./types/memo')['MemoVisibility']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
+  const changedMemoBus: typeof import('./event/event')['changedMemoBus']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
   const computedEager: typeof import('@vueuse/core')['computedEager']
@@ -87,7 +88,6 @@ declare global {
   const resolveComponent: typeof import('vue')['resolveComponent']
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
-  const saveMemoBus: typeof import('./event/event')['saveMemoBus']
   const searchMemosBus: typeof import('./event/event')['searchMemosBus']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
@@ -304,6 +304,7 @@ declare module 'vue' {
     readonly MemoVisibility: UnwrapRef<typeof import('./types/memo')['MemoVisibility']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly changedMemoBus: UnwrapRef<typeof import('./event/event')['changedMemoBus']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -383,7 +384,6 @@ declare module 'vue' {
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
-    readonly saveMemoBus: UnwrapRef<typeof import('./event/event')['saveMemoBus']>
     readonly searchMemosBus: UnwrapRef<typeof import('./event/event')['searchMemosBus']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>

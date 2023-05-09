@@ -70,7 +70,7 @@ searchMemosBus.on(async (params) => {
 })
 
 reloadMemosBus.on(reload)
-saveMemoBus.on(reload)
+changedMemoBus.on(reload)
 
 const clearSearchDate = () => {
   state.search.begin = undefined

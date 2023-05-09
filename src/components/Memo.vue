@@ -3,12 +3,12 @@
     <div class="header">
       <div class="date">2023-05-08 17:56</div>
       <div class="author" @click="searchMemosBus.emit({ userId: props.memo.userId, username: props.memo.authorName })">
-        {{ props.memo.authorName }}
+        @{{ props.memo.authorName }}
       </div>
       <div class="visibility" @click="searchMemosBus.emit({ visibility: props.memo.visibility })">
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
-      <n-popover trigger="manual" placement="left" :show="popoverShow">
+      <n-popover trigger="manual" placement="left" :show="popoverShow" @clickoutside="popoverShow = false">
         <template #trigger>
           <div class="detail" @click="popoverShow = !popoverShow"></div>
         </template>
@@ -95,6 +95,7 @@ const removeMemo = async (id: number) => {
   await useMyFetch(`/api/memo/remove?id=${id}`).post().json()
   const { message } = createDiscreteApi(['message'])
   message.success('删除成功')
+  changedMemoBus.emit()
   reloadMemosBus.emit()
 }
 

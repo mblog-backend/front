@@ -89,7 +89,7 @@ const saveMemo = async () => {
   memoSaveParam.visibility = 'PUBLIC'
   memoSaveParam.top = false
   uploadFiles.value = []
-  saveMemoBus.emit()
+  changedMemoBus.emit()
 }
 
 editMemoBus.on((memo: MemoDTO) => {

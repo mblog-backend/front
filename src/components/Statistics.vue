@@ -52,7 +52,7 @@ const reload = async () => {
   statisticsDTO.value = data.value
 }
 
-saveMemoBus.on(reload)
+changedMemoBus.on(reload)
 
 const tooltip = (idx: number) => {
   const day = dayjs().subtract(idx, 'd').format('YYYY-MM-DD')
