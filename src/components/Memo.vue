@@ -8,7 +8,13 @@
       <div class="visibility" @click="searchMemosBus.emit({ visibility: props.memo.visibility })">
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
-      <n-popover trigger="manual" placement="left" :show="popoverShow" @clickoutside="popoverShow = false">
+      <n-popover
+        trigger="manual"
+        placement="left"
+        :show="popoverShow"
+        @clickoutside="popoverShow = false"
+        v-if="userinfo.token"
+      >
         <template #trigger>
           <div class="detail" @click="popoverShow = !popoverShow"></div>
         </template>
@@ -17,7 +23,10 @@
             <div class="i-carbon:edit"></div>
             <div>编辑</div>
           </div>
-          <div class="fr gap-1 items-center cursor-pointer hover:text-blue-600">
+          <div
+            class="fr gap-1 items-center cursor-pointer hover:text-blue-600"
+            @click="navTo('/memo/' + props.memo.id)"
+          >
             <div class="i-carbon:book"></div>
             <div>详情</div>
           </div>
@@ -37,7 +46,7 @@
         </div>
       </n-popover>
     </div>
-    <div class="content" v-text="props.memo.content"></div>
+    <div class="content" v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"></div>
 
     <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="props.memo.resources">
       <n-image-group>
@@ -78,12 +87,29 @@
 </template>
 
 <script setup lang="ts">
+import { marked } from 'marked'
+import { mangle } from 'marked-mangle'
+import { gfmHeadingId } from 'marked-gfm-heading-id'
+
 import { type MemoDTO, getVisbilityDesc } from '@/types/memo'
 import { searchMemosBus, reloadMemosBus } from '@/event/event'
 import { useMyFetch } from '@/api/fetch'
+const options = {
+  prefix: 'mblog-',
+}
+const userinfo = useStorage('userinfo', { token: '' })
+
+marked.use(gfmHeadingId(options))
+marked.use(mangle())
+
 const props = defineProps<{
   memo: MemoDTO
 }>()
+
+const router = useRouter()
+const navTo = (path: string) => {
+  router.push(path)
+}
 
 const tags = computed(() => {
   return props.memo.tags?.split(',')
@@ -126,6 +152,7 @@ const editMemo = () => {
 
   .content {
     @apply py-2 px-4;
+    overflow-wrap: anywhere;
   }
 
   .tags {

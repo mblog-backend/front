@@ -9,8 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    copy: typeof import('./components/Mine copy.vue')['default']
-    HeaderNav: typeof import('./components/HeaderNav.vue')['default']
+    copy: typeof import('./components/settings/TagManage copy.vue')['default']
+    DevConfig: typeof import('./components/settings/DevConfig.vue')['default']
     LeftNav: typeof import('./components/LeftNav.vue')['default']
     Memo: typeof import('./components/Memo.vue')['default']
     MemoInput: typeof import('./components/MemoInput.vue')['default']
@@ -24,10 +24,8 @@ declare module '@vue/runtime-core' {
     NImage: typeof import('naive-ui')['NImage']
     NImageGroup: typeof import('naive-ui')['NImageGroup']
     NInput: typeof import('naive-ui')['NInput']
-    NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NPopconfirm: typeof import('naive-ui')['NPopconfirm']
     NPopover: typeof import('naive-ui')['NPopover']
-    NPopselect: typeof import('naive-ui')['NPopselect']
     NRadioButton: typeof import('naive-ui')['NRadioButton']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NSelect: typeof import('naive-ui')['NSelect']
@@ -43,6 +41,7 @@ declare module '@vue/runtime-core' {
     Statistics: typeof import('./components/Statistics.vue')['default']
     SysConfig: typeof import('./components/settings/SysConfig.vue')['default']
     TagManage: typeof import('./components/settings/TagManage.vue')['default']
+    Top10Tag: typeof import('./components/Top10Tag.vue')['default']
     UserConfig: typeof import('./components/settings/UserConfig.vue')['default']
   }
 }

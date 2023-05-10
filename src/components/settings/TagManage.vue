@@ -10,8 +10,6 @@
 <script setup lang="ts">
 import type { Tag } from '@/types/tag'
 import { NButton, type DataTableColumns, NInput } from 'naive-ui'
-import { type } from 'os'
-import { json } from 'stream/consumers'
 
 const columns: DataTableColumns<Tag> = [
   {
@@ -102,7 +100,7 @@ const saveTag = async () => {
     ?.map(({ id, name }) => {
       return { id, name }
     })
-  if (updatedTags) {
+  if (updatedTags && updatedTags.length > 0) {
     console.log(updatedTags)
     const { error } = await useMyFetch('/api/tag/save')
       .post({
@@ -112,6 +110,8 @@ const saveTag = async () => {
     if (error.value) return
     message.success('保存标签成功！')
     await reload()
+  } else {
+    message.success('保存标签成功！')
   }
 }
 </script>
