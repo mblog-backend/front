@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     NAvatar: typeof import('naive-ui')['NAvatar']
     NButton: typeof import('naive-ui')['NButton']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
+    NDataTable: typeof import('naive-ui')['NDataTable']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
     NImage: typeof import('naive-ui')['NImage']
@@ -41,5 +42,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     Statistics: typeof import('./components/Statistics.vue')['default']
     SysConfig: typeof import('./components/settings/SysConfig.vue')['default']
+    TagManage: typeof import('./components/settings/TagManage.vue')['default']
+    UserConfig: typeof import('./components/settings/UserConfig.vue')['default']
   }
 }

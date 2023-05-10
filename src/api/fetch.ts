@@ -15,13 +15,15 @@ export const useMyFetch = createFetch({
       return { options }
     },
     async afterFetch(ctx) {
+      console.log('afterfetch', ctx)
       if (ctx.response.status !== 200 || ctx.data.code !== 0) {
-        return Promise.reject(new Error(ctx.data.msg || '系统异常'))
+        return Promise.reject(new Error(ctx.data?.msg || '系统异常'))
       }
       return Promise.resolve({ data: ctx.data.data })
     },
     async onFetchError(ctx) {
-      message.error(ctx.data.msg || '系统异常')
+      console.log('onFetchError', ctx)
+      message.error(ctx.data?.msg || '系统异常')
       return Promise.resolve(ctx)
     },
   },

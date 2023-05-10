@@ -1,7 +1,7 @@
 <template>
   <div class="fc bg-white p-2 rd gap-2">
     <div class="fr gap-2 items-center justify-center">
-      <n-avatar round size="large" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" />
+      <n-avatar round size="large" :src="user.avatarUrl" />
       <div class="fc text-xs text-gray">
         <div>@{{ user.displayName }}</div>
         <div>始于{{ created }}</div>

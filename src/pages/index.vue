@@ -1,6 +1,6 @@
 <template>
   <div class="fc gap-2">
-    <memo-input />
+    <memo-input v-if="userinfo.token" />
     <div class="search">
       <n-space>
         <n-tag type="success" closable v-if="state.search.tag" @close="state.search.tag = undefined">
@@ -33,6 +33,8 @@ import { useMyFetch } from '@/api/fetch'
 import type { ListMemoResponse, MemoDTO, MemoSearchParam } from '@/types/memo'
 import { reloadMemosBus, searchMemosBus } from '@/event/event'
 import dayjs from 'dayjs'
+
+const userinfo = useStorage('userinfo', { token: '' })
 
 interface State {
   memos: Array<MemoDTO>

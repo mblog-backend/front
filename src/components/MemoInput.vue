@@ -80,9 +80,9 @@ let uploadFiles = ref<Array<UploadItem>>([])
 
 const visibilityOptions = getVisbilitys()
 
-const saveMemo = () => {
+const saveMemo = async () => {
   const url = memoSaveParam.id ? '/api/memo/update' : '/api/memo/save'
-  const { error } = useMyFetch(url).post(memoSaveParam).json()
+  const { error } = await useMyFetch(url).post(memoSaveParam).json()
   if (!error.value) {
     memoSaveParam.id = undefined
     memoSaveParam.content = ''
@@ -103,15 +103,17 @@ editMemoBus.on((memo: MemoDTO) => {
   uploadFiles.value = structuredClone(toRaw(memo.resources))
 })
 
-const customRequest = ({ file }: UploadCustomRequestOptions) => {
+const userinfo = useStorage('userinfo', { token: '' })
+
+const customRequest = async ({ file }: UploadCustomRequestOptions) => {
   const uploadUrl = `${import.meta.env.VITE_BASE_URL}/api/resource/upload`
   const uploadHeaders = {
-    token: useStorage('userinfo', { token: '' }).value.token,
+    token: userinfo.value.token,
   }
   const formData = new FormData()
   formData.append('files', file.file as File)
 
-  const { data, error } = useMyFetch(uploadUrl, {
+  const { data, error } = await useMyFetch(uploadUrl, {
     body: formData,
     headers: uploadHeaders,
   })

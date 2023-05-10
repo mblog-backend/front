@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-const userinfo = useStorage('userinfo', { username: '', token: '' })
+// const userinfo = useStorage('userinfo', { username: '', token: '' })
 </script>
 
 <style scoped lang="scss">
