@@ -91,7 +91,6 @@ const token = ref<Partial<Token>>({})
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/token/').get().json()
   if (error.value) return
-  console.log('datavalue', data.value)
   if (data.value === null) {
     token.value = {}
   } else {

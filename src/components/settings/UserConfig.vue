@@ -1,6 +1,6 @@
 <template>
-  <div class="rd bg-white p-2">
-    <div class="w-2/3 mx-auto">
+  <div class="rd bg-white p-2 dark:bg-gray-7">
+    <div class="mx-auto">
       <n-form ref="formRef" :label-width="70" :model="formValue" label-placement="left">
         <n-form-item label="头像">
           <n-upload :custom-request="customRequest" ref="uploadRef" :show-file-list="false">
@@ -64,7 +64,6 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
     .post()
     .json()
   if (!error.value) {
-    console.log(data.value)
     formValue.value.avatarUrl = data.value[0].url
     uploadRef.value?.clear()
   }

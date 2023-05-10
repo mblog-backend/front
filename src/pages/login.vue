@@ -11,7 +11,7 @@
         <n-form-item>
           <n-space align="center">
             <n-button attr-type="button" type="primary" @click="doLogin"> 登录 </n-button>
-            <n-button text attr-type="button" type="info" v-if="state.openRegister">
+            <n-button text attr-type="button" type="info" v-if="sessionStorage.OPEN_REGISTER">
               <RouterLink to="/register">去注册</RouterLink>
             </n-button>
           </n-space>
@@ -24,17 +24,12 @@
 <script setup lang="ts">
 import type { FormInst, FormRules } from 'naive-ui'
 
-const state = reactive({
-  openRegister: false,
+const sessionStorage = useSessionStorage('config', {
+  OPEN_REGISTER: false,
+  WEBSITE_TITLE: 'MBlog',
 })
 
-onMounted(async () => {
-  const { data, error } = await useMyFetch('/api/sysConfig/').get().json()
-  if (!error.value) {
-    const config = data.value as Array<{ key: string; value: string }>
-    state.openRegister = config.find((r) => r.key === 'OPEN_REGISTER')?.value === 'true'
-  }
-})
+onMounted(async () => {})
 
 const formValue = reactive({
   username: '',
@@ -77,6 +72,7 @@ const doLogin = () => {
       const { error, data } = await useMyFetch('/api/user/login').post(formValue).json()
       if (!error.value) {
         message.success('登录成功,转向首页', {
+          duration: 1000,
           onLeave: () => {
             userinfo.value = data.value
             router.push('/')

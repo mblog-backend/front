@@ -1,7 +1,7 @@
 <template>
   <div class="memo">
     <div class="header">
-      <div class="date">2023-05-08 17:56</div>
+      <div class="date">{{ dayjs(props.memo.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="author" @click="searchMemosBus.emit({ userId: props.memo.userId, username: props.memo.authorName })">
         @{{ props.memo.authorName }}
       </div>
@@ -46,7 +46,11 @@
         </div>
       </n-popover>
     </div>
-    <div class="content" v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"></div>
+    <div
+      class="content md-content"
+      :class="{ wrap: !route.path.startsWith('/memo') }"
+      v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
+    ></div>
 
     <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="props.memo.resources">
       <n-image-group>
@@ -94,10 +98,12 @@ import { gfmHeadingId } from 'marked-gfm-heading-id'
 import { type MemoDTO, getVisbilityDesc } from '@/types/memo'
 import { searchMemosBus, reloadMemosBus } from '@/event/event'
 import { useMyFetch } from '@/api/fetch'
+import dayjs from 'dayjs'
 const options = {
   prefix: 'mblog-',
 }
 const userinfo = useStorage('userinfo', { token: '' })
+const route = useRoute()
 
 marked.use(gfmHeadingId(options))
 marked.use(mangle())
@@ -135,10 +141,10 @@ const editMemo = () => {
 
 <style scoped lang="scss">
 .memo {
-  @apply fc bg-white rd;
+  @apply fc bg-white rd dark:bg-gray-7 dark:text-gray-4;
 
   .header {
-    @apply bg-gray-50 fr gap-2 text-xs py-2 px-4 text-gray-500;
+    @apply bg-gray-50 fr gap-2 text-xs py-2 px-4 text-gray-500 rd dark:bg-gray-5 dark:text-gray-9;
 
     .author,
     .visibility {
@@ -153,6 +159,12 @@ const editMemo = () => {
   .content {
     @apply py-2 px-4;
     overflow-wrap: anywhere;
+
+    &.wrap {
+      text-overflow: ellipsis;
+      max-height: 300px;
+      overflow: hidden;
+    }
   }
 
   .tags {

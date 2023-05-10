@@ -9,7 +9,6 @@ const route = useRoute()
 
 const memoData = ref<MemoDTO>({} as MemoDTO)
 
-console.log(route.params)
 onMounted(async () => {
   const { data, error } = await useMyFetch('/api/memo/' + route.params.id)
     .post()

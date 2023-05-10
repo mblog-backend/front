@@ -1,16 +1,16 @@
 <template>
-  <div class="fc bg-white py-4 px-2 rd">
+  <div class="fc bg-white py-4 px-2 rd dark:bg-gray-7 dark:text-gray-4">
     <div class="fr justify-around gap-4 text-gray mb-2">
       <div class="fc items-center">
-        <div class="text-lg text-black">{{ statisticsDTO.totalMemos }}</div>
+        <div class="text-lg text-black dark:text-gray-4">{{ statisticsDTO.totalMemos }}</div>
         <div>Memo</div>
       </div>
       <div class="fc items-center">
-        <div class="text-lg text-black">{{ statisticsDTO.totalTags }}</div>
+        <div class="text-lg text-black dark:text-gray-4">{{ statisticsDTO.totalTags }}</div>
         <div>Tags</div>
       </div>
       <div class="fc items-center">
-        <div class="text-lg text-black">{{ statisticsDTO.totalDays }}</div>
+        <div class="text-lg text-black dark:text-gray-4">{{ statisticsDTO.totalDays }}</div>
         <div>Day</div>
       </div>
     </div>
@@ -73,6 +73,7 @@ const searchMemoByDay = (idx: number) => {
     begin: day.startOf('d').toDate(),
     end: day.endOf('d').toDate(),
   })
+  closeDrawerBus.emit()
 }
 
 const opacity = (idx: number) => {
@@ -96,7 +97,7 @@ const opacity = (idx: number) => {
   grid-row-gap: 5px;
 
   .grid-item {
-    @apply w-5 h-5 cursor-pointer hover:bg-gray-400 bg-gray-200 rd;
+    @apply w-5 h-5 cursor-pointer hover:bg-gray-400 bg-gray-200 rd dark:bg-gray-8;
   }
 }
 </style>

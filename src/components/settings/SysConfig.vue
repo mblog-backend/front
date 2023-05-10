@@ -1,6 +1,6 @@
 <template>
-  <div class="rd bg-white p-2">
-    <div class="w-2/3 mx-auto">
+  <div class="rd bg-white p-2 dark:bg-gray-7">
+    <div class="mx-auto">
       <n-form ref="formRef" :label-width="90" :model="formValue" label-placement="left">
         <n-form-item label="网站标题">
           <n-input v-model:value="formValue.WEBSITE_TITLE" placeholder="输入网站标题" />
@@ -59,11 +59,15 @@ const formValue: Partial<SysConfig> = reactive({})
 let oss = ref<Partial<OssStorage>>({})
 
 const changeStorage = (val: string) => {
-  console.log(val)
   if (val === 'QINIU') {
     oss.value = JSON.parse(formValue.QINIU_PARAM as string)
   }
 }
+
+const sessionStorage = useSessionStorage('config', {
+  OPEN_REGISTER: false,
+  WEBSITE_TITLE: 'MBlog',
+})
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/get').get().json()
@@ -109,6 +113,8 @@ const saveConfig = async () => {
   if (!error.value) {
     const { message } = createDiscreteApi(['message'])
     message.success('保存系统配置成功!')
+    sessionStorage.value.OPEN_REGISTER = formValue.OPEN_REGISTER!
+    sessionStorage.value.WEBSITE_TITLE = formValue.WEBSITE_TITLE!
     await reload()
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dark:bg-gray-7">
     <n-data-table :columns="columns" :data="tags" :bordered="false" />
     <div class="flex items-center justify-center mt-2">
       <n-button type="primary" @click="saveTag">保存标签</n-button>
@@ -80,7 +80,6 @@ const removeTag = async (id: number) => {
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/tag/list').post().json()
   if (error.value) return
-  console.log(data.value)
   tags.value = data.value
 }
 
@@ -101,7 +100,6 @@ const saveTag = async () => {
       return { id, name }
     })
   if (updatedTags && updatedTags.length > 0) {
-    console.log(updatedTags)
     const { error } = await useMyFetch('/api/tag/save')
       .post({
         list: updatedTags,

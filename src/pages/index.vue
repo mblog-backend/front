@@ -71,7 +71,6 @@ onMounted(async () => {
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/memo/list').post(state.search).json()
-  console.log('memo reload error', error.value)
   if (!error.value) {
     const response = data.value as ListMemoResponse
     if (state.search.page > 1) {

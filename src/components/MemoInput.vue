@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99">
+  <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99 dark:bg-gray-7">
     <n-input
       type="textarea"
       placeholder="输入你要记录的吧"
@@ -128,7 +128,6 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
 
 const deleteResource = (publicId: string) => {
   const idx = uploadFiles.value.findIndex((r) => r.publicId === publicId)
-  console.log(idx)
   if (idx >= 0) {
     uploadFiles.value.splice(idx, 1)
   }

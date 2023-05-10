@@ -10,13 +10,7 @@ import {
 
 export default defineConfig({
   theme: {
-    colors: {
-      cSelected: '#526ECC',
-      cHover: '#344899',
-      cMain: '#5E7CE0',
-      cFMain: '#252B3A',
-      cFThird: '#BABBC0',
-    },
+    colors: {},
     breakpoints: {
       sm: '320px',
       md: '640px',

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-white rd" style="min-height: 600px">
+  <div class="p-2 bg-white rd dark:bg-gray-7" style="min-height: 600px">
     <n-tabs type="card">
       <n-tab-pane name="系统设置">
         <SysConfig />
