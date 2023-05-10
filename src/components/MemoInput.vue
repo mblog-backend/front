@@ -12,8 +12,20 @@
     <div class="fr gap-2 items-center">
       <n-select v-model:value="memoSaveParam.visibility" :options="visibilityOptions" class="w-32" size="small" />
       <n-upload :multiple="true" name="files" :show-file-list="false" :custom-request="customRequest" ref="uploadRef">
-        <div class="i-carbon:cloud-upload cursor-pointer text-gray-500 hover:text-gray text-lg"></div>
+        <div
+          class="i-carbon:cloud-upload cursor-pointer text-gray-500 hover:text-gray text-lg dark:text-yellow-3"
+        ></div>
       </n-upload>
+      <n-popover :show="emojiShow" @clickoutside="emojiShow = false">
+        <template #trigger>
+          <div
+            class="i-carbon:face-wink cursor-pointer hover:text-yellow text-lg dark:text-yellow-3"
+            @click="emojiShow = true"
+          ></div>
+        </template>
+        <emoji-picker ref="pickerRef" @emoji-click="emojiClicked"></emoji-picker>
+      </n-popover>
+
       <n-button type="primary" class="ml-auto px-8" @click="saveMemo"> 记录 </n-button>
     </div>
 
@@ -49,13 +61,6 @@
           </div>
         </n-space>
       </n-image-group>
-
-      <!--  <div v-for="img in uploadFiles" :key="img.publicId" class="relative">
-        
-        
-        <img :src="img.url" class="w-20 h-20 rd hover:shadow-2xl cursor-pointer" />
-        <div class="deleteBtn" @click="deleteResource(img.publicId)"></div> 
-      </div>-->
     </div>
   </div>
 </template>
@@ -63,6 +68,8 @@
 <script setup lang="ts">
 import { getVisbilitys, type MemoSaveParam, type MemoDTO } from '@/types/memo'
 import { type UploadCustomRequestOptions, type UploadInst } from 'naive-ui'
+import 'emoji-picker-element'
+// import { Picker } from 'emoji-picker-element'
 
 let memoSaveParam: Partial<MemoSaveParam> = reactive({
   visibility: 'PUBLIC',
@@ -78,7 +85,15 @@ const uploadRef = ref<UploadInst | null>(null)
 
 let uploadFiles = ref<Array<UploadItem>>([])
 
+const emojiShow = ref(false)
+
 const visibilityOptions = getVisbilitys()
+
+const emojiClicked = (event: { detail: any }) => {
+  console.log(event.detail)
+  memoSaveParam.content = memoSaveParam.content + event.detail.unicode
+  emojiShow.value = false
+}
 
 const saveMemo = async () => {
   const url = memoSaveParam.id ? '/api/memo/update' : '/api/memo/save'
@@ -146,5 +161,17 @@ const deleteResource = (publicId: string) => {
 
 .deleteBtn {
   @apply i-carbon:close-filled text-red-400 hover:text-red-700 cursor-pointer absolute top-2 right-2 fw-500;
+}
+
+emoji-picker {
+  width: 400px;
+  height: 300px;
+}
+@media screen and (max-width: 640px) {
+  emoji-picker {
+    width: 100%;
+    --num-columns: 6;
+    --category-emoji-size: 1rem;
+  }
 }
 </style>
