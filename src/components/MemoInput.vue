@@ -25,6 +25,7 @@
         </template>
         <emoji-picker ref="pickerRef" @emoji-click="emojiClicked"></emoji-picker>
       </n-popover>
+      <!-- <n-button @click="toggleDrauuBus.emit()" size="tiny" text> 随手画 </n-button> -->
 
       <n-button type="primary" class="ml-auto px-8" @click="saveMemo"> 记录 </n-button>
     </div>
@@ -62,6 +63,8 @@
         </n-space>
       </n-image-group>
     </div>
+
+    <Drauu />
   </div>
 </template>
 
@@ -69,7 +72,6 @@
 import { getVisbilitys, type MemoSaveParam, type MemoDTO } from '@/types/memo'
 import { type UploadCustomRequestOptions, type UploadInst } from 'naive-ui'
 import 'emoji-picker-element'
-// import { Picker } from 'emoji-picker-element'
 
 let memoSaveParam: Partial<MemoSaveParam> = reactive({
   visibility: 'PUBLIC',

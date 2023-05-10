@@ -50,6 +50,13 @@
   resolved "https://registry.npmmirror.com/@css-render/vue3-ssr/-/vue3-ssr-0.15.12.tgz#798d8dffadecd2bf8c80cbaab64e9df10be5626e"
   integrity sha512-AQLGhhaE0F+rwybRCkKUdzBdTEM/5PZBYy+fSYe1T9z9+yxMuV/k7ZRqa4M69X+EI1W8pa4kc9Iq2VjQkZx4rg==
 
+"@drauu/core@0.3.2":
+  version "0.3.2"
+  resolved "https://registry.npmmirror.com/@drauu/core/-/core-0.3.2.tgz#e6ba620bd4d2ef72e0850e4b7ba3ca708dafdfd1"
+  integrity sha512-7G3qIuMBkDkrzvZOs6Rm/7rKWuhZOe8iimHooTmy4vpKGsPimaNC1jGCSPSM8ys/johhcIvx+1ZvnMJ5+UAXJA==
+  dependencies:
+    perfect-freehand "^1.2.0"
+
 "@emotion/hash@~0.8.0":
   version "0.8.0"
   resolved "https://registry.npmmirror.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
@@ -895,13 +902,22 @@
   resolved "https://registry.npmmirror.com/@vue/tsconfig/-/tsconfig-0.3.2.tgz#612ba0b6aefde5ac1a513545eee7d4ed01c407f5"
   integrity sha512-jWzZbGyrZAEbHYGn0kPzJ+MMtIkIxb0+hL5+RghBowyOxMRs9jMdp5XvpXz3wgCzjRZiUucy29042HBe9cxoYA==
 
-"@vueuse/core@^10.1.2":
+"@vueuse/core@10.1.2", "@vueuse/core@^10.1.2":
   version "10.1.2"
   resolved "https://mirrors.cloud.tencent.com/npm/@vueuse/core/-/core-10.1.2.tgz#2499eadec36c5d7109338e3a2b73725040ae8011"
   integrity sha512-roNn8WuerI56A5uiTyF/TEYX0Y+VKlhZAF94unUfdhbDUI+NfwQMn4FUnUscIRUhv3344qvAghopU4bzLPNFlA==
   dependencies:
     "@types/web-bluetooth" "^0.0.17"
     "@vueuse/metadata" "10.1.2"
+    "@vueuse/shared" "10.1.2"
+    vue-demi ">=0.14.0"
+
+"@vueuse/integrations@^10.1.2":
+  version "10.1.2"
+  resolved "https://registry.npmmirror.com/@vueuse/integrations/-/integrations-10.1.2.tgz#e318ed2cec87711b2a110dceca2150d7fe1452d0"
+  integrity sha512-wUpG3Wv6LiWerOwCzOAM0iGhNQ4vfFUTkhj/xQy7TLXduh2M3D8N08aS0KqlxsejY6R8NLxydDIM+68QfHZZ8Q==
+  dependencies:
+    "@vueuse/core" "10.1.2"
     "@vueuse/shared" "10.1.2"
     vue-demi ">=0.14.0"
 
@@ -1284,6 +1300,13 @@ doctrine@^3.0.0:
   integrity sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
   dependencies:
     esutils "^2.0.2"
+
+drauu@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.npmmirror.com/drauu/-/drauu-0.3.2.tgz#1d35e37bb370a38bba7f455fc9a5842f3ea3f6ee"
+  integrity sha512-NnRQU6uM9uk1zAd33nFZ6FqZGGmT3jiYS/ERdDIDuTUgDsweSgpf1D3X7vYZwRSxCZayOnnt1sKWj9swbR8q4Q==
+  dependencies:
+    "@drauu/core" "0.3.2"
 
 duplexer@^0.1.2:
   version "0.1.2"
@@ -2570,6 +2593,11 @@ perfect-debounce@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/perfect-debounce/-/perfect-debounce-1.0.0.tgz#9c2e8bc30b169cc984a58b7d5b28049839591d2a"
   integrity sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==
+
+perfect-freehand@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmmirror.com/perfect-freehand/-/perfect-freehand-1.2.0.tgz#706a0f854544f6175772440c51d3b0563eb3988a"
+  integrity sha512-h/0ikF1M3phW7CwpZ5MMvKnfpHficWoOEyr//KVNTxV4F6deRK1eYMtHyBKEAKFK0aXIEUK9oBvlF6PNXMDsAw==
 
 picocolors@^1.0.0:
   version "1.0.0"

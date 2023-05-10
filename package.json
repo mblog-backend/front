@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.1.2",
+    "@vueuse/integrations": "^10.1.2",
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
+    "drauu": "^0.3.2",
     "emoji-picker-element": "^1.17.0",
     "marked": "^5.0.1",
     "marked-gfm-heading-id": "^3.0.3",

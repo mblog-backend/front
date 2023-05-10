@@ -18,3 +18,4 @@ declare global {
 }
 declare module 'marked-mangle'
 declare module 'marked-gfm-heading-id'
+declare module '@vueuse/integrations/useDrauu'
