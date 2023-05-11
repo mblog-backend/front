@@ -12,7 +12,7 @@ RUN yarn build --mode=docker
 
 FROM nginx:stable-alpine as production-stage
 
-COPY --from=build-stage dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 COPY entrypoint.sh /usr/share/nginx
 
 EXPOSE 80
