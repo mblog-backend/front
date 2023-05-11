@@ -2,6 +2,8 @@
 
 前后分离的微博平台前端
 
+[服务端地址](https://github.com/kingwrcy/mblog-backend)
+
 支持的功能如下:
 
 大体功能如下:
