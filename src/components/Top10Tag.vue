@@ -32,6 +32,8 @@ const reload = async () => {
   if (error.value) return
   tagList.value = data.value
 }
+
+changedMemoBus.on(reload)
 </script>
 
 <style scoped></style>

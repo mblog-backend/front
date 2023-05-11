@@ -103,7 +103,7 @@ onMounted(async () => {
   tags.value = tagList.map((r) => {
     return {
       label: r.name,
-      value: r.name,
+      value: r.name.substring(1),
     }
   })
 })
@@ -177,7 +177,7 @@ const deleteResource = (publicId: string) => {
     uploadFiles.value.splice(idx, 1)
   }
   const idx2 = memoSaveParam.publicIds?.findIndex((r) => r === publicId)
-  if (memoSaveParam.publicIds && idx2 && idx2 >= 0) {
+  if (memoSaveParam.publicIds && idx2 != null && idx2 >= 0) {
     memoSaveParam.publicIds.splice(idx2, 1)
   }
 }
