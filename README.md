@@ -1,46 +1,33 @@
 # mblog-front
 
-This template should help get you started developing with Vue 3 in Vite.
+前后分离的微博平台前端
 
-## Recommended IDE Setup
+支持的功能如下:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+大体功能如下:
 
-## Type Support for `.vue` Imports in TS
+- 基本的文字/图片输入,支持标签
+- 支持对历史博文/标签修改
+- 支持单/多用户,支持开启/关闭注册
+- 支持博可见性, 登录用户/所有人/只有自己 可见
+- 支持按照标签,作者等条件搜索
+- 支持标签管理(**一键改标签**,删除无用标签等)
+- 支持上传图片(目前支持本地文件存储和七牛云,后续继续添加阿里云/腾讯云等)
+- 支持开发者使用 api token
+- 响应式设计,支持 pc 和手机
+- 支持 RSS
+- 支持 markdown 语法
+- 前后端分离,前端和后端域名可以不一致,可以后端部署在 nas 上,前端部署在 cdn.
+- ...更多特性等待开发
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+# 部署
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+支持 Docker 部署和 CDN 部署,详情见[这里](https://github.com/kingwrcy/mblog-backend)
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+# 本地开发
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
+```
+git clone https://github.com/kingwrcy/mblog-front
 yarn
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 yarn dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-yarn build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-yarn lint
 ```
