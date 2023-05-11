@@ -8,7 +8,7 @@ RUN --mount=type=cache,id=yarn-store,target=/root/.yarn-store \
     yarn install --registry=https://registry.npm.taobao.org
 
 COPY . .
-RUN yarn build --mode=docker
+RUN yarn build-only --mode=docker
 
 FROM nginx:stable-alpine as production-stage
 
