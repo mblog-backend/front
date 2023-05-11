@@ -17,14 +17,22 @@
       <div class="i-carbon:login"></div>
       <div>登录</div>
     </div>
-    <div class="item" @click="navTo('/login')">
-      <div class="i-carbon:moon" @click="toggleTheme('dark')" v-if="themeModelVal.theme === 'day'"></div>
+    <div class="fr gap-2 items-center justify-center">
+      <div
+        class="i-carbon:moon hover:text-gray-7 cursor-pointer"
+        @click="toggleTheme('dark')"
+        v-if="themeModelVal.theme === 'day'"
+      ></div>
       <div
         class="i-carbon:sun text-yellow-5 text-lg hover:text-yellow-4"
         @click="toggleTheme('day')"
         v-if="themeModelVal.theme === 'dark'"
       ></div>
-      <div class="i-carbon:logo-github text-lg hover:text-gray-7"></div>
+      <a
+        class="i-carbon:logo-github text-lg hover:text-gray-7"
+        target="_blank"
+        href="https://github.com/kingwrcy/mblog-backend"
+      ></a>
     </div>
   </div>
 </template>

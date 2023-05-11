@@ -46,11 +46,7 @@
         </div>
       </n-popover>
     </div>
-    <div
-      class="content md-content"
-      :class="{ wrap: !route.path.startsWith('/memo') }"
-      v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
-    ></div>
+    <div class="content md-content" v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"></div>
 
     <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="props.memo.resources">
       <n-image-group>
