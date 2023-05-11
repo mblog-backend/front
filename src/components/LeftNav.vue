@@ -24,12 +24,12 @@
         v-if="themeModelVal.theme === 'day'"
       ></div>
       <div
-        class="i-carbon:sun text-yellow-5 text-lg hover:text-yellow-4"
+        class="i-carbon:sun text-yellow-5 text-lg hover:text-yellow-4 cursor-pointer"
         @click="toggleTheme('day')"
         v-if="themeModelVal.theme === 'dark'"
       ></div>
       <a
-        class="i-carbon:logo-github text-lg hover:text-gray-7"
+        class="i-carbon:logo-github text-lg hover:text-gray-7 dark:text-yellow-5 dark:hover:text-yellow-4"
         target="_blank"
         href="https://github.com/kingwrcy/mblog-backend"
       ></a>
