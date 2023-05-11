@@ -1,0 +1,37 @@
+kind: pipeline
+type: docker
+name: mblog-front
+trigger:
+  branch:
+    - main
+  event:
+    - push
+
+steps:
+  - name: docker build
+    image: plugins/docker
+    settings:
+      registry: 192.168.2.33:47382
+      insecure: true
+      repo: 192.168.2.33:47382/kingwrcy/mblog-front
+      tags: latest
+      cache_from: 192.168.2.33:47382/kingwrcy/mblog-front:latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+
+  - name: start service
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        - 192.168.2.33
+      username: root
+      key:
+        from_secret: ds920_private_key
+      port: 22
+      command_timeout: 2m
+      script:
+        - cd /volume1/docker/drone/memo-front/
+        - chmod +x ./startup.sh
+        - ./startup.sh
