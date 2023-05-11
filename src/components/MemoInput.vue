@@ -1,9 +1,11 @@
 <template>
   <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99 dark:bg-gray-7">
-    <n-input
+    <n-mention
       type="textarea"
       placeholder="输入你要记录的吧"
       show-count
+      prefix="#"
+      :options="tags"
       v-model:value="memoSaveParam.content"
       :autosize="{
         minRows: 3,
@@ -70,8 +72,11 @@
 
 <script setup lang="ts">
 import { getVisbilitys, type MemoSaveParam, type MemoDTO } from '@/types/memo'
-import { type UploadCustomRequestOptions, type UploadInst } from 'naive-ui'
+import { type Tag } from '@/types/tag'
+import { type MentionOption, type UploadCustomRequestOptions, type UploadInst } from 'naive-ui'
 import 'emoji-picker-element'
+
+const tags = ref<Array<MentionOption>>()
 
 let memoSaveParam: Partial<MemoSaveParam> = reactive({
   visibility: 'PUBLIC',
@@ -91,9 +96,32 @@ const emojiShow = ref(false)
 
 const visibilityOptions = getVisbilitys()
 
-const emojiClicked = (event: { detail: any }) => {
-  console.log(event.detail)
-  memoSaveParam.content = memoSaveParam.content + event.detail.unicode
+onMounted(async () => {
+  const { data, error } = await useMyFetch('/api/tag/list').post().json()
+  if (error.value) return
+  const tagList = data.value as Array<Tag>
+  tags.value = tagList.map((r) => {
+    return {
+      label: r.name,
+      value: r.name,
+    }
+  })
+})
+
+const emojiClicked = async (event: { detail: any }) => {
+  const textArea = document.querySelector('textarea') as HTMLTextAreaElement
+  const emojiVal = event.detail.unicode
+  if (textArea.selectionStart || textArea.selectionStart === 0) {
+    var startPos = textArea.selectionStart
+    var endPos = textArea.selectionEnd
+    memoSaveParam.content =
+      textArea.value.substring(0, startPos) + emojiVal + textArea.value.substring(endPos, textArea.value.length)
+    await nextTick()
+    textArea.focus()
+    textArea.setSelectionRange(endPos + emojiVal.length, endPos + emojiVal.length)
+  } else {
+    memoSaveParam.content += emojiVal
+  }
   emojiShow.value = false
 }
 

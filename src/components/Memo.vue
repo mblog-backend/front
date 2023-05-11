@@ -99,7 +99,7 @@ const options = {
   prefix: 'mblog-',
 }
 const userinfo = useStorage('userinfo', { token: '' })
-const route = useRoute()
+// const route = useRoute()
 
 marked.use(gfmHeadingId(options))
 marked.use(mangle())

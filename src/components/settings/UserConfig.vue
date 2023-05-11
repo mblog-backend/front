@@ -10,6 +10,9 @@
         <n-form-item label="昵称">
           <n-input v-model:value="formValue.displayName" placeholder="输入昵称" />
         </n-form-item>
+        <n-form-item label="密码">
+          <n-input type="password" v-model:value="formValue.password" placeholder="留空就是不修改密码" />
+        </n-form-item>
         <n-form-item label="邮箱">
           <n-input v-model:value="formValue.email" placeholder="输入邮箱" />
         </n-form-item>
@@ -31,7 +34,7 @@ import type { User } from '@/types/user'
 import type { UploadCustomRequestOptions, UploadInst } from 'naive-ui'
 
 const userinfo = useStorage('userinfo', { token: '' })
-const formValue = ref<Partial<User>>({})
+const formValue = ref<Partial<User> & { password?: string }>({})
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/user/current').post().json()

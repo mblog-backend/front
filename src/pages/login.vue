@@ -62,7 +62,7 @@ const rules: FormRules = {
 const router = useRouter()
 const formRef = ref<FormInst | null>(null)
 const { message } = createDiscreteApi(['message'])
-const userinfo = useStorage('userinfo', { username: '', token: '' })
+const userinfo = useStorage('userinfo', { username: '', token: '', role: '' })
 
 // onMounted(async () => {})
 
