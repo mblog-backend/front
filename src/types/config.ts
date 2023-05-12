@@ -14,4 +14,5 @@ export interface OssStorage {
   bucket: string
   domain: string
   prefix: string
+  suffix: string
 }

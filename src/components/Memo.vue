@@ -53,11 +53,13 @@
         <n-space>
           <n-image
             v-for="(img, index) in props.memo.resources"
+            class="rd hover:shadow-2xl"
             :key="index"
             width="100"
             height="100"
             lazy
-            :src="img.url"
+            :src="img.url + img.suffix"
+            :preview-src="img.url"
             :intersection-observer-options="{
               root: '#image-scroll-container',
             }"

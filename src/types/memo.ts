@@ -16,6 +16,7 @@ export interface MemoDTO {
     publicId: string
     url: string
     fileType: string
+    suffix: string
   }>
 }
 

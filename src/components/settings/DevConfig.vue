@@ -1,5 +1,5 @@
 <template>
-  <div class="fc gap-2">
+  <div class="fc gap-2 px-4">
     <div class="fr gap-2">
       <n-button type="info" v-if="!token.id" @click="enableToken">启用开发者Token</n-button>
       <n-button type="primary" v-if="token.id" @click="resetToken">重置Token</n-button>

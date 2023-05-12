@@ -40,7 +40,8 @@
               width="100"
               height="100"
               lazy
-              :src="img.url"
+              :src="img.url + img.suffix"
+              :preview-src="img.url"
               :intersection-observer-options="{
                 root: '#image-scroll-container',
               }"
@@ -86,6 +87,7 @@ let memoSaveParam: Partial<MemoSaveParam> = reactive({
 interface UploadItem {
   url: string
   publicId: string
+  suffix: string
 }
 
 const uploadRef = ref<UploadInst | null>(null)

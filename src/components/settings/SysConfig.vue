@@ -40,6 +40,9 @@
           <n-form-item label="文件夹前缀">
             <n-input v-model:value="oss.prefix" placeholder="文件夹前缀" />
           </n-form-item>
+          <n-form-item label="图片后缀">
+            <n-input v-model:value="oss.suffix" placeholder="图片后缀" />
+          </n-form-item>
         </template>
         <n-form-item>
           <n-space align="center">

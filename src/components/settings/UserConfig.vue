@@ -67,7 +67,7 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
     .post()
     .json()
   if (!error.value) {
-    formValue.value.avatarUrl = data.value[0].url
+    formValue.value.avatarUrl = data.value[0].url + data.value[0].suffix
     uploadRef.value?.clear()
   }
 }

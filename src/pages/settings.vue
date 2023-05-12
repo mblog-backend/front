@@ -7,7 +7,7 @@
       <n-tab-pane name="用户设置">
         <UserConfig />
       </n-tab-pane>
-      <n-tab-pane name="标签管理" v-if="userinfo.role === 'ADMIN'">
+      <n-tab-pane name="标签管理">
         <TagManage />
       </n-tab-pane>
       <n-tab-pane name="开发者"> <DevConfig /> </n-tab-pane>
