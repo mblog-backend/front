@@ -34,12 +34,21 @@
         href="https://github.com/kingwrcy/mblog-backend"
       ></a>
     </div>
+    <div class="flex justify-center text-xs text-gray-400 pb-1 hover-text-gray-700 cursor-pointer">
+      <a
+        :href="'https://github.com/kingwrcy/mblog-backend/releases/tag/v' + version"
+        target="_blank"
+        class="dark:text-white"
+      >
+        v{{ version }}
+      </a>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 const themeModelVal = useLocalStorage('themeModel', { theme: 'day' })
-
+const version = import.meta.env.VITE_MBLOG_VERSION
 const router = useRouter()
 const navTo = (path: string) => {
   router.push(path)

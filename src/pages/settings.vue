@@ -10,7 +10,7 @@
       <n-tab-pane name="标签管理">
         <TagManage />
       </n-tab-pane>
-      <n-tab-pane name="开发者"> <DevConfig /> </n-tab-pane>
+      <n-tab-pane name="开发者" v-if="userinfo.role === 'ADMIN'"> <DevConfig /> </n-tab-pane>
     </n-tabs>
   </div>
 </template>

@@ -2,7 +2,7 @@
   <div class="dark:bg-gray-7">
     <n-data-table :columns="columns" :data="tags" :bordered="false" />
     <div class="flex items-center justify-center mt-2">
-      <n-button type="primary" @click="saveTag">保存标签</n-button>
+      <n-button type="primary" @click="saveTag" v-if="tags.length > 0">保存标签</n-button>
     </div>
   </div>
 </template>

@@ -17,9 +17,9 @@
         </n-tag>
       </n-space>
     </div>
-    <memo :memo="item" v-for="item in state.memos" :key="item.id" />
+    <memo :memo="item" v-for="item in state.memos" :key="item.id" :id="item.id" />
 
-    <div v-if="state.memos.length === 0 && state.search.page === 1" class="flex justify-center text-gray-700">
+    <div v-cloak v-if="state.memos.length === 0 && state.search.page === 1" class="flex justify-center text-gray-700">
       暂无记录,等待你添加,支持Markdown格式
     </div>
     <div
@@ -72,12 +72,6 @@ watch(
 onMounted(async () => {
   await reload()
 })
-
-// const defaultMemo :MemoDTO ={
-//   id:0,
-//   content:`暂无记录,赶快添加吧,支持Markdown格式.`,
-//   created:new Date().toDateString()
-// }
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/memo/list').post(state.search).json()

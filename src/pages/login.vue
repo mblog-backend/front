@@ -1,5 +1,5 @@
 <template>
-  <div class="rd bg-white p-2">
+  <div class="rd bg-white p-2 dark:bg-gray-700">
     <div class="w-2/3 mx-auto">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules">
         <n-form-item label="姓名" path="username">
@@ -12,7 +12,7 @@
           <n-space align="center">
             <n-button attr-type="button" type="primary" @click="doLogin"> 登录 </n-button>
             <n-button text attr-type="button" type="info" v-if="sessionStorage.OPEN_REGISTER">
-              <RouterLink to="/register">去注册</RouterLink>
+              <RouterLink to="/register" class="dark:text-white">去注册</RouterLink>
             </n-button>
           </n-space>
         </n-form-item>

@@ -40,7 +40,8 @@
               width="100"
               height="100"
               lazy
-              :src="img.url + img.suffix"
+              class="rd hover:shadow-2xl"
+              :src="img.url + (img.suffix || '')"
               :preview-src="img.url"
               :intersection-observer-options="{
                 root: '#image-scroll-container',
@@ -135,7 +136,7 @@ const saveMemo = async () => {
     memoSaveParam.content = ''
     memoSaveParam.publicIds = []
     memoSaveParam.visibility = 'PUBLIC'
-    memoSaveParam.top = false
+    memoSaveParam.top = 'N'
     uploadFiles.value = []
     changedMemoBus.emit()
   }
@@ -146,7 +147,7 @@ editMemoBus.on((memo: MemoDTO) => {
   memoSaveParam.id = memo.id
   memoSaveParam.content = content
   memoSaveParam.publicIds = memo.resources.map((r) => r.publicId)
-  memoSaveParam.top = false
+  memoSaveParam.top = memo.top
   uploadFiles.value = structuredClone(toRaw(memo.resources))
 })
 

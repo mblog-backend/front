@@ -2,7 +2,7 @@
   <div class="main">
     <div class="fr gap-2">
       <div class="left">
-        <LeftNav />
+        <LeftNav v-if="userinfo.token || !route.path.startsWith('/memo')" />
       </div>
       <div class="middle">
         <RouterView />
@@ -12,9 +12,11 @@
       </div>
     </div>
     <div
-      class="i-carbon:settings md:hidden sticky left-2 bottom-2 text-3xl z-99"
-      @click="showDrawer = !showDrawer"
-    ></div>
+      title="设置"
+      class="bg-blue rd md:hidden sticky hover:bg-blue-5 left-2 bottom-2 z-99 w-10 items-center justify-center cursor-pointer flex"
+    >
+      <div class="i-carbon:settings text-3xl text-white" @click="showDrawer = !showDrawer"></div>
+    </div>
   </div>
 
   <n-drawer v-model:show="showDrawer" :width="'60%'" placement="right">
@@ -30,6 +32,7 @@
 <script setup lang="ts">
 const userinfo = useStorage('userinfo', { username: '', token: '' })
 const showDrawer = ref(false)
+const route = useRoute()
 closeDrawerBus.on(() => {
   showDrawer.value = false
 })

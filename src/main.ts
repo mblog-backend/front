@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
       return next('/')
     }
   } else {
-    if (['/', '/register', '/login'].includes(to.path)) {
+    if (['/', '/register', '/login'].includes(to.path) || to.path.startsWith('/memo/')) {
       return next()
     } else {
       return next('/login?redirect=' + to.path)

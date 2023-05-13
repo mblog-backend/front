@@ -11,7 +11,7 @@ export interface MemoDTO {
   authorRole: string
   email: string
   bio: string
-  authorId: number
+  top: string
   resources: Array<{
     publicId: string
     url: string
@@ -44,7 +44,7 @@ export interface MemoSaveParam {
   content: string
   publicIds: Array<string>
   visibility?: string
-  top: boolean
+  top: string
 }
 export enum MemoVisibility {
   PUBLIC = '所有人可见',

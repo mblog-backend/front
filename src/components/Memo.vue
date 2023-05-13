@@ -1,5 +1,5 @@
 <template>
-  <div class="memo">
+  <div class="memo" :class="{ top: props.memo.top === 'Y' }">
     <div class="header">
       <div class="date">{{ dayjs(props.memo.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="author" @click="searchMemosBus.emit({ userId: props.memo.userId, username: props.memo.authorName })">
@@ -8,30 +8,63 @@
       <div class="visibility" @click="searchMemosBus.emit({ visibility: props.memo.visibility })">
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
+      <div v-if="props.memo.top === 'Y'" class="fw-700">已置顶</div>
+
+      <div
+        class="fr gap-1 items-center cursor-pointer hover:text-blue-600 ml-auto"
+        @click="navTo('/memo/' + props.memo.id)"
+        title="查看详情"
+        v-if="route.path === '/' && !userinfo.token"
+      >
+        <div class="i-carbon:book"></div>
+      </div>
+
       <n-popover
         trigger="manual"
         placement="left"
         :show="popoverShow"
         @clickoutside="popoverShow = false"
-        v-if="userinfo.token"
+        v-if="userinfo.token && route.path === '/'"
       >
         <template #trigger>
           <div class="detail" @click="popoverShow = !popoverShow"></div>
         </template>
         <div class="fc gap-1">
-          <div class="fr gap-1 items-center cursor-pointer hover:text-blue-600" @click="editMemo()">
+          <div
+            v-if="props.memo.userId === userinfo.userId"
+            class="fr gap-1 items-center cursor-pointer hover:text-blue-600"
+            @click="editMemo()"
+          >
             <div class="i-carbon:edit"></div>
             <div>编辑</div>
           </div>
           <div
             class="fr gap-1 items-center cursor-pointer hover:text-blue-600"
+            v-if="route.path === '/'"
             @click="navTo('/memo/' + props.memo.id)"
           >
             <div class="i-carbon:book"></div>
             <div>详情</div>
           </div>
+          <div
+            v-if="props.memo.top === 'N' && userinfo.role === 'ADMIN'"
+            class="fr gap-1 items-center cursor-pointer hover:text-blue-600"
+            @click="setMemoTop(props.memo.id, 'Y')"
+          >
+            <div class="i-carbon:up-to-top"></div>
+            <div>置顶</div>
+          </div>
+          <div
+            v-if="userinfo.role === 'ADMIN' && props.memo.top === 'Y'"
+            class="fr gap-1 items-center cursor-pointer hover:text-blue-600"
+            @click="setMemoTop(props.memo.id, 'N')"
+          >
+            <div class="i-carbon:down-to-bottom"></div>
+            <div>取消置顶</div>
+          </div>
           <n-popconfirm
             :show-icon="false"
+            v-if="props.memo.userId === userinfo.userId"
             @positive-click="removeMemo(props.memo.id)"
             negative-text="取消"
             positive-text="确定"
@@ -58,7 +91,7 @@
             width="100"
             height="100"
             lazy
-            :src="img.url + img.suffix"
+            :src="img.url + (img.suffix || '')"
             :preview-src="img.url"
             :intersection-observer-options="{
               root: '#image-scroll-container',
@@ -86,6 +119,9 @@
       <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
     </div>
   </div>
+  <div class="flex items-center justify-center mt-4" v-if="route.path !== '/' && !userinfo.token">
+    <n-button type="primary" class="px-6" @click="router.push('/')">回首页</n-button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -100,14 +136,26 @@ import dayjs from 'dayjs'
 const options = {
   prefix: 'mblog-',
 }
-const userinfo = useStorage('userinfo', { token: '' })
-// const route = useRoute()
+
+const userinfo = useStorage('userinfo', { token: '', userId: 0, role: '' })
+const route = useRoute()
+
+const setMemoTop = async (id: number, top: string) => {
+  popoverShow.value = false
+  const { error } = await useMyFetch(`/api/memo/setTop?id=${id}&top=${top}`).post().json()
+  if (!error.value) {
+    const { message } = createDiscreteApi(['message'])
+    message.success('操作成功')
+    reloadMemosBus.emit()
+  }
+}
 
 marked.use(gfmHeadingId(options))
 marked.use(mangle())
 
 const props = defineProps<{
   memo: MemoDTO
+  id: number | string
 }>()
 
 const router = useRouter()
@@ -141,8 +189,16 @@ const editMemo = () => {
 .memo {
   @apply fc bg-white rd dark:bg-gray-7 dark:text-gray-4;
 
+  &.top {
+    @apply shadow-2xl;
+
+    .header {
+      @apply bg-blue-50;
+    }
+  }
+
   .header {
-    @apply bg-gray-50 fr gap-2 text-xs py-2 px-4 text-gray-500 rd dark:bg-gray-5 dark:text-gray-9;
+    @apply bg-gray-50 fr gap-2 text-xs py-2 px-4 text-gray-500 rd-t dark:bg-gray-5 dark:text-gray-9;
 
     .author,
     .visibility {

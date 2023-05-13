@@ -16,3 +16,6 @@ html.dark {
 .md-content a:any-link {
   color: rgb(156, 163, 175);
 }
+[v-cloak] {
+  display: none;
+}
