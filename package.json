@@ -9,7 +9,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "build-cf": "sed s/'REPLACE_VERSION_HERE'/'`git describe --tags --abbrev=0`'/g .env.production && build-only"
   },
   "dependencies": {
     "@vueuse/core": "^10.1.2",

@@ -34,13 +34,13 @@
         href="https://github.com/kingwrcy/mblog-backend"
       ></a>
     </div>
-    <div class="flex justify-center text-xs text-gray-400 pb-1 hover-text-gray-700 cursor-pointer">
+    <div class="flex justify-center text-xs text-gray-400 pb-1 hover-text-gray-700 cursor-pointer" v-if="version">
       <a
-        :href="'https://github.com/kingwrcy/mblog-backend/releases/tag/v' + version"
+        :href="'https://github.com/kingwrcy/mblog-backend/releases/tag/v' + computedVersion"
         target="_blank"
         class="dark:text-white"
       >
-        v{{ version }}
+        v{{ computedVersion }}
       </a>
     </div>
   </div>
@@ -49,6 +49,16 @@
 <script setup lang="ts">
 const themeModelVal = useLocalStorage('themeModel', { theme: 'day' })
 const version = import.meta.env.VITE_MBLOG_VERSION
+const computedVersion = computed(() => {
+  if (version) {
+    if (version.startsWith('v')) {
+      return version.substring(1)
+    } else {
+      return version
+    }
+  }
+  return ''
+})
 const router = useRouter()
 const navTo = (path: string) => {
   router.push(path)
