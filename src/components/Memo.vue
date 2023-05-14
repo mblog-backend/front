@@ -1,5 +1,5 @@
 <template>
-  <div class="memo" :class="{ top: props.memo.top === 'Y' }">
+  <div class="memo" :class="{ top: props.memo.priority > 0 }">
     <div class="header">
       <div class="date">{{ dayjs(props.memo.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="author" @click="searchMemosBus.emit({ userId: props.memo.userId, username: props.memo.authorName })">
@@ -8,7 +8,7 @@
       <div class="visibility" @click="searchMemosBus.emit({ visibility: props.memo.visibility })">
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
-      <div v-if="props.memo.top === 'Y'" class="fw-700">已置顶</div>
+      <div v-if="props.memo.priority > 0" class="fw-700">已置顶</div>
 
       <div
         class="fr gap-1 items-center cursor-pointer hover:text-blue-600 ml-auto"
@@ -47,17 +47,17 @@
             <div>详情</div>
           </div>
           <div
-            v-if="props.memo.top === 'N' && userinfo.role === 'ADMIN'"
+            v-if="props.memo.priority === 0 && userinfo.role === 'ADMIN'"
             class="fr gap-1 items-center cursor-pointer hover:text-blue-600"
-            @click="setMemoTop(props.memo.id, 'Y')"
+            @click="setMemoPriority(props.memo.id, true)"
           >
             <div class="i-carbon:up-to-top"></div>
             <div>置顶</div>
           </div>
           <div
-            v-if="userinfo.role === 'ADMIN' && props.memo.top === 'Y'"
+            v-if="userinfo.role === 'ADMIN' && props.memo.priority > 0"
             class="fr gap-1 items-center cursor-pointer hover:text-blue-600"
-            @click="setMemoTop(props.memo.id, 'N')"
+            @click="setMemoPriority(props.memo.id, false)"
           >
             <div class="i-carbon:down-to-bottom"></div>
             <div>取消置顶</div>
@@ -140,9 +140,9 @@ const options = {
 const userinfo = useStorage('userinfo', { token: '', userId: 0, role: '' })
 const route = useRoute()
 
-const setMemoTop = async (id: number, top: string) => {
+const setMemoPriority = async (id: number, top: boolean) => {
   popoverShow.value = false
-  const { error } = await useMyFetch(`/api/memo/setTop?id=${id}&top=${top}`).post().json()
+  const { error } = await useMyFetch(`/api/memo/setPriority?id=${id}&set=${top}`).post().json()
   if (!error.value) {
     const { message } = createDiscreteApi(['message'])
     message.success('操作成功')
@@ -157,6 +157,8 @@ const props = defineProps<{
   memo: MemoDTO
   id: number | string
 }>()
+
+onMounted(() => {})
 
 const router = useRouter()
 const navTo = (path: string) => {

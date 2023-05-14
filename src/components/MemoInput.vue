@@ -89,6 +89,7 @@ interface UploadItem {
   url: string
   publicId: string
   suffix: string
+  storageType: string
 }
 
 const uploadRef = ref<UploadInst | null>(null)
@@ -136,7 +137,6 @@ const saveMemo = async () => {
     memoSaveParam.content = ''
     memoSaveParam.publicIds = []
     memoSaveParam.visibility = 'PUBLIC'
-    memoSaveParam.top = 'N'
     uploadFiles.value = []
     changedMemoBus.emit()
   }
@@ -147,7 +147,8 @@ editMemoBus.on((memo: MemoDTO) => {
   memoSaveParam.id = memo.id
   memoSaveParam.content = content
   memoSaveParam.publicIds = memo.resources.map((r) => r.publicId)
-  memoSaveParam.top = memo.top
+  memoSaveParam.priority = memo.priority
+  memoSaveParam.visibility = memo.visibility
   uploadFiles.value = structuredClone(toRaw(memo.resources))
 })
 
@@ -168,6 +169,11 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
     .post()
     .json()
   if (!error.value) {
+    data.value.forEach((item: any) => {
+      if (item.storageType === 'LOCAL') {
+        item.url = import.meta.env.VITE_BASE_URL + item.url
+      }
+    })
     uploadFiles.value.push(...data.value)
     memoSaveParam.publicIds = uploadFiles.value.map((r) => r.publicId)
     uploadRef.value?.clear()

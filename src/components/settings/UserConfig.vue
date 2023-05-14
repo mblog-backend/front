@@ -67,7 +67,11 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
     .post()
     .json()
   if (!error.value) {
-    formValue.value.avatarUrl = data.value[0].url + data.value[0].suffix
+    let url = data.value[0].url
+    if (data.value[0].storageType === 'LOCAL') {
+      url = import.meta.env.VITE_BASE_URL + url
+    }
+    formValue.value.avatarUrl = url + (data.value[0].suffix || '')
     uploadRef.value?.clear()
   }
 }

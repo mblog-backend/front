@@ -20,7 +20,7 @@
     <memo :memo="item" v-for="item in state.memos" :key="item.id" :id="item.id" />
 
     <div v-cloak v-if="state.memos.length === 0 && state.search.page === 1" class="flex justify-center text-gray-700">
-      暂无记录,等待你添加,支持Markdown格式
+      暂无记录
     </div>
     <div
       class="flex items-center justify-center text-gray-500 text-sm cursor-pointer my-4 hover:text-blue-300"
@@ -82,12 +82,20 @@ const reload = async () => {
     } else {
       state.memos = response.items
     }
+    state.memos.forEach((memo) => {
+      memo.resources.forEach((item) => {
+        if (item.storageType === 'LOCAL' && item.url.startsWith('/')) {
+          item.url = import.meta.env.VITE_BASE_URL + item.url
+        }
+      })
+    })
     state.total = response.total
     state.totalPage = response.totalPage
   }
 }
 
 searchMemosBus.on(async (params) => {
+  params.page = 1
   state.search = Object.assign(state.search, params)
 })
 
