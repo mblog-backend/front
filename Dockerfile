@@ -9,7 +9,7 @@ RUN --mount=type=cache,id=yarn-store,target=/root/.yarn-store \
     yarn install --registry=https://registry.npm.taobao.org
 
 COPY . .
-RUN sed -i 's#REPLACE_VERSION_HERE#'"$VERSION"'#g'  /app/.env.docker`
+RUN sed -i 's#REPLACE_VERSION_HERE#'"$VERSION"'#g'  /app/.env.docker
 
 RUN yarn build-only --mode=docker
 
