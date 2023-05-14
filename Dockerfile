@@ -8,8 +8,9 @@ COPY package.json yarn.lock ./
 RUN --mount=type=cache,id=yarn-store,target=/root/.yarn-store \
     yarn install --registry=https://registry.npm.taobao.org
 
-sed -i 's#"${VERSION}"#'"REPLACE_VERSION_HERE"'#g' `grep 'REPLACE_VERSION_HERE' /app/.env.docker`
 COPY . .
+RUN sed -i 's#REPLACE_VERSION_HERE#'"$VERSION"'#g'  /app/.env.docker`
+
 RUN yarn build-only --mode=docker
 
 FROM nginx:stable-alpine as production-stage
