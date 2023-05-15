@@ -38,7 +38,7 @@
       <a
         :href="'https://github.com/kingwrcy/mblog-backend/releases/tag/v' + computedVersion"
         target="_blank"
-        class="dark:text-white"
+        class="dark:text-white no-underline"
       >
         v{{ computedVersion }}
       </a>

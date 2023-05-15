@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     DevConfig: typeof import('./components/settings/DevConfig.vue')['default']
     Drauu: typeof import('./components/Drauu.vue')['default']
+    Import: typeof import('./components/settings/Import.vue')['default']
     LeftNav: typeof import('./components/LeftNav.vue')['default']
     Memo: typeof import('./components/Memo.vue')['default']
     MemoInput: typeof import('./components/MemoInput.vue')['default']

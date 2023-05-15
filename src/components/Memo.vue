@@ -189,7 +189,7 @@ const editMemo = () => {
 
 <style scoped lang="scss">
 .memo {
-  @apply fc bg-white rd dark:bg-gray-7 dark:text-gray-4;
+  @apply fc bg-white rd dark:bg-gray-7 dark:text-gray-4 mb-2;
 
   &.top {
     @apply shadow-2xl;

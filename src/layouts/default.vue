@@ -8,7 +8,7 @@
         <RouterView />
       </div>
       <div class="right">
-        <RightNav v-if="userinfo.token" />
+        <RightNav v-if="route.path === '/'" />
       </div>
     </div>
     <div

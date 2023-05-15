@@ -19,3 +19,22 @@ html.dark {
 [v-cloak] {
   display: none;
 }
+
+.md-content pre {
+  /* font-family: 'Courier New', Courier, monospace; */
+  white-space: pre-wrap; /* css-3 */
+  word-wrap: break-word; /* InternetExplorer5.5+ */
+  white-space: -moz-pre-wrap; /* Mozilla,since1999 */
+  white-space: -pre-wrap; /* Opera4-6 */
+  white-space: -o-pre-wrap; /* Opera7 */
+
+  background-color: #000;
+  color: wheat;
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+
+.md-content pre code {
+  font-family: LXGW WenKai Screen, sans-serif;
+  font-size: 12px;
+}

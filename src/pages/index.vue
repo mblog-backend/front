@@ -1,5 +1,5 @@
 <template>
-  <div class="fc gap-2">
+  <div class="fc">
     <memo-input v-if="userinfo.token" />
     <div class="search">
       <n-space>
@@ -52,7 +52,7 @@ const state: State = reactive({
   search: {
     page: 1,
     size: 20,
-    begin: dayjs().subtract(1, 'year').startOf('d').toDate(),
+    begin: dayjs().subtract(20, 'year').startOf('d').toDate(),
     end: dayjs().endOf('d').toDate(),
   },
   total: 0,

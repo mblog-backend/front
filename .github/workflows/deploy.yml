@@ -8,13 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set nodejs 18
-        uses: actions/setup-node@v3
-        with:
-          node-versio: '18.x'
-          registry-url: 'https://registry.npmjs.org'
-      - name: npm install and build
-        run: npm install && npm run build-only
       - name: Extract Version
         id: version_step
         run: |
