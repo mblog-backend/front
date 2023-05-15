@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99 dark:bg-gray-7">
+  <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99 dark:bg-gray-7 mb-2">
     <n-mention
       type="textarea"
       placeholder="输入你要记录的吧"

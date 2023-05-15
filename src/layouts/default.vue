@@ -40,7 +40,7 @@ closeDrawerBus.on(() => {
 
 <style scoped lang="scss">
 .main {
-  @apply flex flex-col gap-2 lg:w-200 mx-auto md:mt-2;
+  @apply flex flex-col gap-2 lg:w-200 mx-auto;
 
   .left {
     @apply w-20  lt-md:hidden;
