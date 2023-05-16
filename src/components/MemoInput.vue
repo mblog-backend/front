@@ -7,6 +7,17 @@
       prefix="#"
       :options="tags"
       v-model:value="memoSaveParam.content"
+      v-if="tags && tags.length > 0"
+      :autosize="{
+        minRows: 3,
+      }"
+    />
+    <n-input
+      v-else
+      type="textarea"
+      placeholder="输入你要记录的吧"
+      show-count
+      v-model:value="memoSaveParam.content"
       :autosize="{
         minRows: 3,
       }"
@@ -106,7 +117,7 @@ onMounted(async () => {
   const tagList = data.value as Array<Tag>
   tags.value = tagList.map((r) => {
     return {
-      label: r.name,
+      label: r.name.substring(1),
       value: r.name.substring(1),
     }
   })
@@ -124,7 +135,7 @@ const emojiClicked = async (event: { detail: any }) => {
     textArea.focus()
     textArea.setSelectionRange(endPos + emojiVal.length, endPos + emojiVal.length)
   } else {
-    memoSaveParam.content += emojiVal
+    memoSaveParam.content += ' ' + emojiVal + ' '
   }
   emojiShow.value = false
 }
