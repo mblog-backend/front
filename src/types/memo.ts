@@ -12,6 +12,11 @@ export interface MemoDTO {
   email: string
   bio: string
   priority: number
+  commentCount: number
+  likeCount: number
+  enableComment: number
+  viewCount: number
+  liked: number
   resources: Array<{
     publicId: string
     url: string
@@ -46,6 +51,7 @@ export interface MemoSaveParam {
   publicIds: Array<string>
   visibility?: string
   priority: number
+  enableComment: number | string
 }
 export enum MemoVisibility {
   PUBLIC = '所有人可见',

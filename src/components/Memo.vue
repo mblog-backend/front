@@ -9,6 +9,19 @@
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
       <div v-if="props.memo.priority > 0" class="fw-700">已置顶</div>
+      <div class="fr items-center cursor-pointer hover:text-red-400 gap-1" @click="saveRealtion(props.memo)">
+        <div class="i-carbon:favorite-filled" v-if="props.memo.liked"></div>
+        <div class="i-carbon:favorite" v-else></div>
+        <div>{{ props.memo.likeCount }}</div>
+      </div>
+      <div class="fr items-center gap-1 cursor-pointer hover:text-red-400" @click="goToDetail(props.memo.id)">
+        <div class="i-carbon:chat"></div>
+        <div>{{ props.memo.commentCount }}</div>
+      </div>
+      <div class="fr items-center gap-1">
+        <div class="i-carbon:view"></div>
+        <div>{{ props.memo.viewCount }}</div>
+      </div>
 
       <div
         class="fr gap-1 items-center cursor-pointer hover:text-blue-600 ml-auto"
@@ -119,7 +132,7 @@
       <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
     </div>
   </div>
-  <div class="flex items-center justify-center mt-4" v-if="route.path !== '/' && !userinfo.token">
+  <div class="flex items-center justify-center my-4" v-if="route.path !== '/' && !userinfo.token">
     <n-button type="primary" class="px-6" @click="router.push('/')">回首页</n-button>
   </div>
 </template>
@@ -143,6 +156,30 @@ const route = useRoute()
 const setMemoPriority = async (id: number, top: boolean) => {
   popoverShow.value = false
   const { error } = await useMyFetch(`/api/memo/setPriority?id=${id}&set=${top}`).post().json()
+  if (!error.value) {
+    const { message } = createDiscreteApi(['message'])
+    message.success('操作成功')
+    reloadMemosBus.emit()
+  }
+}
+
+const goToDetail = (id: number) => {
+  router.push('/memo/' + id)
+}
+
+const saveRealtion = async (memo: MemoDTO) => {
+  if (!userinfo.value.token) {
+    const { message } = createDiscreteApi(['message'])
+    message.warning('请先登录')
+    return
+  }
+  const { error } = await useMyFetch(`/api/memo/relation`)
+    .post({
+      memoId: memo.id,
+      type: 'LIKE',
+      operateType: memo.liked > 0 ? 'REMOVE' : 'ADD',
+    })
+    .json()
   if (!error.value) {
     const { message } = createDiscreteApi(['message'])
     message.success('操作成功')

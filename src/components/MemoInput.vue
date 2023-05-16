@@ -39,7 +39,10 @@
         <emoji-picker ref="pickerRef" @emoji-click="emojiClicked"></emoji-picker>
       </n-popover>
       <!-- <n-button @click="toggleDrauuBus.emit()" size="tiny" text> 随手画 </n-button> -->
-
+      <n-switch v-model:value="memoSaveParam.enableComment" size="small" checked-value="1" unchecked-value="0">
+        <template #checked> 允许评论 </template>
+        <template #unchecked> 禁止评论 </template></n-switch
+      >
       <n-button type="primary" class="ml-auto px-8" @click="saveMemo"> 记录 </n-button>
     </div>
 
@@ -142,6 +145,7 @@ const emojiClicked = async (event: { detail: any }) => {
 
 const saveMemo = async () => {
   const url = memoSaveParam.id ? '/api/memo/update' : '/api/memo/save'
+  memoSaveParam.enableComment = parseInt(memoSaveParam.enableComment as any)
   const { error } = await useMyFetch(url).post(memoSaveParam).json()
   if (!error.value) {
     memoSaveParam.id = undefined
@@ -160,6 +164,7 @@ editMemoBus.on((memo: MemoDTO) => {
   memoSaveParam.publicIds = memo.resources.map((r) => r.publicId)
   memoSaveParam.priority = memo.priority
   memoSaveParam.visibility = memo.visibility
+  memoSaveParam.enableComment = memo.enableComment + ''
   uploadFiles.value = structuredClone(toRaw(memo.resources))
 })
 

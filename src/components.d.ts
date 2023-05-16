@@ -9,6 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Comment: typeof import('./components/Comment.vue')['default']
+    CommentInput: typeof import('./components/CommentInput.vue')['default']
     DevConfig: typeof import('./components/settings/DevConfig.vue')['default']
     Drauu: typeof import('./components/Drauu.vue')['default']
     Import: typeof import('./components/settings/Import.vue')['default']
@@ -17,9 +19,9 @@ declare module '@vue/runtime-core' {
     MemoInput: typeof import('./components/MemoInput.vue')['default']
     Mine: typeof import('./components/Mine.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
+    NButon: typeof import('naive-ui')['NButon']
     NButton: typeof import('naive-ui')['NButton']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
-    NDataTable: typeof import('naive-ui')['NDataTable']
     NDrawer: typeof import('naive-ui')['NDrawer']
     NDrawerContent: typeof import('naive-ui')['NDrawerContent']
     NForm: typeof import('naive-ui')['NForm']
@@ -30,12 +32,9 @@ declare module '@vue/runtime-core' {
     NMention: typeof import('naive-ui')['NMention']
     NPopconfirm: typeof import('naive-ui')['NPopconfirm']
     NPopover: typeof import('naive-ui')['NPopover']
-    NRadioButton: typeof import('naive-ui')['NRadioButton']
-    NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
-    NTabPane: typeof import('naive-ui')['NTabPane']
-    NTabs: typeof import('naive-ui')['NTabs']
+    NSwitch: typeof import('naive-ui')['NSwitch']
     NTag: typeof import('naive-ui')['NTag']
     NTooltip: typeof import('naive-ui')['NTooltip']
     NUpload: typeof import('naive-ui')['NUpload']
