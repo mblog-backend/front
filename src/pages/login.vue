@@ -24,12 +24,16 @@
 <script setup lang="ts">
 import type { FormInst, FormRules } from 'naive-ui'
 
+const router = useRouter()
+const route = useRoute()
+const formRef = ref<FormInst | null>(null)
+const { message } = createDiscreteApi(['message'])
+const userinfo = useStorage('userinfo', { username: '', token: '', role: '' })
+
 const sessionStorage = useSessionStorage('config', {
   OPEN_REGISTER: false,
   WEBSITE_TITLE: 'MBlog',
 })
-
-onMounted(async () => {})
 
 const formValue = reactive({
   username: '',
@@ -59,23 +63,17 @@ const rules: FormRules = {
   ],
 }
 
-const router = useRouter()
-const formRef = ref<FormInst | null>(null)
-const { message } = createDiscreteApi(['message'])
-const userinfo = useStorage('userinfo', { username: '', token: '', role: '' })
-
-// onMounted(async () => {})
-
 const doLogin = () => {
   formRef.value?.validate(async (errors) => {
     if (!errors) {
       const { error, data } = await useMyFetch('/api/user/login').post(formValue).json()
       if (!error.value) {
-        message.success('登录成功,转向首页', {
+        const target = (route.query.redirect as string) || '/'
+        message.success('登录成功,请稍等...', {
           duration: 1000,
           onLeave: () => {
             userinfo.value = data.value
-            router.push('/')
+            router.push(target)
           },
         })
       }

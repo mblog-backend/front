@@ -7,8 +7,8 @@
       <div class="middle">
         <RouterView />
       </div>
-      <div class="right">
-        <RightNav v-if="route.path === '/'" />
+      <div class="right" v-if="route.path !== '/settings'">
+        <RightNav v-if="route.path === '/' || route.path === '/me'" />
       </div>
     </div>
     <div
@@ -43,7 +43,7 @@ closeDrawerBus.on(() => {
   @apply flex flex-col gap-2 lg:w-200 mx-auto;
 
   .left {
-    @apply w-20  lt-md:hidden;
+    @apply w-24  lt-md:hidden;
   }
 
   .middle {

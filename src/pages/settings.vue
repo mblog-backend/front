@@ -20,8 +20,3 @@ const userinfo = useStorage('userinfo', { username: '', token: '', role: '' })
 </script>
 
 <style scoped></style>
-
-<route lang="yaml">
-meta:
-  layout: manage
-</route>

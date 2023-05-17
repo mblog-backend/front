@@ -2,7 +2,8 @@ export interface CommentDTO {
   id: number
   userId: number
   content: string
-  mentioned?: Array<string>
+  mentioned: string
+  mentionedUserId: string
   memoId: number
   userName: string
   created: Date

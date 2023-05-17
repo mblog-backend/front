@@ -38,3 +38,24 @@ html.dark {
   font-family: LXGW WenKai Screen, sans-serif;
   font-size: 12px;
 }
+
+.md-content .mentioned {
+  display: inline-block;
+  margin: 0 4px;
+  text-decoration: underline;
+  text-decoration-color: teal;
+}
+
+.md-content .mentioned.self {
+  color: red;
+}
+
+.md-content .mentioned:hover {
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.n-tabs-tab--active .men {
+  color: var(--n-tab-text-color-active) !important;
+}

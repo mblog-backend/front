@@ -10,7 +10,7 @@
       </div>
       <div v-if="props.memo.priority > 0" class="fw-700">已置顶</div>
       <div class="fr items-center cursor-pointer hover:text-red-400 gap-1" @click="saveRealtion(props.memo)">
-        <div class="i-carbon:favorite-filled" v-if="props.memo.liked"></div>
+        <div class="i-carbon:favorite-filled text-red-500" v-if="props.memo.liked"></div>
         <div class="i-carbon:favorite" v-else></div>
         <div>{{ props.memo.likeCount }}</div>
       </div>

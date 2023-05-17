@@ -10,6 +10,7 @@
       type="textarea"
       v-model:value="content"
       :disabled="!userinfo.token"
+      size="small"
     />
     <div class="fr justify-end mt-2 gap-2">
       <n-button text attr-type="button" type="info" class="dark:text-white" v-if="!userinfo.token" @click="nav2Login"
@@ -32,7 +33,7 @@ const userinfo = useStorage('userinfo', { token: '' })
 const router = useRouter()
 
 const nav2Login = () => {
-  router.push('/login?rediect=/memo/' + props.memoId)
+  router.push('/login?redirect=/memo/' + props.memoId)
 }
 
 const getUsernames = async () => {

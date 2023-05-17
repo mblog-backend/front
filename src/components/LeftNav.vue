@@ -1,10 +1,19 @@
 <template>
   <div class="parent">
-    <div class="item" @click="navTo('/')">
+    <div class="item" :class="{ selected: route.path === '/' }" @click="navTo('/')">
       <div class="i-carbon:home"></div>
       <div>首页</div>
     </div>
-    <div class="item" @click="navTo('/settings')" v-if="userinfo.token">
+    <div class="item" :class="{ selected: route.path === '/me' }" @click="navTo('/me')" v-if="userinfo.token">
+      <div class="i-carbon:person"></div>
+      <div class="">我的</div>
+    </div>
+    <div
+      class="item"
+      :class="{ selected: route.path === '/settings' }"
+      @click="navTo('/settings')"
+      v-if="userinfo.token"
+    >
       <div class="i-carbon:settings"></div>
       <div>设置</div>
     </div>
@@ -13,7 +22,7 @@
       <div class="i-carbon:logout"></div>
       <div>登出</div>
     </div>
-    <div class="item" @click="navTo('/login')" v-if="!userinfo.token">
+    <div class="item" :class="{ selected: route.path === '/login' }" @click="navTo('/login')" v-if="!userinfo.token">
       <div class="i-carbon:login"></div>
       <div>登录</div>
     </div>
@@ -60,6 +69,7 @@ const computedVersion = computed(() => {
   return ''
 })
 const router = useRouter()
+const route = useRoute()
 const navTo = (path: string) => {
   router.push(path)
   closeDrawerBus.emit()
@@ -80,6 +90,10 @@ const logout = () => {
   .item {
     @apply cursor-pointer list-none fr gap-1 items-center hover:text-gray-500 dark:text-gray-4 justify-center;
     letter-spacing: 3px;
+
+    &.selected {
+      @apply bg-gray-2 px-2 py-1 rd;
+    }
   }
 }
 </style>

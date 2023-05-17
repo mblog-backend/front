@@ -8,6 +8,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "lib": ["ES2021"],
     "types": ["vite-plugin-pages/client", "vite/client", "naive-ui/volar"]
   }
 }

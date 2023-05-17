@@ -7,7 +7,7 @@
         <div>#{{ props.index + 1 }}</div>
       </div>
     </div>
-    <div class="p-2 dark:text-white" v-html="marked.parse(props.comment.content)"></div>
+    <div class="p-2 dark:text-white md-content" v-html="commentContent"></div>
   </div>
 </template>
 
@@ -27,6 +27,19 @@ const props = defineProps<{
   comment: CommentDTO
   index: number
 }>()
+
+const commentContent = ref(marked.parse(props.comment.content))
+
+onMounted(() => {
+  if (props.comment.mentioned) {
+    const users = props.comment.mentioned.split(',')
+    users.forEach((user: string) => {
+      // @ts-ignore
+      const reg = new RegExp(`(@${user}?)\\s+`, 'g')
+      commentContent.value = commentContent.value.replaceAll(reg, "<div class='mentioned'>$1</div>")
+    })
+  }
+})
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>
