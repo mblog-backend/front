@@ -1,5 +1,5 @@
 <template>
-  <div class="memo" :class="{ top: props.memo.priority > 0 }">
+  <div class="memo" :class="{ top: props.memo.priority > 0 && route.path === '/' }">
     <div class="header">
       <div class="date">{{ dayjs(props.memo.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="author" @click="searchMemosBus.emit({ userId: props.memo.userId, username: props.memo.authorName })">
@@ -8,7 +8,7 @@
       <div class="visibility" @click="searchMemosBus.emit({ visibility: props.memo.visibility })">
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
-      <div v-if="props.memo.priority > 0" class="fw-700">已置顶</div>
+      <div v-if="props.memo.priority > 0 && route.path === '/'" class="fw-700">已置顶</div>
       <div class="fr items-center cursor-pointer hover:text-red-400 gap-1" @click="saveRealtion(props.memo)">
         <div class="i-carbon:favorite-filled text-red-500" v-if="props.memo.liked"></div>
         <div class="i-carbon:favorite" v-else></div>
