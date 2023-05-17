@@ -9,16 +9,22 @@
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
       <div v-if="props.memo.priority > 0 && route.path === '/'" class="fw-700">已置顶</div>
-      <div class="fr items-center cursor-pointer hover:text-red-400 gap-1" @click="saveRealtion(props.memo)">
+      <div
+        class="fr items-center cursor-pointer hover:text-red-400 gap-1 lt-md:hidden"
+        @click="saveRealtion(props.memo)"
+      >
         <div class="i-carbon:favorite-filled text-red-500" v-if="props.memo.liked"></div>
         <div class="i-carbon:favorite" v-else></div>
         <div>{{ props.memo.likeCount }}</div>
       </div>
-      <div class="fr items-center gap-1 cursor-pointer hover:text-red-400" @click="goToDetail(props.memo.id)">
+      <div
+        class="fr items-center gap-1 cursor-pointer hover:text-red-400 lt-md:hidden"
+        @click="goToDetail(props.memo.id)"
+      >
         <div class="i-carbon:chat"></div>
         <div>{{ props.memo.commentCount }}</div>
       </div>
-      <div class="fr items-center gap-1">
+      <div class="fr items-center gap-1 lt-md:hidden">
         <div class="i-carbon:view"></div>
         <div>{{ props.memo.viewCount }}</div>
       </div>

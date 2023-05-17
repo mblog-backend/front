@@ -65,4 +65,8 @@ const changeTab = async (value: string | number) => {
   background-color: #fff;
   padding: 0 10px;
 }
+
+::v-deep(html.dark .n-tabs-nav--bar-type) {
+  background-color: black;
+}
 </style>

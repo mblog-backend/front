@@ -56,6 +56,18 @@ html.dark {
   cursor: pointer;
 }
 
+html.dark .men {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html.dark .n-tabs-tab--active .men {
+  color: var(--n-tab-text-color-active) !important;
+}
+
 .n-tabs-tab--active .men {
   color: var(--n-tab-text-color-active) !important;
+}
+
+html.dark .n-tabs-nav--bar-type {
+  background-color: black;
 }
