@@ -10,6 +10,7 @@
       v-if="tags && tags.length > 0"
       :autosize="{
         minRows: 3,
+        maxRows: 10,
       }"
     />
     <n-input
@@ -20,6 +21,7 @@
       v-model:value="memoSaveParam.content"
       :autosize="{
         minRows: 3,
+        maxRows: 10,
       }"
     />
     <div class="fr gap-2 items-center">
