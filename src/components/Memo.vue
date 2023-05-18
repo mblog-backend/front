@@ -98,7 +98,11 @@
         </div>
       </n-popover>
     </div>
-    <div class="content md-content" v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"></div>
+    <div
+      ref="el"
+      class="content md-content"
+      v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
+    ></div>
 
     <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="props.memo.resources">
       <n-image-group>
@@ -133,6 +137,24 @@
           </n-image>
         </n-space>
       </n-image-group>
+    </div>
+    <div
+      v-if="height >= props.maxHeight && fold"
+      class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center"
+      title="展开"
+      @click="toggleContent"
+    >
+      <div class="i-carbon:arrow-down"></div>
+      <div>展开</div>
+    </div>
+    <div
+      v-if="!fold"
+      class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center"
+      title="折叠"
+      @click="toggleContent"
+    >
+      <div class="i-carbon:arrow-up"></div>
+      <div>折叠</div>
     </div>
     <div class="tags">
       <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
@@ -196,12 +218,25 @@ const saveRealtion = async (memo: MemoDTO) => {
 marked.use(gfmHeadingId(options))
 marked.use(mangle())
 
-const props = defineProps<{
-  memo: MemoDTO
-  id: number | string
-}>()
+const props = withDefaults(
+  defineProps<{
+    memo: MemoDTO
+    id: number | string
+    maxHeight?: number
+  }>(),
+  {
+    maxHeight: 300,
+  }
+)
 
-onMounted(() => {})
+const el = ref<any>(null)
+const { height } = useElementSize(el)
+const fold = ref(true)
+const toggleContent = () => {
+  fold.value = !fold.value
+  const contentHeight = window.getComputedStyle(el.value).maxHeight
+  el.value.style.maxHeight = contentHeight === `${props.maxHeight}px` ? 'none' : `${props.maxHeight}px`
+}
 
 const router = useRouter()
 const navTo = (path: string) => {
@@ -258,6 +293,8 @@ const editMemo = () => {
   .content {
     @apply py-2 px-4;
     overflow-wrap: anywhere;
+    max-height: 300px;
+    overflow: hidden;
 
     &.wrap {
       text-overflow: ellipsis;
