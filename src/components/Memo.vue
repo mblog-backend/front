@@ -251,6 +251,7 @@ const toggleContent = () => {
 onMounted(() => {
   if (route.path.startsWith('/memo')) {
     el.value.style.maxHeight = 'none'
+    maxHeight.value = 'none'
   }
 })
 
