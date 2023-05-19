@@ -4,6 +4,7 @@
       <n-button type="info" v-if="!token.id" @click="enableToken">启用开发者Token</n-button>
       <n-button type="primary" v-if="token.id" @click="resetToken">重置Token</n-button>
       <n-button type="error" v-if="token.id" @click="disableToken">禁用开发者Token</n-button>
+      <n-button type="info" v-if="token.id" @click="copyToken">一键复制Token</n-button>
     </div>
 
     <n-input
@@ -87,6 +88,16 @@ onMounted(async () => {
 })
 
 const token = ref<Partial<Token>>({})
+
+const tokenStr = ref('')
+const { copy } = useClipboard({ source: tokenStr })
+
+const copyToken = () => {
+  tokenStr.value = token.value.token!
+  copy()
+  const { message } = createDiscreteApi(['message'])
+  message.success('复制token成功!')
+}
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/token/').get().json()

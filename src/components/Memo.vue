@@ -10,6 +10,7 @@
       </div>
       <div v-if="props.memo.priority > 0 && route.path === '/'" class="fw-700">已置顶</div>
       <div
+        v-if="sessionStorage.OPEN_LIKE"
         class="fr items-center cursor-pointer hover:text-red-400 gap-1 lt-md:hidden"
         @click="saveRealtion(props.memo)"
       >
@@ -18,6 +19,7 @@
         <div>{{ props.memo.likeCount }}</div>
       </div>
       <div
+        v-if="sessionStorage.OPEN_COMMENT"
         class="fr items-center gap-1 cursor-pointer hover:text-red-400 lt-md:hidden"
         @click="goToDetail(props.memo.id)"
       >
@@ -83,7 +85,7 @@
           </div>
           <n-popconfirm
             :show-icon="false"
-            v-if="props.memo.userId === userinfo.userId"
+            v-if="props.memo.userId === userinfo.userId || userinfo.role === 'ADMIN'"
             @positive-click="removeMemo(props.memo.id)"
             negative-text="取消"
             positive-text="确定"
@@ -101,6 +103,7 @@
     <div
       ref="el"
       class="content md-content"
+      :style="{ 'max-height': maxHeight }"
       v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
     ></div>
 
@@ -138,24 +141,26 @@
         </n-space>
       </n-image-group>
     </div>
-    <div
-      v-if="height >= props.maxHeight && fold"
-      class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center"
-      title="展开"
-      @click="toggleContent"
-    >
-      <div class="i-carbon:arrow-down"></div>
-      <div>展开</div>
-    </div>
-    <div
-      v-if="!fold"
-      class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center"
-      title="折叠"
-      @click="toggleContent"
-    >
-      <div class="i-carbon:arrow-up"></div>
-      <div>折叠</div>
-    </div>
+    <template v-if="!route.path.startsWith('/memo/')">
+      <div
+        v-if="height >= props.maxHeight && fold"
+        class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center text-gray-4"
+        title="展开"
+        @click="toggleContent"
+      >
+        <div class="i-carbon:arrow-down"></div>
+        <div>展开</div>
+      </div>
+      <div
+        v-if="!fold"
+        class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center text-gray-4"
+        title="折叠"
+        @click="toggleContent"
+      >
+        <div class="i-carbon:arrow-up"></div>
+        <div>折叠</div>
+      </div>
+    </template>
     <div class="tags">
       <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
     </div>
@@ -179,6 +184,10 @@ const options = {
 }
 
 const userinfo = useStorage('userinfo', { token: '', userId: 0, role: '' })
+const sessionStorage = useSessionStorage('config', {
+  OPEN_COMMENT: false,
+  OPEN_LIKE: false,
+})
 const route = useRoute()
 
 const setMemoPriority = async (id: number, top: boolean) => {
@@ -232,11 +241,18 @@ const props = withDefaults(
 const el = ref<any>(null)
 const { height } = useElementSize(el)
 const fold = ref(true)
+const maxHeight = ref(props.maxHeight + 'px')
 const toggleContent = () => {
   fold.value = !fold.value
   const contentHeight = window.getComputedStyle(el.value).maxHeight
-  el.value.style.maxHeight = contentHeight === `${props.maxHeight}px` ? 'none' : `${props.maxHeight}px`
+  maxHeight.value = contentHeight === `${props.maxHeight}px` ? '5000px' : `${props.maxHeight}px`
 }
+
+onMounted(() => {
+  if (route.path.startsWith('/memo')) {
+    el.value.style.maxHeight = 'none'
+  }
+})
 
 const router = useRouter()
 const navTo = (path: string) => {
@@ -291,16 +307,9 @@ const editMemo = () => {
   }
 
   .content {
-    @apply py-2 px-4;
+    @apply py-2 px-4 transition-all transition-duration-300;
     overflow-wrap: anywhere;
-    max-height: 300px;
     overflow: hidden;
-
-    &.wrap {
-      text-overflow: ellipsis;
-      max-height: 300px;
-      overflow: hidden;
-    }
   }
 
   .tags {

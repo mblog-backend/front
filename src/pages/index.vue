@@ -17,13 +17,19 @@
         </n-tag>
       </n-space>
     </div>
-    <memo :memo="item" v-for="item in state.memos" :key="item.id" :id="item.id" />
+    <memo
+      :memo="item"
+      v-for="item in state.memos"
+      :key="item.id"
+      :id="item.id"
+      :max-height="sessionStorage.MEMO_MAX_LENGTH"
+    />
 
     <div v-cloak v-if="state.memos.length === 0 && state.search.page === 1" class="flex justify-center text-gray-700">
       暂无记录
     </div>
     <div
-      class="flex items-center justify-center text-gray-500 text-sm cursor-pointer my-4 hover:text-blue-300"
+      class="flex items-center justify-center text-gray-500 text-sm cursor-pointer my-4 hover:text-blue-300 select-none"
       v-if="state.search.page < state.totalPage"
       @click="++state.search.page"
     >
@@ -39,7 +45,9 @@ import { reloadMemosBus, searchMemosBus } from '@/event/event'
 import dayjs from 'dayjs'
 
 const userinfo = useStorage('userinfo', { token: '' })
-
+const sessionStorage = useSessionStorage('config', {
+  MEMO_MAX_LENGTH: 300,
+})
 interface State {
   memos: Array<MemoDTO>
   search: MemoSearchParam

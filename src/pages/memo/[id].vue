@@ -7,7 +7,7 @@
         <n-button type="primary" class="px-6" @click="router.push('/')">去首页</n-button>
       </div>
     </template>
-    <CommentInput :memo-id="memoData.id" v-if="memoData.enableComment === 1" />
+    <CommentInput :memo-id="memoData.id" v-if="memoData.enableComment === 1 && sessionStorage.OPEN_COMMENT" />
 
     <div
       class="text-sm my-4 bg-white dark:bg-gray-7 p-4 rd dark:text-white"
@@ -25,7 +25,9 @@ import type { QueryCommentResponse } from '@/types/comment'
 import type { MemoDTO } from '@/types/memo'
 
 const route = useRoute()
-
+const sessionStorage = useSessionStorage('config', {
+  OPEN_COMMENT: false,
+})
 const memoData = ref<MemoDTO>({} as MemoDTO)
 const router = useRouter()
 const page = ref(1)

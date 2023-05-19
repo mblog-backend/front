@@ -8,6 +8,7 @@
       :options="tags"
       v-model:value="memoSaveParam.content"
       v-if="tags && tags.length > 0"
+      @paste="paste"
       :autosize="{
         minRows: 3,
         maxRows: 10,
@@ -19,6 +20,7 @@
       placeholder="输入你要记录的吧"
       show-count
       v-model:value="memoSaveParam.content"
+      @paste="paste"
       :autosize="{
         minRows: 3,
         maxRows: 10,
@@ -41,7 +43,13 @@
         <emoji-picker ref="pickerRef" @emoji-click="emojiClicked"></emoji-picker>
       </n-popover>
       <!-- <n-button @click="toggleDrauuBus.emit()" size="tiny" text> 随手画 </n-button> -->
-      <n-switch v-model:value="memoSaveParam.enableComment" size="small" checked-value="1" unchecked-value="0">
+      <n-switch
+        v-model:value="memoSaveParam.enableComment"
+        size="small"
+        checked-value="1"
+        unchecked-value="0"
+        v-if="sessionStorage.OPEN_COMMENT"
+      >
         <template #checked> 允许评论 </template>
         <template #unchecked> 禁止评论 </template></n-switch
       >
@@ -95,7 +103,9 @@ import { type MentionOption, type UploadCustomRequestOptions, type UploadInst } 
 import 'emoji-picker-element'
 
 const tags = ref<Array<MentionOption>>()
-
+const sessionStorage = useSessionStorage('config', {
+  OPEN_COMMENT: false,
+})
 let memoSaveParam: Partial<MemoSaveParam> = reactive({
   visibility: 'PUBLIC',
   publicIds: [],
@@ -127,6 +137,12 @@ onMounted(async () => {
     }
   })
 })
+
+const paste = async (e: any) => {
+  if (e.clipboardData.files[0]) {
+    await upload(e.clipboardData.files[0])
+  }
+}
 
 const emojiClicked = async (event: { detail: any }) => {
   const textArea = document.querySelector('textarea') as HTMLTextAreaElement
@@ -172,13 +188,13 @@ editMemoBus.on((memo: MemoDTO) => {
 
 const userinfo = useStorage('userinfo', { token: '' })
 
-const customRequest = async ({ file }: UploadCustomRequestOptions) => {
+const upload = async (file: File) => {
   const uploadUrl = `${import.meta.env.VITE_BASE_URL}/api/resource/upload`
   const uploadHeaders = {
     token: userinfo.value.token,
   }
   const formData = new FormData()
-  formData.append('files', file.file as File)
+  formData.append('files', file)
 
   const { data, error } = await useMyFetch(uploadUrl, {
     body: formData,
@@ -196,6 +212,10 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
     memoSaveParam.publicIds = uploadFiles.value.map((r) => r.publicId)
     uploadRef.value?.clear()
   }
+}
+
+const customRequest = async ({ file }: UploadCustomRequestOptions) => {
+  await upload(file.file as File)
 }
 
 const deleteResource = (publicId: string) => {

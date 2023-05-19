@@ -1,10 +1,12 @@
 export interface SysConfig {
   CORS_DOMAIN_LIST: string
   DOMAIN: string
-  OPEN_REGISTER: boolean
+  OPEN_REGISTER: string
   QINIU_PARAM: string
   STORAGE_TYPE: string
   WEBSITE_TITLE: string
+  MEMO_MAX_LENGTH: string
+  INDEX_WIDTH: string
   [k: string]: any
 }
 
