@@ -56,6 +56,11 @@ html.dark {
   cursor: pointer;
 }
 
+.md-content img {
+  max-width: 300px;
+  max-height: 300px;
+}
+
 html.dark .men {
   color: rgba(255, 255, 255, 0.9) !important;
 }

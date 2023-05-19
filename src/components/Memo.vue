@@ -144,7 +144,7 @@
     <template v-if="!route.path.startsWith('/memo/')">
       <div
         v-if="height >= props.maxHeight && fold"
-        class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center text-gray-4"
+        class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center text-gray-4 select-none"
         title="展开"
         @click="toggleContent"
       >
@@ -153,7 +153,7 @@
       </div>
       <div
         v-if="!fold"
-        class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center text-gray-4"
+        class="fr justify-center my-4 cursor-pointer hover:text-gray-5 items-center text-gray-4 select-none"
         title="折叠"
         @click="toggleContent"
       >
