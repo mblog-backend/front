@@ -61,6 +61,7 @@
         <n-space>
           <div class="relative" v-for="(img, index) in uploadFiles" :key="index">
             <n-image
+              v-if="img.fileType.includes('image')"
               width="100"
               height="100"
               lazy
@@ -86,6 +87,9 @@
                 </div>
               </template>
             </n-image>
+            <div v-else>
+              {{ img.fileName }}
+            </div>
             <div class="deleteBtn" @click="deleteResource(img.publicId)"></div>
           </div>
         </n-space>
@@ -116,6 +120,8 @@ interface UploadItem {
   publicId: string
   suffix: string
   storageType: string
+  fileType: string
+  fileName: string
 }
 
 const uploadRef = ref<UploadInst | null>(null)
@@ -237,7 +243,7 @@ const deleteResource = (publicId: string) => {
 }
 
 .deleteBtn {
-  @apply i-carbon:close-filled text-red-400 hover:text-red-700 cursor-pointer absolute top-2 right-2 fw-500;
+  @apply i-carbon:close-filled text-red-700 hover:text-red-400 cursor-pointer absolute top-0 right--2 fw-500 z-99;
 }
 
 emoji-picker {

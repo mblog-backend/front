@@ -8,6 +8,10 @@
       <div class="i-carbon:person"></div>
       <div class="">我的</div>
     </div>
+    <div class="item" :class="{ selected: route.path === '/search' }" @click="navTo('/search')" v-if="userinfo.token">
+      <div class="i-carbon:search"></div>
+      <div>搜索</div>
+    </div>
     <div
       class="item"
       :class="{ selected: route.path === '/settings' }"

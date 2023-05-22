@@ -23,6 +23,7 @@ export interface MemoDTO {
     fileType: string
     suffix: string
     storageType: string
+    fileName: string
   }>
 }
 

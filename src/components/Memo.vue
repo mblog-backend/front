@@ -107,11 +107,11 @@
       v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
     ></div>
 
-    <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="props.memo.resources">
+    <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="imgs">
       <n-image-group>
         <n-space>
           <n-image
-            v-for="(img, index) in props.memo.resources"
+            v-for="(img, index) in imgs"
             class="rd hover:shadow-2xl"
             :key="index"
             width="100"
@@ -140,6 +140,11 @@
           </n-image>
         </n-space>
       </n-image-group>
+    </div>
+    <div class="fc gap-2 px-2 mb-2 flex-wrap" v-if="files">
+      <div v-for="(resource, index) in files" :key="index" class="text-sm text-gray-3">
+        <a target="_blank" :href="resource.url" style="color: rgb(156, 163, 175)">{{ resource.fileName }}</a>
+      </div>
     </div>
     <template v-if="!route.path.startsWith('/memo/')">
       <div
@@ -183,12 +188,31 @@ const options = {
   prefix: 'mblog-',
 }
 
+const props = withDefaults(
+  defineProps<{
+    memo: MemoDTO
+    id: number | string
+    maxHeight?: number
+  }>(),
+  {
+    maxHeight: 300,
+  }
+)
+
 const userinfo = useStorage('userinfo', { token: '', userId: 0, role: '' })
 const sessionStorage = useSessionStorage('config', {
   OPEN_COMMENT: false,
   OPEN_LIKE: false,
 })
 const route = useRoute()
+
+const imgs = computed(() => {
+  return props.memo.resources?.filter((r) => r.fileType.includes('image'))
+})
+
+const files = computed(() => {
+  return props.memo.resources?.filter((r) => r.fileType.includes('application'))
+})
 
 const setMemoPriority = async (id: number, top: boolean) => {
   popoverShow.value = false
@@ -227,17 +251,6 @@ const saveRealtion = async (memo: MemoDTO) => {
 marked.use(gfmHeadingId(options))
 marked.use(mangle())
 
-const props = withDefaults(
-  defineProps<{
-    memo: MemoDTO
-    id: number | string
-    maxHeight?: number
-  }>(),
-  {
-    maxHeight: 300,
-  }
-)
-
 const el = ref<any>(null)
 const { height } = useElementSize(el)
 const fold = ref(true)
@@ -245,7 +258,7 @@ const maxHeight = ref(props.maxHeight + 'px')
 const toggleContent = () => {
   fold.value = !fold.value
   const contentHeight = window.getComputedStyle(el.value).maxHeight
-  maxHeight.value = contentHeight === `${props.maxHeight}px` ? '5000px' : `${props.maxHeight}px`
+  maxHeight.value = contentHeight === `${props.maxHeight}px` ? 'none' : `${props.maxHeight}px`
 }
 
 onMounted(() => {
