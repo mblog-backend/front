@@ -38,6 +38,7 @@ closeDrawerBus.on(() => {
   showDrawer.value = false
 })
 const main = ref<HTMLElement>()
+const isSmallerScreen = useMediaQuery('(max-width: 768px)')
 const sessionStorage = useSessionStorage('config', {
   OPEN_REGISTER: false,
   OPEN_COMMENT: false,
@@ -56,8 +57,11 @@ onBeforeMount(async () => {
     sessionStorage.value.OPEN_LIKE = configData.find((r) => r.key === 'OPEN_LIKE')?.value === 'true' || false
     sessionStorage.value.MEMO_MAX_LENGTH = parseInt(configData.find((r) => r.key === 'MEMO_MAX_LENGTH')?.value as any)
     sessionStorage.value.INDEX_WIDTH = configData.find((r) => r.key === 'INDEX_WIDTH')?.value || '50rem'
-    const { style } = useElementStyle(main)
-    style.width = sessionStorage.value.INDEX_WIDTH
+    if (!isSmallerScreen) {
+      const { style } = useElementStyle(main)
+      style.width = sessionStorage.value.INDEX_WIDTH
+    }
+
     const title = useTitle()
     title.value = sessionStorage.value.WEBSITE_TITLE
   }
