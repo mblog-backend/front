@@ -1,10 +1,20 @@
 <template>
   <div class="parent">
-    <div class="item" :class="{ selected: route.path === '/' }" @click="navTo('/')">
+    <div class="item" :class="{ selected: route.path === '/' }" @click="navTo('/')" v-multipleUser>
+      <div class="i-carbon:home"></div>
+      <div>广场</div>
+    </div>
+    <div class="item" :class="{ selected: route.path === '/' }" @click="navTo('/')" v-singleUser>
       <div class="i-carbon:home"></div>
       <div>首页</div>
     </div>
-    <div class="item" :class="{ selected: route.path === '/me' }" @click="navTo('/me')" v-if="userinfo.token">
+    <div
+      class="item"
+      :class="{ selected: route.path === '/me' }"
+      @click="navTo('/me')"
+      v-if="userinfo.token"
+      v-multipleUser
+    >
       <div class="i-carbon:person"></div>
       <div class="">我的</div>
     </div>

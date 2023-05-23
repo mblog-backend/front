@@ -10,7 +10,7 @@
       </div>
       <div v-if="props.memo.priority > 0 && route.path === '/'" class="fw-700">已置顶</div>
       <div
-        v-if="sessionStorage.OPEN_LIKE"
+        v-openLike
         class="fr items-center cursor-pointer hover:text-red-400 gap-1 lt-md:hidden"
         @click="saveRealtion(props.memo)"
       >
@@ -19,7 +19,7 @@
         <div>{{ props.memo.likeCount }}</div>
       </div>
       <div
-        v-if="sessionStorage.OPEN_COMMENT"
+        v-openComment
         class="fr items-center gap-1 cursor-pointer hover:text-red-400 lt-md:hidden"
         @click="goToDetail(props.memo.id)"
       >

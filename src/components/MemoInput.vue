@@ -48,7 +48,7 @@
         size="small"
         checked-value="1"
         unchecked-value="0"
-        v-if="sessionStorage.OPEN_COMMENT"
+        v-openComment
       >
         <template #checked> 允许评论 </template>
         <template #unchecked> 禁止评论 </template></n-switch

@@ -7,6 +7,7 @@ export interface SysConfig {
   WEBSITE_TITLE: string
   MEMO_MAX_LENGTH: string
   INDEX_WIDTH: string
+  USER_MODEL: string
   [k: string]: any
 }
 

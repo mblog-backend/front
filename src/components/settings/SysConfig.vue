@@ -17,24 +17,32 @@
         <n-form-item label="单个记录长度">
           <n-input v-model:value="formValue.MEMO_MAX_LENGTH" placeholder="默认高度300,超出自动折叠" />px
         </n-form-item>
-        <n-form-item label="开放注册">
-          <n-radio-group v-model:value="formValue.OPEN_REGISTER" name="radiobuttongroup1">
-            <n-radio-button value="true" label="开放" />
-            <n-radio-button value="false" label="关闭" />
+        <n-form-item label="用户模式">
+          <n-radio-group v-model:value="formValue.USER_MODEL" name="radiobuttongroup1">
+            <n-radio-button value="SINGLE" label="单用户" />
+            <n-radio-button value="MULTIPLE" label="多用户" />
           </n-radio-group>
         </n-form-item>
-        <n-form-item label="开放评论">
-          <n-radio-group v-model:value="formValue.OPEN_COMMENT" name="radiobuttongroup1">
-            <n-radio-button value="true" label="开放" />
-            <n-radio-button value="false" label="关闭" />
-          </n-radio-group>
-        </n-form-item>
-        <n-form-item label="开放点赞">
-          <n-radio-group v-model:value="formValue.OPEN_LIKE" name="radiobuttongroup1">
-            <n-radio-button value="true" label="开放" />
-            <n-radio-button value="false" label="关闭" />
-          </n-radio-group>
-        </n-form-item>
+        <template v-if="formValue.USER_MODEL === 'MULTIPLE'">
+          <n-form-item label="开放注册">
+            <n-radio-group v-model:value="formValue.OPEN_REGISTER" name="radiobuttongroup1">
+              <n-radio-button value="true" label="开放" />
+              <n-radio-button value="false" label="关闭" />
+            </n-radio-group>
+          </n-form-item>
+          <n-form-item label="开放评论">
+            <n-radio-group v-model:value="formValue.OPEN_COMMENT" name="radiobuttongroup1">
+              <n-radio-button value="true" label="开放" />
+              <n-radio-button value="false" label="关闭" />
+            </n-radio-group>
+          </n-form-item>
+          <n-form-item label="开放点赞">
+            <n-radio-group v-model:value="formValue.OPEN_LIKE" name="radiobuttongroup1">
+              <n-radio-button value="true" label="开放" />
+              <n-radio-button value="false" label="关闭" />
+            </n-radio-group>
+          </n-form-item>
+        </template>
         <n-form-item label="存储设置">
           <n-radio-group v-model:value="formValue.STORAGE_TYPE" name="radiobuttongroup1" @update-value="changeStorage">
             <n-radio-button value="LOCAL" label="本地" />
@@ -92,6 +100,7 @@ const sessionStorage = useSessionStorage('config', {
   OPEN_LIKE: false,
   MEMO_MAX_LENGTH: 300,
   INDEX_WIDTH: '50rem',
+  USER_MODEL: 'SINGLE',
 })
 
 const reload = async () => {
@@ -106,10 +115,7 @@ const reload = async () => {
 
 const saveConfig = async () => {
   const items = []
-  items.push({
-    key: 'OPEN_REGISTER',
-    value: formValue.OPEN_REGISTER,
-  })
+
   items.push({
     key: 'STORAGE_TYPE',
     value: formValue.STORAGE_TYPE,
@@ -126,13 +132,24 @@ const saveConfig = async () => {
     key: 'WEBSITE_TITLE',
     value: formValue.WEBSITE_TITLE,
   })
+
+  if (formValue.USER_MODEL === 'MULTIPLE') {
+    items.push({
+      key: 'OPEN_REGISTER',
+      value: formValue.OPEN_REGISTER,
+    })
+    items.push({
+      key: 'OPEN_COMMENT',
+      value: formValue.OPEN_COMMENT,
+    })
+    items.push({
+      key: 'OPEN_LIKE',
+      value: formValue.OPEN_LIKE,
+    })
+  }
   items.push({
-    key: 'OPEN_COMMENT',
-    value: formValue.OPEN_COMMENT,
-  })
-  items.push({
-    key: 'OPEN_LIKE',
-    value: formValue.OPEN_LIKE,
+    key: 'USER_MODEL',
+    value: formValue.USER_MODEL,
   })
   items.push({
     key: 'MEMO_MAX_LENGTH',
@@ -153,14 +170,7 @@ const saveConfig = async () => {
   if (!error.value) {
     const { message } = createDiscreteApi(['message'])
     message.success('保存系统配置成功!')
-    sessionStorage.value.OPEN_REGISTER = formValue.OPEN_REGISTER === 'true'
-    sessionStorage.value.WEBSITE_TITLE = formValue.WEBSITE_TITLE!
-    sessionStorage.value.OPEN_COMMENT = formValue.OPEN_COMMENT === 'true'
-    sessionStorage.value.OPEN_LIKE = formValue.OPEN_LIKE === 'true'
-    sessionStorage.value.MEMO_MAX_LENGTH = parseInt(formValue.MEMO_MAX_LENGTH || '300')
-    sessionStorage.value.INDEX_WIDTH = formValue.INDEX_WIDTH!
-
-    await reload()
+    window.location.reload()
   }
 }
 

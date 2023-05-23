@@ -11,7 +11,7 @@
         <n-form-item>
           <n-space align="center">
             <n-button attr-type="button" type="primary" @click="doLogin"> 登录 </n-button>
-            <n-button text attr-type="button" type="info" v-if="sessionStorage.OPEN_REGISTER">
+            <n-button text attr-type="button" type="info" v-openRegister>
               <RouterLink to="/register" class="dark:text-white">去注册</RouterLink>
             </n-button>
           </n-space>
@@ -29,11 +29,6 @@ const route = useRoute()
 const formRef = ref<FormInst | null>(null)
 const { message } = createDiscreteApi(['message'])
 const userinfo = useStorage('userinfo', { username: '', token: '', role: '' })
-
-const sessionStorage = useSessionStorage('config', {
-  OPEN_REGISTER: false,
-  WEBSITE_TITLE: 'MBlog',
-})
 
 const formValue = reactive({
   username: '',

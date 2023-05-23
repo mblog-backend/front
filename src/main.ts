@@ -7,6 +7,7 @@ import App from './App.vue'
 import 'virtual:uno.css'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHistory } from 'vue-router'
+import { installDirectives } from './directives/directives'
 
 const app = createApp(App)
 const routes = setupLayouts(generatedRoutes)
@@ -34,4 +35,7 @@ router.beforeEach((to, from, next) => {
 })
 app.use(router)
 app.use(pinia)
+
+installDirectives(app)
+
 app.mount('#app')

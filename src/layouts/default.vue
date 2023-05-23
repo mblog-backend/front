@@ -46,15 +46,19 @@ const sessionStorage = useSessionStorage('config', {
   MEMO_MAX_LENGTH: 300,
   INDEX_WIDTH: '50rem',
   WEBSITE_TITLE: 'MBlog',
+  USER_MODEL: 'SINGLE',
 })
 onBeforeMount(async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/').get().json()
   if (!error.value) {
     const configData = data.value as Array<{ key: string; value: string }>
-    sessionStorage.value.OPEN_REGISTER = configData.find((r) => r.key === 'OPEN_REGISTER')?.value === 'true' || false
+    sessionStorage.value.USER_MODEL = configData.find((r) => r.key === 'USER_MODEL')?.value || 'SINGLE'
+    if (sessionStorage.value.USER_MODEL === 'MULTIPLE') {
+      sessionStorage.value.OPEN_REGISTER = configData.find((r) => r.key === 'OPEN_REGISTER')?.value === 'true' || false
+      sessionStorage.value.OPEN_COMMENT = configData.find((r) => r.key === 'OPEN_COMMENT')?.value === 'true' || false
+      sessionStorage.value.OPEN_LIKE = configData.find((r) => r.key === 'OPEN_LIKE')?.value === 'true' || false
+    }
     sessionStorage.value.WEBSITE_TITLE = configData.find((r) => r.key === 'WEBSITE_TITLE')?.value || 'MBlog'
-    sessionStorage.value.OPEN_COMMENT = configData.find((r) => r.key === 'OPEN_COMMENT')?.value === 'true' || false
-    sessionStorage.value.OPEN_LIKE = configData.find((r) => r.key === 'OPEN_LIKE')?.value === 'true' || false
     sessionStorage.value.MEMO_MAX_LENGTH = parseInt(configData.find((r) => r.key === 'MEMO_MAX_LENGTH')?.value as any)
     sessionStorage.value.INDEX_WIDTH = configData.find((r) => r.key === 'INDEX_WIDTH')?.value || '50rem'
     if (!isSmallerScreen) {
