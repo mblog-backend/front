@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { useMyFetch } from '@/api/fetch'
-import type { ListMemoResponse, MemoDTO, MemoSearchParam } from '@/types/memo'
+import type { ListMemoResponse, MemoDTO, MemoSaveParam, MemoSearchParam } from '@/types/memo'
 import { reloadMemosBus, searchMemosBus } from '@/event/event'
 import dayjs from 'dayjs'
 
@@ -108,7 +108,21 @@ searchMemosBus.on(async (params) => {
 })
 
 reloadMemosBus.on(reload)
-changedMemoBus.on(reload)
+changedMemoBus.on(async (param: MemoSaveParam) => {
+  if (param.id && param.id > 0) {
+    const memo = state.memos.find((r) => r.id === param.id)
+    if (memo) {
+      if (param.deleteMemo) {
+        const idx = state.memos.findIndex((r) => r.id === param.id)
+        state.memos.splice(idx, 1)
+      } else {
+        Object.assign(memo, param)
+      }
+    }
+  } else {
+    await reload()
+  }
+})
 
 const clearSearchDate = () => {
   state.search.begin = undefined

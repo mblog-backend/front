@@ -1,7 +1,7 @@
 <template>
   <div class="rd bg-white p-2 dark:bg-gray-7">
     <div class="mx-auto">
-      <n-form ref="formRef" :label-width="70" :model="formValue" label-placement="left">
+      <n-form ref="formRef" :label-width="100" :model="formValue" label-placement="left">
         <n-form-item label="头像">
           <n-upload :custom-request="customRequest" ref="uploadRef" :show-file-list="false">
             <n-avatar :size="48" :src="formValue.avatarUrl" class="cursor-pointer" />
@@ -24,6 +24,15 @@
         <n-form-item label="个人介绍">
           <n-input v-model:value="formValue.bio" placeholder="输入个人介绍" type="textarea" :rows="5" />
         </n-form-item>
+        <n-form-item label="默认可见性" path="state.visibility">
+          <n-select
+            v-model:value="formValue.defaultVisibility"
+            :options="getVisbilitys()"
+            class="w-50"
+            clearable
+            placeholder="选择可见性"
+          />
+        </n-form-item>
         <n-form-item>
           <n-space align="center">
             <n-button attr-type="button" type="primary" @click="saveConfig"> 保存配置 </n-button>
@@ -38,7 +47,7 @@
 import type { User } from '@/types/user'
 import type { UploadCustomRequestOptions, UploadInst } from 'naive-ui'
 
-const userinfo = useStorage('userinfo', { token: '' })
+const userinfo = useStorage('userinfo', { token: '', defaultVisibility: 'PUBLIC' })
 const formValue = ref<Partial<User> & { password?: string }>({})
 
 const reload = async () => {
@@ -52,6 +61,7 @@ const saveConfig = async () => {
   if (!error.value) {
     const { message } = createDiscreteApi(['message'])
     message.success('保存用户配置成功!')
+    userinfo.value.defaultVisibility = formValue.value.defaultVisibility || 'PUBLIC'
     await reload()
   }
 }

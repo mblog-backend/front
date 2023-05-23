@@ -8,6 +8,7 @@ export interface User {
   updated: string
   role: string
   avatarUrl: string
+  defaultVisibility: string
 }
 
 export interface RegisterUserDTO {

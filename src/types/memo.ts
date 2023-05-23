@@ -48,11 +48,12 @@ export interface MemoSearchParam {
 
 export interface MemoSaveParam {
   id?: number
-  content: string
-  publicIds: Array<string>
+  content?: string
+  publicIds?: Array<string>
   visibility?: string
-  priority: number
-  enableComment: number | string
+  priority?: number
+  enableComment?: number | string
+  deleteMemo?: boolean
 }
 export enum MemoVisibility {
   PUBLIC = '所有人可见',

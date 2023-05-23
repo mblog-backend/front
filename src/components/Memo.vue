@@ -284,8 +284,7 @@ const removeMemo = async (id: number) => {
   if (!error.value) {
     const { message } = createDiscreteApi(['message'])
     message.success('删除成功')
-    changedMemoBus.emit()
-    reloadMemosBus.emit()
+    changedMemoBus.emit({ id, deleteMemo: true })
   }
 }
 

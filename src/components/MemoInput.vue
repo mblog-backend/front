@@ -110,7 +110,7 @@ const tags = ref<Array<MentionOption>>()
 const sessionStorage = useSessionStorage('config', {
   OPEN_COMMENT: false,
 })
-let memoSaveParam: Partial<MemoSaveParam> = reactive({
+let memoSaveParam: MemoSaveParam = reactive({
   visibility: 'PUBLIC',
   publicIds: [],
 })
@@ -133,6 +133,7 @@ const emojiShow = ref(false)
 const visibilityOptions = getVisbilitys()
 
 onMounted(async () => {
+  memoSaveParam.visibility = userinfo.value.defaultVisibility || 'PUBLIC'
   const { data, error } = await useMyFetch('/api/tag/list').post().json()
   if (error.value) return
   const tagList = data.value as Array<Tag>
@@ -172,12 +173,12 @@ const saveMemo = async () => {
   memoSaveParam.enableComment = parseInt(memoSaveParam.enableComment as any)
   const { error } = await useMyFetch(url).post(memoSaveParam).json()
   if (!error.value) {
+    changedMemoBus.emit(memoSaveParam)
     memoSaveParam.id = undefined
     memoSaveParam.content = ''
     memoSaveParam.publicIds = []
     memoSaveParam.visibility = 'PUBLIC'
     uploadFiles.value = []
-    changedMemoBus.emit()
   }
 }
 
@@ -192,7 +193,7 @@ editMemoBus.on((memo: MemoDTO) => {
   uploadFiles.value = structuredClone(toRaw(memo.resources))
 })
 
-const userinfo = useStorage('userinfo', { token: '' })
+const userinfo = useStorage('userinfo', { token: '', defaultVisibility: 'PUBLIC' })
 
 const upload = async (file: File) => {
   const uploadUrl = `${import.meta.env.VITE_BASE_URL}/api/resource/upload`
