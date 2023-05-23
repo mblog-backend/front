@@ -21,6 +21,17 @@
           placeholder="选择可见性"
         />
       </n-form-item>
+      <n-form-item label="用户" path="state.visibility" v-if="userinfo.role === 'ADMIN'">
+        <n-select
+          v-model:value="state.userId"
+          :options="users"
+          class="w-50"
+          clearable
+          placeholder="请选择用户"
+          label-field="displayName"
+          value-field="id"
+        />
+      </n-form-item>
       <n-form-item label="内容" path="state.search">
         <n-input v-model:value="state.search" type="text" placeholder="支持全文搜索" clearable />
       </n-form-item>
@@ -34,6 +45,7 @@
       </div>
     </n-form>
   </div>
+
   <div class="rd" v-if="state.totalPage >= 1">
     <div class="fc gap-1">
       <div class="fr justify-end my-2 gap-2 items-center">
@@ -65,14 +77,18 @@
       </div>
     </div>
   </div>
+  <div class="rd p-4 flex justify-center text-gray-5" v-else>暂无记录</div>
 </template>
 
 <script setup lang="ts">
 import { type MemoDTO } from '@/types/memo'
 import type { Tag } from '@/types/tag'
+import type { User } from '@/types/user'
 import dayjs from 'dayjs'
 
+const userinfo = useStorage('userinfo', { token: '', role: '' })
 const tags = ref<Array<Tag>>([])
+const users = ref<Array<User>>([])
 const sessionStorage = useSessionStorage('config', {
   MEMO_MAX_LENGTH: 300,
 })
@@ -85,6 +101,7 @@ const state = reactive({
   size: 20,
   totalRecord: 0,
   totalPage: 0,
+  userId: undefined,
   memos: Array<MemoDTO>(),
 })
 
@@ -92,7 +109,17 @@ onMounted(async () => {
   const { data, error } = await useMyFetch('/api/tag/list').post().json()
   if (error.value) return
   tags.value = data.value
+
+  if (userinfo.value.role === 'ADMIN') {
+    await loadUserList()
+  }
 })
+
+const loadUserList = async () => {
+  const { data, error } = await useMyFetch('/api/user/list').post().json()
+  if (error.value) return
+  users.value = data.value
+}
 
 const search = async () => {
   const { data, error } = await useMyFetch('/api/memo/list')
@@ -104,6 +131,7 @@ const search = async () => {
       page: state.page,
       size: state.size,
       search: state.search || undefined,
+      userId: state.userId || undefined,
     })
     .json()
   if (error.value) return
