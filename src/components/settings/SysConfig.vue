@@ -93,15 +93,15 @@ const changeStorage = (val: string) => {
   }
 }
 
-const sessionStorage = useSessionStorage('config', {
-  OPEN_REGISTER: false,
-  WEBSITE_TITLE: 'MBlog',
-  OPEN_COMMENT: false,
-  OPEN_LIKE: false,
-  MEMO_MAX_LENGTH: 300,
-  INDEX_WIDTH: '50rem',
-  USER_MODEL: 'SINGLE',
-})
+// const sessionStorage = useSessionStorage('config', {
+//   OPEN_REGISTER: false,
+//   WEBSITE_TITLE: 'MBlog',
+//   OPEN_COMMENT: false,
+//   OPEN_LIKE: false,
+//   MEMO_MAX_LENGTH: 300,
+//   INDEX_WIDTH: '50rem',
+//   USER_MODEL: 'SINGLE',
+// })
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/get').get().json()

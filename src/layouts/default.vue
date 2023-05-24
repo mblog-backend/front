@@ -48,7 +48,7 @@ const sessionStorage = useSessionStorage('config', {
   WEBSITE_TITLE: 'MBlog',
   USER_MODEL: 'SINGLE',
 })
-onBeforeMount(async () => {
+onMounted(async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/').get().json()
   if (!error.value) {
     const configData = data.value as Array<{ key: string; value: string }>

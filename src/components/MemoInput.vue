@@ -107,9 +107,7 @@ import { type MentionOption, type UploadCustomRequestOptions, type UploadInst } 
 import 'emoji-picker-element'
 
 const tags = ref<Array<MentionOption>>()
-const sessionStorage = useSessionStorage('config', {
-  OPEN_COMMENT: false,
-})
+
 let memoSaveParam: MemoSaveParam = reactive({
   visibility: 'PUBLIC',
   publicIds: [],

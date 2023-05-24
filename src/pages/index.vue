@@ -6,7 +6,7 @@
         <n-tag type="success" closable v-if="state.search.tag" @close="state.search.tag = undefined">
           {{ state.search.tag }}
         </n-tag>
-        <n-tag type="warning" closable v-if="state.search.userId" @close="state.search.userId = undefined"
+        <n-tag type="warning" closable v-if="state.search.username" @close="state.search.userId = undefined"
           >{{ state.search.username }}
         </n-tag>
         <n-tag type="info" closable v-if="state.search.visibility" @close="state.search.visibility = undefined">
@@ -44,9 +44,10 @@ import type { ListMemoResponse, MemoDTO, MemoSaveParam, MemoSearchParam } from '
 import { reloadMemosBus, searchMemosBus } from '@/event/event'
 import dayjs from 'dayjs'
 
-const userinfo = useStorage('userinfo', { token: '' })
+const userinfo = useStorage('userinfo', { token: '', userId: 0 })
 const sessionStorage = useSessionStorage('config', {
   MEMO_MAX_LENGTH: 300,
+  USER_MODEL: 'SINGLE',
 })
 interface State {
   memos: Array<MemoDTO>
@@ -78,7 +79,12 @@ watch(
 )
 
 onMounted(async () => {
-  await reload()
+  console.log(sessionStorage.value.USER_MODEL)
+  if (sessionStorage.value.USER_MODEL === 'SINGLE') {
+    state.search.userId = userinfo.value.userId
+  } else {
+    await reload()
+  }
 })
 
 const reload = async () => {

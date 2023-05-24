@@ -200,10 +200,7 @@ const props = withDefaults(
 )
 
 const userinfo = useStorage('userinfo', { token: '', userId: 0, role: '' })
-const sessionStorage = useSessionStorage('config', {
-  OPEN_COMMENT: false,
-  OPEN_LIKE: false,
-})
+
 const route = useRoute()
 
 const imgs = computed(() => {
