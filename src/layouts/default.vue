@@ -63,7 +63,6 @@ onMounted(async () => {
     sessionStorage.value.INDEX_WIDTH = configData.find((r) => r.key === 'INDEX_WIDTH')?.value || '50rem'
     const { style } = useElementStyle(main)
     style.width = sessionStorage.value.INDEX_WIDTH
-    console.log(sessionStorage.value.INDEX_WIDTH, '===>')
     if (!isSmallerScreen) {
       const { style } = useElementStyle(main)
       style.width = sessionStorage.value.INDEX_WIDTH

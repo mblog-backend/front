@@ -1,5 +1,5 @@
 <template>
-  <div class="fc">
+  <div class="fc" ref="middleRef">
     <memo-input v-if="userinfo.token" />
     <div class="search">
       <n-space>
@@ -36,6 +36,13 @@
       点击继续加载更多...
     </div>
   </div>
+
+  <div class="fixed bottom-10% lt-md:hidden" :style="'left:' + (left + width + 20) + 'px'" v-if="y > 150">
+    <div class="fc items-center cursor-pointer hover:text-gray-7 text-gray-400" @click="scroll2Top">
+      <div class="i-carbon:upgrade text-xl" title="回到顶部"></div>
+      <div class="text-xs">回到顶部</div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -43,6 +50,24 @@ import { useMyFetch } from '@/api/fetch'
 import type { ListMemoResponse, MemoDTO, MemoSaveParam, MemoSearchParam } from '@/types/memo'
 import { reloadMemosBus, searchMemosBus } from '@/event/event'
 import dayjs from 'dayjs'
+
+const middleRef = ref(null)
+const { left, width } = useElementBounding(middleRef)
+const { y } = useWindowScroll()
+let timer = 0
+
+const scroll2Top = () => {
+  cancelAnimationFrame(timer)
+  timer = requestAnimationFrame(function fn() {
+    var oTop = document.body.scrollTop || document.documentElement.scrollTop
+    if (oTop > 0) {
+      document.body.scrollTop = document.documentElement.scrollTop = oTop - 100
+      timer = requestAnimationFrame(fn)
+    } else {
+      cancelAnimationFrame(timer)
+    }
+  })
+}
 
 const userinfo = useStorage('userinfo', { token: '', userId: 0 })
 const sessionStorage = useSessionStorage('config', {
@@ -79,12 +104,13 @@ watch(
 )
 
 onMounted(async () => {
-  console.log(sessionStorage.value.USER_MODEL)
   if (sessionStorage.value.USER_MODEL === 'SINGLE') {
     state.search.userId = userinfo.value.userId
   } else {
     await reload()
   }
+
+  // style.width = '100px'
 })
 
 const reload = async () => {

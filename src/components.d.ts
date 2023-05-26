@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     Drauu: typeof import('./components/Drauu.vue')['default']
     Import: typeof import('./components/settings/Import.vue')['default']
     LeftNav: typeof import('./components/LeftNav.vue')['default']
+    MarkdownInput: typeof import('./components/Markdown-input.vue')['default']
     MeAll: typeof import('./components/MeAll.vue')['default']
     Memo: typeof import('./components/Memo.vue')['default']
     MemoInput: typeof import('./components/MemoInput.vue')['default']
