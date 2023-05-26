@@ -1,5 +1,44 @@
 <template>
-  <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99 dark:bg-gray-7 mb-2">
+  <div class="p-2 bg-white rd fc gap-2 sticky top-0 shadow-xl z-99 dark:bg-gray-7 mb-2" ref="fcRef">
+    <div class="fr items-center gap-2 text-lg text-gray-5">
+      <div
+        class="i-carbon:list hover:text-gray-9 cursor-pointer"
+        title="有序列表"
+        @click="appendValue('1. \n2. \n3. ')"
+      ></div>
+      <div
+        class="i-carbon:menu hover:text-gray-9 cursor-pointer"
+        title="无序列表"
+        @click="appendValue('- \n- \n- ')"
+      ></div>
+      <div
+        class="i-carbon:link hover:text-gray-9 cursor-pointer"
+        title="链接"
+        @click="appendValue('[描述](链接)')"
+      ></div>
+      <div
+        class="i-carbon:image hover:text-gray-9 cursor-pointer"
+        title="图片"
+        @click="appendValue('![描述](链接)')"
+      ></div>
+      <div
+        class="i-carbon:task hover:text-gray-9 cursor-pointer"
+        title="待办"
+        @click="appendValue('- [] \n- [] \n- [] \n')"
+      ></div>
+      <div
+        class="i-carbon:data-table hover:text-gray-9 cursor-pointer"
+        title="表格"
+        @click="appendValue('|column1|column2|column3|\n|-|-|-|\n|content1|content2|content3|')"
+      ></div>
+      <div class="i-carbon:code hover:text-gray-9 cursor-pointer" title="代码" @click="appendValue('```\n\n```')"></div>
+      <div
+        class="i-carbon:not-available hover:text-gray-9 cursor-pointer"
+        title="分割线"
+        @click="appendValue('\n-------------------\n')"
+      ></div>
+    </div>
+
     <n-mention
       type="textarea"
       placeholder="输入你要记录的吧"
@@ -10,8 +49,8 @@
       v-if="tags && tags.length > 0"
       @paste="paste"
       :autosize="{
-        minRows: 3,
-        maxRows: 10,
+        minRows: isFullscreen ? 20 : 5,
+        maxRows: isFullscreen ? 30 : 20,
       }"
     />
     <n-input
@@ -22,8 +61,8 @@
       v-model:value="memoSaveParam.content"
       @paste="paste"
       :autosize="{
-        minRows: 3,
-        maxRows: 10,
+        minRows: isFullscreen ? 20 : 5,
+        maxRows: isFullscreen ? 30 : 20,
       }"
     />
     <div class="fr gap-2 items-center">
@@ -42,6 +81,11 @@
         </template>
         <emoji-picker ref="pickerRef" @emoji-click="emojiClicked"></emoji-picker>
       </n-popover>
+      <div
+        class="i-carbon:maximize cursor-pointer text-gray-500 hover:text-gray text-lg dark:text-yellow-3"
+        @click="toggle()"
+        title="全屏编辑"
+      ></div>
       <!-- <n-button @click="toggleDrauuBus.emit()" size="tiny" text> 随手画 </n-button> -->
       <n-switch
         v-model:value="memoSaveParam.enableComment"
@@ -53,7 +97,10 @@
         <template #checked> 允许评论 </template>
         <template #unchecked> 禁止评论 </template></n-switch
       >
-      <n-button type="primary" class="ml-auto px-8" @click="saveMemo"> 记录 </n-button>
+      <div class="ml-auto gap-2 fr items-center">
+        <n-button type="warning" class="px-8" @click="toggle()" v-if="isFullscreen"> 退出全屏 </n-button>
+        <n-button type="primary" class="px-8" @click="saveMemo"> 记录 </n-button>
+      </div>
     </div>
 
     <div class="fr" v-if="uploadFiles">
@@ -97,15 +144,29 @@
     </div>
 
     <Drauu />
+
+    <div
+      class="markdown md-content"
+      v-if="isFullscreen"
+      v-html="memoSaveParam.content && marked.parse(memoSaveParam.content)"
+    ></div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { marked } from 'marked'
+import { mangle } from 'marked-mangle'
+import { gfmHeadingId } from 'marked-gfm-heading-id'
 import { getVisbilitys, type MemoSaveParam, type MemoDTO } from '@/types/memo'
 import { type Tag } from '@/types/tag'
 import { type MentionOption, type UploadCustomRequestOptions, type UploadInst } from 'naive-ui'
 import 'emoji-picker-element'
 
+const options = {
+  prefix: 'mblog-',
+}
+marked.use(gfmHeadingId(options))
+marked.use(mangle())
 const tags = ref<Array<MentionOption>>()
 
 let memoSaveParam: MemoSaveParam = reactive({
@@ -121,6 +182,9 @@ interface UploadItem {
   fileType: string
   fileName: string
 }
+const fcRef = ref<HTMLElement | null>(null)
+
+const { toggle, isFullscreen } = useFullscreen(fcRef as any)
 
 const uploadRef = ref<UploadInst | null>(null)
 
@@ -142,6 +206,17 @@ onMounted(async () => {
     }
   })
 })
+
+const appendValue = (content: string) => {
+  if (memoSaveParam.content) {
+    memoSaveParam.content = memoSaveParam.content + '\n'
+  } else {
+    memoSaveParam.content = ''
+  }
+  memoSaveParam.content = memoSaveParam.content + content
+  const textArea = document.querySelector('textarea') as HTMLTextAreaElement
+  textArea.focus()
+}
 
 const paste = async (e: any) => {
   if (e.clipboardData.files[0]) {
@@ -171,6 +246,9 @@ const saveMemo = async () => {
   memoSaveParam.enableComment = parseInt(memoSaveParam.enableComment as any)
   const { error } = await useMyFetch(url).post(memoSaveParam).json()
   if (!error.value) {
+    if (isFullscreen) {
+      toggle()
+    }
     changedMemoBus.emit(memoSaveParam)
     memoSaveParam.id = undefined
     memoSaveParam.content = ''
