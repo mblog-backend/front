@@ -8,6 +8,8 @@ export interface SysConfig {
   MEMO_MAX_LENGTH: string
   INDEX_WIDTH: string
   USER_MODEL: string
+  CUSTOM_CSS: string
+  CUSTOM_JAVASCRIPT: string
   [k: string]: any
 }
 

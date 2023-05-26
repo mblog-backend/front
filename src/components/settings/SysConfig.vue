@@ -70,6 +70,18 @@
             <n-input v-model:value="oss.suffix" placeholder="图片后缀" />
           </n-form-item>
         </template>
+        <n-form-item label="自定义CSS">
+          <n-input v-model:value="formValue.CUSTOM_CSS" placeholder="输入自定义CSS" type="textarea" :rows="5" />
+        </n-form-item>
+        <n-form-item label="自定义Script">
+          <n-input
+            v-model:value="formValue.CUSTOM_JAVASCRIPT"
+            placeholder="输入自定义Script"
+            type="textarea"
+            :rows="5"
+          />
+        </n-form-item>
+
         <n-form-item>
           <n-space align="center">
             <n-button attr-type="button" type="primary" @click="saveConfig"> 保存配置 </n-button>
@@ -165,6 +177,14 @@ const saveConfig = async () => {
       value: JSON.stringify(oss.value),
     })
   }
+  items.push({
+    key: 'CUSTOM_CSS',
+    value: formValue.CUSTOM_CSS,
+  })
+  items.push({
+    key: 'CUSTOM_JAVASCRIPT',
+    value: formValue.CUSTOM_JAVASCRIPT,
+  })
 
   const { error } = await useMyFetch('/api/sysConfig/save').post({ items }).json()
   if (!error.value) {

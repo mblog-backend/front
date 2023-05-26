@@ -37,6 +37,7 @@
         title="分割线"
         @click="appendValue('\n-------------------\n')"
       ></div>
+      <div class="i-carbon:quotes hover:text-gray-9 cursor-pointer" title="引用" @click="appendValue('> ')"></div>
     </div>
 
     <n-mention
@@ -82,7 +83,7 @@
         <emoji-picker ref="pickerRef" @emoji-click="emojiClicked"></emoji-picker>
       </n-popover>
       <div
-        class="i-carbon:maximize cursor-pointer text-gray-500 hover:text-gray text-lg dark:text-yellow-3"
+        class="i-carbon:maximize cursor-pointer text-gray-500 hover:text-gray text-sm dark:text-yellow-3"
         @click="toggle()"
         title="全屏编辑"
       ></div>
@@ -246,7 +247,7 @@ const saveMemo = async () => {
   memoSaveParam.enableComment = parseInt(memoSaveParam.enableComment as any)
   const { error } = await useMyFetch(url).post(memoSaveParam).json()
   if (!error.value) {
-    if (isFullscreen) {
+    if (isFullscreen.value) {
       toggle()
     }
     changedMemoBus.emit(memoSaveParam)

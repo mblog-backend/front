@@ -107,7 +107,7 @@
       v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
     ></div>
 
-    <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="imgs">
+    <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="imgs && imgs.length > 0">
       <n-image-group>
         <n-space>
           <n-image
@@ -141,7 +141,7 @@
         </n-space>
       </n-image-group>
     </div>
-    <div class="fc gap-2 px-2 mb-2 flex-wrap" v-if="files">
+    <div class="fc gap-2 px-2 mb-2 flex-wrap" v-if="files && files.length > 0">
       <div v-for="(resource, index) in files" :key="index" class="text-sm text-gray-3">
         <a target="_blank" :href="resource.url" style="color: rgb(156, 163, 175)">{{ resource.fileName }}</a>
       </div>
@@ -166,7 +166,7 @@
         <div>折叠</div>
       </div>
     </template>
-    <div class="tags">
+    <div class="tags" v-if="props.memo.tags && props.memo.tags.length > 0">
       <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
     </div>
   </div>
