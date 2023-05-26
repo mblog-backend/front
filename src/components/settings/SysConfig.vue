@@ -44,13 +44,14 @@
           </n-form-item>
         </template>
         <n-form-item label="存储设置">
-          <n-radio-group v-model:value="formValue.STORAGE_TYPE" name="radiobuttongroup1" @update-value="changeStorage">
+          <n-radio-group v-model:value="formValue.STORAGE_TYPE" @update-value="changeStorage">
             <n-radio-button value="LOCAL" label="本地" />
             <n-radio-button value="QINIU" label="七牛云" />
+            <n-radio-button value="AWSS3" label="AWS S3" />
           </n-radio-group>
         </n-form-item>
 
-        <template v-if="formValue.STORAGE_TYPE === 'QINIU'">
+        <template v-if="formValue.STORAGE_TYPE !== 'LOCAL'">
           <n-form-item label="AccessKey">
             <n-input v-model:value="oss.accessKey" placeholder="AccessKey" />
           </n-form-item>
@@ -60,13 +61,16 @@
           <n-form-item label="Bucket">
             <n-input v-model:value="oss.bucket" placeholder="Bucket" />
           </n-form-item>
+          <n-form-item label="Region" v-if="formValue.STORAGE_TYPE !== 'QINIU'">
+            <n-input v-model:value="oss.region" placeholder="Region" />
+          </n-form-item>
           <n-form-item label="CDN域名">
-            <n-input v-model:value="oss.domain" placeholder="CDN域名" />
+            <n-input v-model:value="oss.domain" placeholder="CDN域名,不通默认取cdn提供方提供的二级域名" />
           </n-form-item>
           <n-form-item label="文件夹前缀">
             <n-input v-model:value="oss.prefix" placeholder="文件夹前缀" />
           </n-form-item>
-          <n-form-item label="图片后缀">
+          <n-form-item label="图片后缀" v-if="formValue.STORAGE_TYPE !== 'AWSS3'">
             <n-input v-model:value="oss.suffix" placeholder="图片后缀" />
           </n-form-item>
         </template>
@@ -100,8 +104,11 @@ const formValue: Partial<SysConfig> = reactive({})
 let oss = ref<Partial<OssStorage>>({})
 
 const changeStorage = (val: string) => {
+  oss.value = {}
   if (val === 'QINIU') {
     oss.value = JSON.parse(formValue.QINIU_PARAM as string)
+  } else if (val === 'AWSS3') {
+    oss.value = JSON.parse(formValue.AWSS3_PARAM as string)
   }
 }
 

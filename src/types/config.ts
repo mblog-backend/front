@@ -20,4 +20,5 @@ export interface OssStorage {
   domain: string
   prefix: string
   suffix: string
+  region: string
 }
