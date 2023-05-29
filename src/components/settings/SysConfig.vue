@@ -65,7 +65,7 @@
             <n-input v-model:value="oss.region" placeholder="Region" />
           </n-form-item>
           <n-form-item label="CDN域名">
-            <n-input v-model:value="oss.domain" placeholder="CDN域名,不通默认取cdn提供方提供的二级域名" />
+            <n-input v-model:value="oss.domain" placeholder="CDN域名,不提供默认取cdn提供方提供的二级域名" />
           </n-form-item>
           <n-form-item label="文件夹前缀">
             <n-input v-model:value="oss.prefix" placeholder="文件夹前缀" />
@@ -110,17 +110,14 @@ const changeStorage = (val: string) => {
   } else if (val === 'AWSS3') {
     oss.value = JSON.parse(formValue.AWSS3_PARAM as string)
   }
+  oss.value.accessKey = oss.value.accessKey || ''
+  oss.value.secretKey = oss.value.secretKey || ''
+  oss.value.bucket = oss.value.bucket || ''
+  oss.value.domain = oss.value.domain || ''
+  oss.value.prefix = oss.value.prefix || ''
+  oss.value.suffix = oss.value.suffix || ''
+  oss.value.region = oss.value.region || ''
 }
-
-// const sessionStorage = useSessionStorage('config', {
-//   OPEN_REGISTER: false,
-//   WEBSITE_TITLE: 'MBlog',
-//   OPEN_COMMENT: false,
-//   OPEN_LIKE: false,
-//   MEMO_MAX_LENGTH: 300,
-//   INDEX_WIDTH: '50rem',
-//   USER_MODEL: 'SINGLE',
-// })
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/get').get().json()

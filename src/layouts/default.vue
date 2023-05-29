@@ -7,7 +7,7 @@
       <div class="middle">
         <RouterView />
       </div>
-      <div class="right" v-if="route.path !== '/settings'">
+      <div class="right" v-if="route.path !== '/settings' && userinfo.token">
         <RightNav v-if="route.path === '/' || route.path === '/me' || route.path === '/search'" />
       </div>
     </div>
