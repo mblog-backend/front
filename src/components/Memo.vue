@@ -286,8 +286,10 @@ const removeMemo = async (id: number) => {
 }
 
 const editMemo = () => {
-  editMemoBus.emit(props.memo)
-  popoverShow.value = false
+  if (props.memo.userId === userinfo.value.userId) {
+    editMemoBus.emit(props.memo)
+    popoverShow.value = false
+  }
 }
 </script>
 

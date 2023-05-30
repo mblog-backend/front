@@ -6,7 +6,11 @@
         <n-tag type="success" closable v-if="state.search.tag" @close="state.search.tag = undefined">
           {{ state.search.tag }}
         </n-tag>
-        <n-tag type="warning" closable v-if="state.search.username" @close="state.search.userId = undefined"
+        <n-tag
+          type="warning"
+          closable
+          v-if="state.search.username && state.search.userId"
+          @close="state.search.userId = undefined"
           >{{ state.search.username }}
         </n-tag>
         <n-tag type="info" closable v-if="state.search.visibility" @close="state.search.visibility = undefined">
@@ -104,13 +108,7 @@ watch(
 )
 
 onMounted(async () => {
-  if (sessionStorage.value.USER_MODEL === 'SINGLE') {
-    state.search.userId = userinfo.value.userId
-  } else {
-    await reload()
-  }
-
-  // style.width = '100px'
+  await reload()
 })
 
 const reload = async () => {

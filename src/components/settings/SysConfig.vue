@@ -23,26 +23,24 @@
             <n-radio-button value="MULTIPLE" label="多用户" />
           </n-radio-group>
         </n-form-item>
-        <template v-if="formValue.USER_MODEL === 'MULTIPLE'">
-          <n-form-item label="开放注册">
-            <n-radio-group v-model:value="formValue.OPEN_REGISTER" name="radiobuttongroup1">
-              <n-radio-button value="true" label="开放" />
-              <n-radio-button value="false" label="关闭" />
-            </n-radio-group>
-          </n-form-item>
-          <n-form-item label="开放评论">
-            <n-radio-group v-model:value="formValue.OPEN_COMMENT" name="radiobuttongroup1">
-              <n-radio-button value="true" label="开放" />
-              <n-radio-button value="false" label="关闭" />
-            </n-radio-group>
-          </n-form-item>
-          <n-form-item label="开放点赞">
-            <n-radio-group v-model:value="formValue.OPEN_LIKE" name="radiobuttongroup1">
-              <n-radio-button value="true" label="开放" />
-              <n-radio-button value="false" label="关闭" />
-            </n-radio-group>
-          </n-form-item>
-        </template>
+        <n-form-item label="开放注册">
+          <n-radio-group v-model:value="formValue.OPEN_REGISTER" name="radiobuttongroup1">
+            <n-radio-button value="true" label="开放" />
+            <n-radio-button value="false" label="关闭" />
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item label="开放评论">
+          <n-radio-group v-model:value="formValue.OPEN_COMMENT" name="radiobuttongroup1">
+            <n-radio-button value="true" label="开放" />
+            <n-radio-button value="false" label="关闭" />
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item label="开放点赞">
+          <n-radio-group v-model:value="formValue.OPEN_LIKE" name="radiobuttongroup1">
+            <n-radio-button value="true" label="开放" />
+            <n-radio-button value="false" label="关闭" />
+          </n-radio-group>
+        </n-form-item>
         <n-form-item label="存储设置">
           <n-radio-group v-model:value="formValue.STORAGE_TYPE" @update-value="changeStorage">
             <n-radio-button value="LOCAL" label="本地" />
@@ -179,20 +177,19 @@ const saveConfig = async () => {
     value: formValue.WEBSITE_TITLE,
   })
 
-  if (formValue.USER_MODEL === 'MULTIPLE') {
-    items.push({
-      key: 'OPEN_REGISTER',
-      value: formValue.OPEN_REGISTER,
-    })
-    items.push({
-      key: 'OPEN_COMMENT',
-      value: formValue.OPEN_COMMENT,
-    })
-    items.push({
-      key: 'OPEN_LIKE',
-      value: formValue.OPEN_LIKE,
-    })
-  }
+  items.push({
+    key: 'OPEN_REGISTER',
+    value: formValue.OPEN_REGISTER,
+  })
+  items.push({
+    key: 'OPEN_COMMENT',
+    value: formValue.OPEN_COMMENT,
+  })
+  items.push({
+    key: 'OPEN_LIKE',
+    value: formValue.OPEN_LIKE,
+  })
+
   items.push({
     key: 'USER_MODEL',
     value: formValue.USER_MODEL,

@@ -96,7 +96,10 @@ const state = reactive({
   tag: '',
   search: '',
   visibility: '',
-  range: [dayjs().subtract(3, 'y').format('YYYY-MM-DD'), dayjs().endOf('D').format('YYYY-MM-DD')] as [string, string],
+  range: [dayjs().subtract(3, 'y').format('YYYY-MM-DD'), dayjs().endOf('month').format('YYYY-MM-DD')] as [
+    string,
+    string
+  ],
   page: 1,
   size: 20,
   totalRecord: 0,
@@ -126,8 +129,8 @@ const search = async () => {
     .post({
       tag: state.tag || undefined,
       visibility: state.visibility || undefined,
-      begin: dayjs(state.range[0]).toDate() || dayjs().subtract(1, 'y').toDate(),
-      end: dayjs(state.range[1]).toDate() || dayjs().endOf('D').toDate(),
+      begin: dayjs(state.range[0]).toDate() || dayjs().subtract(3, 'y').toDate(),
+      end: dayjs(state.range[1]).toDate() || dayjs().endOf('month').toDate(),
       page: state.page,
       size: state.size,
       search: state.search || undefined,
