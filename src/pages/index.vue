@@ -148,7 +148,13 @@ changedMemoBus.on(async (param: MemoSaveParam) => {
         const idx = state.memos.findIndex((r) => r.id === param.id)
         state.memos.splice(idx, 1)
       } else {
-        Object.assign(memo, param)
+        const { data, error } = await useMyFetch('/api/memo/' + param.id)
+          .post()
+          .json()
+        if (error.value) {
+          return
+        }
+        Object.assign(memo, data.value)
       }
     }
   } else {

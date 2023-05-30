@@ -65,9 +65,8 @@ onMounted(async () => {
   sessionStorage.value.WEBSITE_TITLE = configData.find((r) => r.key === 'WEBSITE_TITLE')?.value || 'MBlog'
   sessionStorage.value.MEMO_MAX_LENGTH = parseInt(configData.find((r) => r.key === 'MEMO_MAX_LENGTH')?.value as any)
   sessionStorage.value.INDEX_WIDTH = configData.find((r) => r.key === 'INDEX_WIDTH')?.value || '50rem'
-  const { style } = useElementStyle(wrapper)
-  style.width = sessionStorage.value.INDEX_WIDTH
-  if (!isSmallerScreen) {
+
+  if (!isSmallerScreen.value) {
     const { style } = useElementStyle(wrapper)
     style.width = sessionStorage.value.INDEX_WIDTH
   }

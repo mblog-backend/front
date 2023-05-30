@@ -61,7 +61,10 @@
           <n-form-item label="Bucket">
             <n-input v-model:value="oss.bucket" placeholder="Bucket" />
           </n-form-item>
-          <n-form-item label="Region" v-if="formValue.STORAGE_TYPE !== 'QINIU'">
+          <n-form-item label="Region" v-if="formValue.STORAGE_TYPE == 'QINIU'">
+            <n-select v-model:value="oss.region" :options="qiniuRegions" class="w-32" style="width: 250px" />
+          </n-form-item>
+          <n-form-item label="Region" v-else>
             <n-input v-model:value="oss.region" placeholder="Region" />
           </n-form-item>
           <n-form-item label="CDN域名">
@@ -118,6 +121,33 @@ const changeStorage = (val: string) => {
   oss.value.suffix = oss.value.suffix || ''
   oss.value.region = oss.value.region || ''
 }
+
+const qiniuRegions = [
+  {
+    label: '华东-浙江',
+    value: 'huadong',
+  },
+  {
+    label: '华东-浙江2',
+    value: 'huadongZheJiang2',
+  },
+  {
+    label: '华北-河北',
+    value: 'huabei',
+  },
+  {
+    label: '华南-广东',
+    value: 'huanan',
+  },
+  {
+    label: '北美-洛杉矶',
+    value: 'beimei',
+  },
+  {
+    label: '亚太-新加坡（原东南亚）',
+    value: 'xinjiapo',
+  },
+]
 
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/get').get().json()

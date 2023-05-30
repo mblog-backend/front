@@ -1,5 +1,5 @@
 <template>
-  <div class="memo" :class="{ top: props.memo.priority > 0 && route.path === '/' }">
+  <div class="memo" :class="{ top: props.memo.priority > 0 && route.path === '/' }" @dblclick="editMemo()">
     <div class="header">
       <div class="date">{{ dayjs(props.memo.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="author" @click="searchMemosBus.emit({ userId: props.memo.userId, username: props.memo.authorName })">

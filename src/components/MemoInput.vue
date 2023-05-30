@@ -100,7 +100,7 @@
       >
       <div class="ml-auto gap-2 fr items-center">
         <n-button type="warning" class="px-8" @click="toggle()" v-if="isFullscreen"> 退出全屏 </n-button>
-        <n-button type="primary" class="px-8" @click="saveMemo"> 记录 </n-button>
+        <n-button type="primary" class="px-8" @click="saveMemo" :disabled="disbaled"> 记录 </n-button>
       </div>
     </div>
 
@@ -183,6 +183,8 @@ interface UploadItem {
   fileType: string
   fileName: string
 }
+
+const disbaled = ref(false)
 const fcRef = ref<HTMLElement | null>(null)
 
 const { toggle, isFullscreen } = useFullscreen(fcRef as any)
@@ -243,6 +245,10 @@ const emojiClicked = async (event: { detail: any }) => {
 }
 
 const saveMemo = async () => {
+  disbaled.value = true
+  window.setTimeout(() => {
+    disbaled.value = false
+  }, 3000)
   const url = memoSaveParam.id ? '/api/memo/update' : '/api/memo/save'
   memoSaveParam.enableComment = parseInt(memoSaveParam.enableComment as any)
   const { error } = await useMyFetch(url).post(memoSaveParam).json()

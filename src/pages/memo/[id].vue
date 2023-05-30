@@ -35,10 +35,16 @@ onMounted(async () => {
   await reload()
 })
 const reload = async () => {
-  const { data, error } = await useMyFetch('/api/memo/' + route.params.id)
+  const { data, error } = await useMyFetch('/api/memo/' + route.params.id + '?count=true')
     .post()
     .json()
   if (error.value) return
+
+  if (data.value === null) {
+    const { message } = createDiscreteApi(['message'])
+    message.info('memo不存在,或者只有本人可见')
+    return
+  }
 
   memoData.value = data.value
   await loadComments()
