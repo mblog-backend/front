@@ -6,7 +6,7 @@ import generatedRoutes from '~pages'
 import App from './App.vue'
 import 'virtual:uno.css'
 import { setupLayouts } from 'virtual:generated-layouts'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { installDirectives } from './directives/directives'
 
 const app = createApp(App)
@@ -15,7 +15,7 @@ const pinia = createPinia()
 
 const router = createRouter({
   routes,
-  history: createWebHistory(),
+  history: import.meta.env.MODE === 'all' ? createWebHashHistory() : createWebHistory(),
 })
 
 router.beforeEach((to, from, next) => {
