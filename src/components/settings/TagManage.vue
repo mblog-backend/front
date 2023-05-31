@@ -80,7 +80,11 @@ const removeTag = async (id: number) => {
 const reload = async () => {
   const { data, error } = await useMyFetch('/api/tag/list').post().json()
   if (error.value) return
-  tags.value = data.value
+  const tagsList = data.value as Array<Tag>
+  tagsList.map((ele: Tag) => {
+    ele.name = ele.name.substring(1)
+  })
+  tags.value = tagsList
 }
 
 const saveTag = async () => {
@@ -97,7 +101,7 @@ const saveTag = async () => {
   const updatedTags = tags.value
     .filter((r) => r.edited)
     ?.map(({ id, name }) => {
-      return { id, name }
+      return { id, name: '#' + name }
     })
   if (updatedTags && updatedTags.length > 0) {
     const { error } = await useMyFetch('/api/tag/save')

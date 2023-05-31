@@ -42,7 +42,7 @@
 
     <n-mention
       type="textarea"
-      placeholder="输入你要记录的吧"
+      placeholder="输入你要记录的吧,第一行以`#`开头的会被视为标签"
       show-count
       prefix="#"
       :options="tags"
@@ -57,7 +57,7 @@
     <n-input
       v-else
       type="textarea"
-      placeholder="输入你要记录的吧"
+      placeholder="输入你要记录的吧,第一行以`#`开头的会被视为标签"
       show-count
       v-model:value="memoSaveParam.content"
       @paste="paste"
@@ -202,6 +202,7 @@ const edited = ref(false)
 
 onMounted(async () => {
   memoSaveParam.visibility = userinfo.value.defaultVisibility || 'PUBLIC'
+  console.log(userinfo.value.defaultEnableComment)
   memoSaveParam.enableComment = userinfo.value.defaultEnableComment === 'true' ? '1' : '0'
   const { data, error } = await useMyFetch('/api/tag/list').post().json()
   if (error.value) return
