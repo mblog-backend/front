@@ -24,7 +24,7 @@
       <div
         class="i-carbon:task hover:text-gray-9 cursor-pointer"
         title="待办"
-        @click="appendValue('- [] \n- [] \n- [] \n')"
+        @click="appendValue('- [ ] \n- [ ] \n- [ ] \n')"
       ></div>
       <div
         class="i-carbon:data-table hover:text-gray-9 cursor-pointer"
