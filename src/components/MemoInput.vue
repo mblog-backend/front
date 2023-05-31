@@ -100,6 +100,7 @@
       >
       <div class="ml-auto gap-2 fr items-center">
         <n-button type="warning" class="px-8" @click="toggle()" v-if="isFullscreen"> 退出全屏 </n-button>
+        <n-button type="error" class="px-8" @click="exitEdit()" v-if="edited"> 退出编辑 </n-button>
         <n-button type="primary" class="px-8" @click="saveMemo" :disabled="disbaled"> 记录 </n-button>
       </div>
     </div>
@@ -197,8 +198,11 @@ const emojiShow = ref(false)
 
 const visibilityOptions = getVisbilitys()
 
+const edited = ref(false)
+
 onMounted(async () => {
   memoSaveParam.visibility = userinfo.value.defaultVisibility || 'PUBLIC'
+  memoSaveParam.enableComment = userinfo.value.defaultEnableComment === 'true' ? '1' : '0'
   const { data, error } = await useMyFetch('/api/tag/list').post().json()
   if (error.value) return
   const tagList = data.value as Array<Tag>
@@ -257,11 +261,7 @@ const saveMemo = async () => {
       toggle()
     }
     changedMemoBus.emit(memoSaveParam)
-    memoSaveParam.id = undefined
-    memoSaveParam.content = ''
-    memoSaveParam.publicIds = []
-    memoSaveParam.visibility = 'PUBLIC'
-    uploadFiles.value = []
+    exitEdit()
   }
 }
 
@@ -274,9 +274,22 @@ editMemoBus.on((memo: MemoDTO) => {
   memoSaveParam.visibility = memo.visibility
   memoSaveParam.enableComment = memo.enableComment + ''
   uploadFiles.value = structuredClone(toRaw(memo.resources))
+  edited.value = true
 })
 
-const userinfo = useStorage('userinfo', { token: '', defaultVisibility: 'PUBLIC' })
+const exitEdit = () => {
+  memoSaveParam.visibility = userinfo.value.defaultVisibility || 'PUBLIC'
+  memoSaveParam.enableComment = userinfo.value.defaultEnableComment === 'true' ? '1' : '0'
+  memoSaveParam.publicIds = []
+  memoSaveParam.priority = 0
+  memoSaveParam.deleteMemo = false
+  memoSaveParam.content = ''
+  memoSaveParam.id = undefined
+  uploadFiles.value = []
+  edited.value = false
+}
+
+const userinfo = useStorage('userinfo', { token: '', defaultVisibility: 'PUBLIC', defaultEnableComment: 'false' })
 
 const upload = async (file: File) => {
   const uploadUrl = `${import.meta.env.VITE_BASE_URL}/api/resource/upload`

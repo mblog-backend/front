@@ -13,6 +13,7 @@ export interface MemoDTO {
   bio: string
   priority: number
   commentCount: number
+  unApprovedCommentCount: number
   likeCount: number
   enableComment: number
   viewCount: number

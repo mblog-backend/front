@@ -30,7 +30,14 @@
         <div class="i-carbon:view"></div>
         <div>{{ props.memo.viewCount }}</div>
       </div>
-
+      <div
+        class="fr items-center gap-1 lt-md:hidden text-red-4 cursor-pointer"
+        v-if="props.memo.unApprovedCommentCount > 0 && userinfo.role === 'ADMIN'"
+        :title="`有${props.memo.unApprovedCommentCount}条待审核评论`"
+      >
+        <div class="i-carbon:task-view"></div>
+        <div>{{ props.memo.unApprovedCommentCount }}</div>
+      </div>
       <div
         class="fr gap-1 items-center cursor-pointer hover:text-blue-600 ml-auto"
         @click="navTo('/memo/' + props.memo.id)"
@@ -114,9 +121,10 @@
             v-for="(img, index) in imgs"
             class="rd hover:shadow-2xl"
             :key="index"
-            width="100"
-            height="100"
+            :width="thumbnailWidth"
+            :height="thumbnailHeight"
             lazy
+            object-fit="cover"
             :src="img.url + (img.suffix || '')"
             :preview-src="img.url"
             :intersection-observer-options="{
@@ -211,6 +219,16 @@ const files = computed(() => {
   return props.memo.resources?.filter((r) => r.fileType.includes('application'))
 })
 
+const sessionStorage = useSessionStorage('config', {
+  THUMBNAIL_SIZE: '100,100',
+})
+
+const thumbnailWidth = computed(() => {
+  return sessionStorage.value.THUMBNAIL_SIZE.split(',')[0]
+})
+const thumbnailHeight = computed(() => {
+  return sessionStorage.value.THUMBNAIL_SIZE.split(',')[1]
+})
 const setMemoPriority = async (id: number, top: boolean) => {
   popoverShow.value = false
   const { error } = await useMyFetch(`/api/memo/setPriority?id=${id}&set=${top}`).post().json()

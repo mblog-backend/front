@@ -9,6 +9,7 @@ export interface User {
   role: string
   avatarUrl: string
   defaultVisibility: string
+  defaultEnableComment: string
 }
 
 export interface RegisterUserDTO {

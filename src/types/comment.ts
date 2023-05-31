@@ -8,6 +8,9 @@ export interface CommentDTO {
   userName: string
   created: Date
   updated: Date
+  email: string
+  link: string
+  approved: number
 }
 
 export interface QueryCommentResponse {

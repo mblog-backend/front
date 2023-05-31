@@ -6,7 +6,9 @@ const sessionStorage = useSessionStorage('config', {
   USER_MODEL: 'SINGLE',
   OPEN_COMMENT: false,
   OPEN_LIKE: false,
+  ANONYMOUS_COMMENT: false,
 })
+const userinfo = useLocalStorage('userinfo', { userId: 0 })
 
 export const installDirectives = (app: App<Element>) => {
   app.directive('openRegister', {
@@ -21,6 +23,11 @@ export const installDirectives = (app: App<Element>) => {
     mounted: (el: Element) => {
       if (sessionStorage.value.OPEN_COMMENT !== true) {
         el.parentNode && el.parentNode.removeChild(el)
+        return
+      }
+      if (!userinfo.value.userId && sessionStorage.value.ANONYMOUS_COMMENT === false) {
+        el.parentNode && el.parentNode.removeChild(el)
+        return
       }
     },
   })

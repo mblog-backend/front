@@ -49,6 +49,9 @@ const sessionStorage = useSessionStorage('config', {
   USER_MODEL: 'SINGLE',
   CUSTOM_CSS: '',
   CUSTOM_JAVASCRIPT: '',
+  THUMBNAIL_SIZE: '100,100',
+  ANONYMOUS_COMMENT: false,
+  COMMENT_APPROVED: true,
 })
 onMounted(async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/').get().json()
@@ -57,11 +60,10 @@ onMounted(async () => {
   }
   const configData = data.value as Array<{ key: string; value: string }>
   sessionStorage.value.USER_MODEL = configData.find((r) => r.key === 'USER_MODEL')?.value || 'SINGLE'
-  if (sessionStorage.value.USER_MODEL === 'MULTIPLE') {
-    sessionStorage.value.OPEN_REGISTER = configData.find((r) => r.key === 'OPEN_REGISTER')?.value === 'true' || false
-    sessionStorage.value.OPEN_COMMENT = configData.find((r) => r.key === 'OPEN_COMMENT')?.value === 'true' || false
-    sessionStorage.value.OPEN_LIKE = configData.find((r) => r.key === 'OPEN_LIKE')?.value === 'true' || false
-  }
+  sessionStorage.value.OPEN_REGISTER = configData.find((r) => r.key === 'OPEN_REGISTER')?.value === 'true' || false
+  sessionStorage.value.OPEN_COMMENT = configData.find((r) => r.key === 'OPEN_COMMENT')?.value === 'true' || false
+  sessionStorage.value.OPEN_LIKE = configData.find((r) => r.key === 'OPEN_LIKE')?.value === 'true' || false
+
   sessionStorage.value.WEBSITE_TITLE = configData.find((r) => r.key === 'WEBSITE_TITLE')?.value || 'MBlog'
   sessionStorage.value.MEMO_MAX_LENGTH = parseInt(configData.find((r) => r.key === 'MEMO_MAX_LENGTH')?.value as any)
   sessionStorage.value.INDEX_WIDTH = configData.find((r) => r.key === 'INDEX_WIDTH')?.value || '50rem'
@@ -77,6 +79,10 @@ onMounted(async () => {
   sessionStorage.value.USER_MODEL = configData.find((r) => r.key === 'USER_MODEL')?.value || 'SINGLE'
   sessionStorage.value.CUSTOM_JAVASCRIPT = configData.find((r) => r.key === 'CUSTOM_JAVASCRIPT')?.value || ''
   sessionStorage.value.CUSTOM_CSS = configData.find((r) => r.key === 'CUSTOM_CSS')?.value || ''
+  sessionStorage.value.THUMBNAIL_SIZE = configData.find((r) => r.key === 'THUMBNAIL_SIZE')?.value || '100,100'
+  sessionStorage.value.ANONYMOUS_COMMENT =
+    configData.find((r) => r.key === 'ANONYMOUS_COMMENT')?.value === 'true' || false
+  sessionStorage.value.COMMENT_APPROVED = configData.find((r) => r.key === 'COMMENT_APPROVED')?.value === 'true' || true
 
   var head = document.getElementsByTagName('head')[0]
 

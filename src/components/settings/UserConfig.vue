@@ -1,7 +1,7 @@
 <template>
   <div class="rd bg-white p-2 dark:bg-gray-7">
     <div class="mx-auto">
-      <n-form ref="formRef" :label-width="100" :model="formValue" label-placement="left">
+      <n-form ref="formRef" :label-width="120" :model="formValue" label-placement="left">
         <n-form-item label="头像">
           <n-upload :custom-request="customRequest" ref="uploadRef" :show-file-list="false">
             <n-avatar :size="48" :src="formValue.avatarUrl" class="cursor-pointer" />
@@ -33,6 +33,12 @@
             placeholder="选择可见性"
           />
         </n-form-item>
+        <n-form-item label="默认是否可评论" path="state.visibility" v-if="sessionStorage.OPEN_COMMENT">
+          <n-radio-group v-model:value="formValue.defaultEnableComment" name="radiobuttongroup1">
+            <n-radio-button value="true" label="可以评论" />
+            <n-radio-button value="false" label="禁止评论" />
+          </n-radio-group>
+        </n-form-item>
         <n-form-item>
           <n-space align="center">
             <n-button attr-type="button" type="primary" @click="saveConfig"> 保存配置 </n-button>
@@ -47,7 +53,10 @@
 import type { User } from '@/types/user'
 import type { UploadCustomRequestOptions, UploadInst } from 'naive-ui'
 
-const userinfo = useStorage('userinfo', { token: '', defaultVisibility: 'PUBLIC' })
+const sessionStorage = useSessionStorage('config', {
+  OPEN_COMMENT: false,
+})
+const userinfo = useStorage('userinfo', { token: '', defaultVisibility: 'PUBLIC', defaultEnableComment: 'false' })
 const formValue = ref<Partial<User> & { password?: string }>({})
 
 const reload = async () => {
@@ -62,6 +71,7 @@ const saveConfig = async () => {
     const { message } = createDiscreteApi(['message'])
     message.success('保存用户配置成功!')
     userinfo.value.defaultVisibility = formValue.value.defaultVisibility || 'PUBLIC'
+    userinfo.value.defaultEnableComment = formValue.value.defaultEnableComment || 'false'
     await reload()
   }
 }

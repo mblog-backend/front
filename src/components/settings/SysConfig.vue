@@ -1,7 +1,7 @@
 <template>
   <div class="rd bg-white p-2 dark:bg-gray-7">
     <div class="mx-auto">
-      <n-form ref="formRef" :label-width="120" :model="formValue" label-placement="left">
+      <n-form ref="formRef" :label-width="140" :model="formValue" label-placement="left">
         <n-form-item label="网站标题">
           <n-input v-model:value="formValue.WEBSITE_TITLE" placeholder="输入网站标题" />
         </n-form-item>
@@ -13,6 +13,9 @@
         </n-form-item>
         <n-form-item label="首页宽度">
           <n-input v-model:value="formValue.INDEX_WIDTH" placeholder="首页宽度,默认50REM" />
+        </n-form-item>
+        <n-form-item label="缩略图大小">
+          <n-input v-model:value="formValue.THUMBNAIL_SIZE" placeholder="缩略图大小,默认100x100" />
         </n-form-item>
         <n-form-item label="单个记录长度">
           <n-input v-model:value="formValue.MEMO_MAX_LENGTH" placeholder="默认高度300,超出自动折叠" />px
@@ -39,6 +42,18 @@
           <n-radio-group v-model:value="formValue.OPEN_LIKE" name="radiobuttongroup1">
             <n-radio-button value="true" label="开放" />
             <n-radio-button value="false" label="关闭" />
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item label="开放匿名评论">
+          <n-radio-group v-model:value="formValue.ANONYMOUS_COMMENT" name="radiobuttongroup1">
+            <n-radio-button value="true" label="开放" />
+            <n-radio-button value="false" label="关闭" />
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item label="匿名评论是否审核">
+          <n-radio-group v-model:value="formValue.COMMENT_APPROVED" name="radiobuttongroup1">
+            <n-radio-button value="true" label="需要" />
+            <n-radio-button value="false" label="不需要" />
           </n-radio-group>
         </n-form-item>
         <n-form-item label="存储设置">
@@ -215,6 +230,18 @@ const saveConfig = async () => {
   items.push({
     key: 'CUSTOM_JAVASCRIPT',
     value: formValue.CUSTOM_JAVASCRIPT,
+  })
+  items.push({
+    key: 'THUMBNAIL_SIZE',
+    value: formValue.THUMBNAIL_SIZE,
+  })
+  items.push({
+    key: 'ANONYMOUS_COMMENT',
+    value: formValue.ANONYMOUS_COMMENT,
+  })
+  items.push({
+    key: 'COMMENT_APPROVED',
+    value: formValue.COMMENT_APPROVED,
   })
 
   const { error } = await useMyFetch('/api/sysConfig/save').post({ items }).json()

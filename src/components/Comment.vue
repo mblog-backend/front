@@ -3,6 +3,13 @@
     <div class="bg-slate-100 fr items-center rd-t p-2 text-gray-5 text-xs gap-2">
       <div class="">{{ dayjs(props.comment.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="cursor-pointer hover:text-gray-9">@{{ props.comment.userName }}</div>
+      <div
+        class="cursor-pointer hover:text-red-7 text-red-4"
+        v-if="userinfo.role === 'ADMIN' && props.comment.approved === 0 && props.comment.userId < 0"
+        @click="singleApproved"
+      >
+        未审核,点击审核通过
+      </div>
       <div class="ml-auto">
         <div>#{{ props.index + 1 }}</div>
       </div>
@@ -27,6 +34,7 @@ const props = defineProps<{
   comment: CommentDTO
   index: number
 }>()
+const userinfo = useStorage('userinfo', { role: '' })
 
 const commentContent = ref(marked.parse(props.comment.content))
 
@@ -40,6 +48,15 @@ onMounted(() => {
     })
   }
 })
+
+const singleApproved = async () => {
+  const { error } = await useMyFetch('/api/comment/singleApprove?id=' + props.comment.id)
+    .post()
+    .json()
+  if (!error.value) {
+    window.location.reload()
+  }
+}
 </script>
 
 <style scoped lang="scss"></style>
