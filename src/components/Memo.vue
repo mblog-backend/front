@@ -5,7 +5,7 @@
       <div class="author" @click="searchMemosBus.emit({ userId: props.memo.userId, username: props.memo.authorName })">
         @{{ props.memo.authorName }}
       </div>
-      <div class="visibility" @click="searchMemosBus.emit({ visibility: props.memo.visibility })">
+      <div class="visibility" @click="searchMemosBus.emit({ visibility: props.memo.visibility })" v-if="userinfo.token">
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
       <div v-if="props.memo.priority > 0 && route.path === '/'" class="fw-700">已置顶</div>

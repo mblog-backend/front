@@ -3,6 +3,7 @@
 html {
   height: 100%;
   background-color: #f4f4f5;
+  font-size: 16px;
 }
 
 html.dark {
@@ -11,6 +12,10 @@ html.dark {
 
 * {
   font-family: LXGW WenKai Screen, sans-serif;
+}
+
+.md-content {
+  font-size: 1rem;
 }
 
 .md-content a:any-link {
@@ -36,7 +41,7 @@ html.dark {
 
 .md-content code {
   font-family: LXGW WenKai Screen, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .md-content li > code,
@@ -90,10 +95,6 @@ html.dark .n-tabs-nav--bar-type {
   border: 1px solid #ccc;
   border-collapse: collapse;
   min-width: 50%;
-}
-
-.md-content li:has(input[type='checkbox']) {
-  list-style: none;
 }
 
 .md-content table td,

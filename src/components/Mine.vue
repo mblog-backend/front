@@ -2,9 +2,9 @@
   <div class="fc bg-white p-2 rd gap-2 text-gray dark:bg-gray-7 dark:text-gray-4">
     <div class="fr gap-2 items-center justify-center">
       <n-avatar round size="large" :src="user.avatarUrl" />
-      <div class="fc text-xs">
+      <div class="fc text-xs gap-1">
         <div>@{{ user.displayName }}</div>
-        <div>始于{{ created }}</div>
+        <div>{{ created }}</div>
       </div>
       <div class="i-carbon:rss text-yellow-5 text-lg cursor-pointer hover:text-yellow-7" @click="nav2Rss"></div>
     </div>
