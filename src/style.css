@@ -108,7 +108,7 @@ html.dark .n-tabs-nav--bar-type {
 .md-content table td,
 .md-content table th {
   border: 1px solid #ccc;
-  text-align: center;
+  padding: 0 10px;
 }
 
 .md-content table th {
