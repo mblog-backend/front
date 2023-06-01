@@ -44,6 +44,14 @@ html.dark {
   font-size: 0.75rem;
 }
 
+.md-content p {
+  margin: 0 0 0.25rem 0;
+}
+.md-content ul,
+.md-content ol {
+  margin: 0 0 0.25rem 0;
+}
+
 .md-content li > code,
 .md-content p > code {
   padding: 2px 5px;
@@ -104,6 +112,11 @@ html.dark .n-tabs-nav--bar-type {
 }
 
 .md-content table th {
-  background-color: #666;
-  color: white;
+  background-color: rgba(158, 188, 226, 0.2);
+  /* color: white; */
+}
+
+.md-content hr {
+  border: 1px solid #dedede;
+  color: #cccccc;
 }
