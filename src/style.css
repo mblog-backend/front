@@ -102,7 +102,7 @@ html.dark .n-tabs-nav--bar-type {
 .md-content table {
   border: 1px solid #ccc;
   border-collapse: collapse;
-  min-width: 50%;
+  width: 100%;
 }
 
 .md-content table td,
