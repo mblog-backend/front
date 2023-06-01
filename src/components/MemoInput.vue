@@ -115,7 +115,8 @@
               height="100"
               lazy
               class="rd hover:shadow-2xl"
-              :src="img.url + (img.suffix || '')"
+              :src="img.url + (img.fileType.includes('webp') ? '' : img.suffix || '')"
+              :fallback-src="img.url"
               :preview-src="img.url"
               :intersection-observer-options="{
                 root: '#image-scroll-container',
