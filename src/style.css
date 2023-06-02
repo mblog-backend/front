@@ -41,7 +41,7 @@ html.dark {
 
 .md-content code {
   font-family: LXGW WenKai Screen, sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
 }
 
 .md-content p {
@@ -53,7 +53,8 @@ html.dark {
 }
 
 .md-content li > code,
-.md-content p > code {
+.md-content p > code,
+.md-content td > code {
   padding: 2px 5px;
   border-radius: 2px;
   border: 1px solid #ccc;
