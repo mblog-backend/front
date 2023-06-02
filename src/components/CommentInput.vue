@@ -68,6 +68,7 @@ const getUsernames = async () => {
 const sessionStorage = useSessionStorage('config', {
   OPEN_COMMENT: false,
   ANONYMOUS_COMMENT: false,
+  COMMENT_APPROVED: true,
 })
 
 const enabelComment = computed(() => {
@@ -85,8 +86,9 @@ const enabelComment = computed(() => {
 })
 
 const saveComment = async () => {
+  const { message } = createDiscreteApi(['message'])
+
   if (!content.value) {
-    const { message } = createDiscreteApi(['message'])
     message.warning('先填写评论')
     return
   }
@@ -100,6 +102,9 @@ const saveComment = async () => {
     })
     .json()
   if (error.value) return
+  if (!userinfo.value.token && sessionStorage.value.COMMENT_APPROVED) {
+    message.warning('匿名评论成功,等待审核.')
+  }
   content.value = ''
   commetSavedBus.emit()
 }

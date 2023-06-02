@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" ref="wrapper">
+  <div class="wrapper" ref="wrapper" :style="{ width: isSmallerScreen ? '100%' : sessionStorage.INDEX_WIDTH }">
     <div class="main fr gap-2">
       <div class="left">
         <LeftNav v-if="userinfo.token || !route.path.startsWith('/memo')" />
@@ -7,8 +7,8 @@
       <div class="middle">
         <RouterView />
       </div>
-      <div class="right" v-if="route.path !== '/settings' && userinfo.token">
-        <RightNav v-if="route.path === '/' || route.path === '/me' || route.path === '/search'" />
+      <div class="right" :style="{ visibility: userinfo.token ? 'visible' : 'hidden' }">
+        <RightNav />
       </div>
     </div>
     <div
@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { useElementStyle } from '@vueuse/motion'
 const userinfo = useStorage('userinfo', { username: '', token: '' })
 const showDrawer = ref(false)
 const route = useRoute()
@@ -53,7 +52,7 @@ const sessionStorage = useSessionStorage('config', {
   ANONYMOUS_COMMENT: false,
   COMMENT_APPROVED: true,
 })
-onMounted(async () => {
+onBeforeMount(async () => {
   const { data, error } = await useMyFetch('/api/sysConfig/').get().json()
   if (error.value) {
     return
@@ -69,8 +68,8 @@ onMounted(async () => {
   sessionStorage.value.INDEX_WIDTH = configData.find((r) => r.key === 'INDEX_WIDTH')?.value || '50rem'
 
   if (!isSmallerScreen.value) {
-    const { style } = useElementStyle(wrapper)
-    style.width = sessionStorage.value.INDEX_WIDTH
+    // const { style } = useElementStyle(wrapper)
+    // style.width = sessionStorage.value.INDEX_WIDTH
   }
 
   const title = useTitle()
