@@ -79,6 +79,8 @@ const memoApproved = async () => {
     .post()
     .json()
   if (!error.value) {
+    const { message } = createDiscreteApi(['message'])
+    message.success('审核评论成功')
     await reload()
   }
 }

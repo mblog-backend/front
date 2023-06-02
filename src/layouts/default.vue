@@ -67,11 +67,6 @@ onBeforeMount(async () => {
   sessionStorage.value.MEMO_MAX_LENGTH = parseInt(configData.find((r) => r.key === 'MEMO_MAX_LENGTH')?.value as any)
   sessionStorage.value.INDEX_WIDTH = configData.find((r) => r.key === 'INDEX_WIDTH')?.value || '50rem'
 
-  if (!isSmallerScreen.value) {
-    // const { style } = useElementStyle(wrapper)
-    // style.width = sessionStorage.value.INDEX_WIDTH
-  }
-
   const title = useTitle()
   title.value = sessionStorage.value.WEBSITE_TITLE
 
@@ -81,7 +76,8 @@ onBeforeMount(async () => {
   sessionStorage.value.THUMBNAIL_SIZE = configData.find((r) => r.key === 'THUMBNAIL_SIZE')?.value || '100,100'
   sessionStorage.value.ANONYMOUS_COMMENT =
     configData.find((r) => r.key === 'ANONYMOUS_COMMENT')?.value === 'true' || false
-  sessionStorage.value.COMMENT_APPROVED = configData.find((r) => r.key === 'COMMENT_APPROVED')?.value === 'true' || true
+  sessionStorage.value.COMMENT_APPROVED =
+    configData.find((r) => r.key === 'COMMENT_APPROVED')?.value === 'true' || false
 
   var head = document.getElementsByTagName('head')[0]
 

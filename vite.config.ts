@@ -5,12 +5,14 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Layouts from 'vite-plugin-vue-layouts'
 import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [
+    VitePWA(),
     vue({
       template: {
         compilerOptions: {

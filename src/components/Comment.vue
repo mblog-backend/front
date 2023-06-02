@@ -10,8 +10,21 @@
       >
         未审核,点击审核通过
       </div>
-      <div class="ml-auto">
+      <div class="ml-auto fr gap-1 items-center">
         <div>#{{ props.index + 1 }}</div>
+        <n-popconfirm
+          :show-icon="false"
+          v-if="userinfo.role === 'ADMIN'"
+          @positive-click="removeComment(props.comment.id)"
+          negative-text="取消"
+          positive-text="确定"
+        >
+          <template #trigger>
+            <div class="fr gap-1 items-center cursor-pointer hover:text-blue-600">
+              <div class="i-carbon:trash-can"></div>
+            </div>
+          </template>
+        </n-popconfirm>
       </div>
     </div>
     <div class="p-2 dark:text-white md-content" v-html="commentContent"></div>
@@ -37,6 +50,17 @@ const props = defineProps<{
 const userinfo = useStorage('userinfo', { role: '' })
 
 const commentContent = ref(marked.parse(props.comment.content))
+
+const removeComment = async (id: number) => {
+  const { error } = await useMyFetch('/api/comment/remove?id=' + id)
+    .post()
+    .json()
+  if (!error.value) {
+    const { message } = createDiscreteApi(['message'])
+    message.success('删除评论成功')
+    commetSavedBus.emit()
+  }
+}
 
 onMounted(() => {
   if (props.comment.mentioned) {
