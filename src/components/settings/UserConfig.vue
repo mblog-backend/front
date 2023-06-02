@@ -92,11 +92,13 @@ const customRequest = async ({ file }: UploadCustomRequestOptions) => {
     .post()
     .json()
   if (!error.value) {
-    let url = data.value[0].url
+    let img = data.value[0]
+    let url = img.url
     if (data.value[0].storageType === 'LOCAL') {
       url = import.meta.env.VITE_BASE_URL + url
     }
-    formValue.value.avatarUrl = url + (data.value[0].suffix || '')
+    formValue.value.avatarUrl = url + (img.fileType.includes('webp') ? '' : img.suffix || '')
+    console.log(formValue.value.avatarUrl)
     uploadRef.value?.clear()
   }
 }
