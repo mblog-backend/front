@@ -1,17 +1,41 @@
+<style scoped lang="scss">
+.comment {
+  @apply bg-white rd dark:bg-gray-7 my-2;
+
+  .head {
+    @apply bg-slate-100 fr items-center rd-t p-2 text-gray-5 text-xs gap-2;
+
+    .author {
+      @apply cursor-pointer hover:text-gray-9;
+    }
+    .approve {
+      @apply cursor-pointer hover:text-red-7 text-red-4;
+    }
+
+    .right {
+      @apply ml-auto fr gap-1 items-center;
+
+      .remove {
+        @apply fr gap-1 items-center cursor-pointer hover:text-blue-600;
+      }
+    }
+  }
+}
+</style>
 <template>
-  <div class="bg-white rd dark:bg-gray-7 my-2">
-    <div class="bg-slate-100 fr items-center rd-t p-2 text-gray-5 text-xs gap-2">
-      <div class="">{{ dayjs(props.comment.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
-      <div class="cursor-pointer hover:text-gray-9">@{{ props.comment.userName }}</div>
+  <div class="comment">
+    <div class="head">
+      <div class="time">{{ dayjs(props.comment.created).format('YYYY-MM-DD HH:mm:ss') }}</div>
+      <div class="author">@{{ props.comment.userName }}</div>
       <div
-        class="cursor-pointer hover:text-red-7 text-red-4"
+        class="approve"
         v-if="userinfo.role === 'ADMIN' && props.comment.approved === 0 && props.comment.userId < 0"
         @click="singleApproved"
       >
         未审核,点击审核通过
       </div>
-      <div class="ml-auto fr gap-1 items-center">
-        <div>#{{ props.index + 1 }}</div>
+      <div class="right">
+        <div class="floor">#{{ props.index + 1 }}</div>
         <n-popconfirm
           :show-icon="false"
           v-if="userinfo.role === 'ADMIN'"
@@ -20,7 +44,7 @@
           positive-text="确定"
         >
           <template #trigger>
-            <div class="fr gap-1 items-center cursor-pointer hover:text-blue-600">
+            <div class="remove">
               <div class="i-carbon:trash-can"></div>
             </div>
           </template>

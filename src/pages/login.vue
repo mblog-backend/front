@@ -2,7 +2,7 @@
   <div class="rd bg-white p-2 dark:bg-gray-700">
     <div class="w-2/3 mx-auto">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules">
-        <n-form-item label="姓名" path="username">
+        <n-form-item label="用户名" path="username">
           <n-input v-model:value="formValue.username" placeholder="输入用户名" />
         </n-form-item>
         <n-form-item label="密码" path="password">

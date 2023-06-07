@@ -201,6 +201,12 @@ const visibilityOptions = getVisbilitys()
 
 const edited = ref(false)
 
+onKeyStroke(true, (e) => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    saveMemo()
+  }
+})
+
 onMounted(async () => {
   memoSaveParam.visibility = userinfo.value.defaultVisibility || 'PUBLIC'
   console.log(userinfo.value.defaultEnableComment)

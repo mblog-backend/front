@@ -9,24 +9,16 @@
         {{ getVisbilityDesc(props.memo.visibility) }}
       </div>
       <div v-if="props.memo.priority > 0 && route.path === '/'" class="fw-700">已置顶</div>
-      <div
-        v-openLike
-        class="fr items-center cursor-pointer hover:text-red-400 gap-1 lt-md:hidden"
-        @click="saveRealtion(props.memo)"
-      >
+      <div v-openLike class="fav" @click="saveRealtion(props.memo)">
         <div class="i-carbon:favorite-filled text-red-500" v-if="props.memo.liked"></div>
         <div class="i-carbon:favorite" v-else></div>
         <div>{{ props.memo.likeCount }}</div>
       </div>
-      <div
-        v-openComment
-        class="fr items-center gap-1 cursor-pointer hover:text-red-400 lt-md:hidden"
-        @click="goToDetail(props.memo.id)"
-      >
+      <div v-openComment class="count" @click="goToDetail(props.memo.id)">
         <div class="i-carbon:chat"></div>
         <div>{{ props.memo.commentCount }}</div>
       </div>
-      <div class="fr items-center gap-1 lt-md:hidden">
+      <div class="view">
         <div class="i-carbon:view"></div>
         <div>{{ props.memo.viewCount }}</div>
       </div>
@@ -114,7 +106,7 @@
       v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
     ></div>
 
-    <div class="fr gap-2 px-2 mb-2 flex-wrap" v-if="imgs && imgs.length > 0">
+    <div class="imgs" v-if="imgs && imgs.length > 0">
       <n-image-group>
         <n-space>
           <n-image
@@ -332,6 +324,17 @@ const editMemo = () => {
       @apply cursor-pointer hover:text-blue-4;
     }
 
+    .fav {
+      @apply fr items-center cursor-pointer hover:text-red-400 gap-1 lt-md:hidden;
+    }
+
+    .count {
+      @apply fr items-center gap-1 cursor-pointer hover:text-red-400 lt-md:hidden;
+    }
+
+    .view {
+      @apply fr items-center gap-1 lt-md:hidden;
+    }
     .detail {
       @apply i-carbon:table ml-auto text-gray-400 cursor-pointer hover:text-gray-700;
     }
@@ -341,6 +344,10 @@ const editMemo = () => {
     @apply py-2 px-4 transition-all transition-duration-300;
     overflow-wrap: anywhere;
     overflow: hidden;
+  }
+
+  .imgs {
+    @apply fr gap-2 px-2 mb-2 flex-wrap;
   }
 
   .tags {
