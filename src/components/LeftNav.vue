@@ -112,9 +112,9 @@ const logout = () => {
 
 <style scoped lang="scss">
 .parent {
-  @apply fc p-2 gap-2 justify-end  sticky top-0 text-4;
+  @apply fc p-2 gap-2 justify-end  sticky top-0;
   .item {
-    @apply cursor-pointer list-none fr gap-1 items-center hover:text-gray-500 dark:text-gray-4 justify-center;
+    @apply cursor-pointer list-none fr gap-3 items-center hover:text-gray-500 dark:text-gray-4 justify-center text-lg;
     letter-spacing: 3px;
 
     &.selected {

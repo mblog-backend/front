@@ -18,6 +18,7 @@ export interface MemoDTO {
   enableComment: number
   viewCount: number
   liked: number
+  source: string
   resources: Array<{
     publicId: string
     url: string

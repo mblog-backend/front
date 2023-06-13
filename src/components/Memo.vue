@@ -100,8 +100,8 @@
       </n-popover>
     </div>
     <div
-      ref="el"
       class="content md-content"
+      ref="el"
       :style="{ 'max-height': maxHeight }"
       v-html="props.memo && props.memo.content && marked.parse(props.memo.content)"
     ></div>
@@ -167,9 +167,11 @@
         <div>折叠</div>
       </div>
     </template>
-    <div class="tags" v-if="props.memo.tags && props.memo.tags.length > 0">
+    <div class="tags" v-if="tags && tags.length > 0">
       <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
     </div>
+
+    <div class="source">来自{{ props.memo.source }}</div>
   </div>
   <div class="flex items-center justify-center my-4" v-if="route.path !== '/' && !userinfo.token">
     <n-button type="primary" class="px-6" @click="router.push('/')">回首页</n-button>
@@ -210,6 +212,10 @@ const imgs = computed(() => {
 
 const files = computed(() => {
   return props.memo.resources?.filter((r) => r.fileType.includes('application'))
+})
+
+const tags = computed(() => {
+  return props.memo.tags?.split(',').filter((r) => r.trim().length > 0)
 })
 
 const sessionStorage = useSessionStorage('config', {
@@ -281,10 +287,6 @@ const navTo = (path: string) => {
   router.push(path)
 }
 
-const tags = computed(() => {
-  return props.memo.tags?.split(',')
-})
-
 const popoverShow = ref(false)
 
 const removeMemo = async (id: number) => {
@@ -306,7 +308,11 @@ const editMemo = () => {
 
 <style scoped lang="scss">
 .memo {
-  @apply fc bg-white rd dark:bg-gray-7 dark:text-gray-4 mb-2;
+  @apply fc bg-white rd dark:bg-gray-7 dark:text-gray-4 mb-4 relative shadow-2xl;
+
+  .source {
+    @apply absolute right-1 bottom-2 text-xs text-gray-3 z-10;
+  }
 
   &.top {
     @apply shadow-2xl;
@@ -325,11 +331,11 @@ const editMemo = () => {
     }
 
     .fav {
-      @apply fr items-center cursor-pointer hover:text-red-400 gap-1 lt-md:hidden;
+      @apply fr items-center cursor-pointer hover:text-blue-5 gap-1 lt-md:hidden;
     }
 
     .count {
-      @apply fr items-center gap-1 cursor-pointer hover:text-red-400 lt-md:hidden;
+      @apply fr items-center gap-1 cursor-pointer hover:text-blue-5 lt-md:hidden;
     }
 
     .view {
@@ -351,10 +357,10 @@ const editMemo = () => {
   }
 
   .tags {
-    @apply fr gap-2 text-xs text-gray-400 pb-2 px-2 items-center;
+    @apply fr gap-2 text-gray-400 pb-2 px-2 items-center;
 
     .tag {
-      @apply cursor-pointer   hover:text-blue-5;
+      @apply cursor-pointer   hover:text-#36ad6a border b-solid rounded px-2 text-#18a058 text-2;
     }
   }
 }

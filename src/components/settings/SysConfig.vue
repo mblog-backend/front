@@ -128,6 +128,7 @@
             <n-form-item label="Webhook Token:">
               <n-input
                 v-model:value="formValue.WEB_HOOK_TOKEN"
+                readonly="readonly"
                 placeholder="可空,安全起见,建议填写,发送webhook时会在请求头里的`token`字段里带上"
               />
             </n-form-item>
@@ -307,10 +308,6 @@ const saveConfig = async () => {
   items.push({
     key: 'WEB_HOOK_URL',
     value: formValue.WEB_HOOK_URL,
-  })
-  items.push({
-    key: 'WEB_HOOK_TOKEN',
-    value: formValue.WEB_HOOK_TOKEN,
   })
   items.push({
     key: 'PUSH_OFFICIAL_SQUARE',

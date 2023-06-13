@@ -101,7 +101,7 @@ onBeforeMount(async () => {
   @apply flex flex-col gap-2 lg:w-200 mx-auto;
 
   .left {
-    @apply w-24  lt-md:hidden;
+    @apply w-28  lt-md:hidden;
   }
 
   .middle {
