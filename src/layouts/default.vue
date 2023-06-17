@@ -23,13 +23,19 @@
     <n-drawer-content>
       <div class="fc gap-2">
         <LeftNav />
-        <RightNav />
+        <RightNav v-if="userinfo.token" />
       </div>
     </n-drawer-content>
   </n-drawer>
 </template>
 
 <script setup lang="ts">
+const preferredColor = usePreferredColorScheme()
+
+themeChangeBus.emit({
+  theme: preferredColor.value,
+})
+
 const userinfo = useStorage('userinfo', { username: '', token: '' })
 const showDrawer = ref(false)
 const route = useRoute()

@@ -171,7 +171,7 @@
       <div class="tag" v-for="tag in tags" :key="tag" @click="searchMemosBus.emit({ tag: tag })">{{ tag }}</div>
     </div>
 
-    <div class="source">来自{{ props.memo.source }}</div>
+    <div class="source" v-if="props.memo.source && props.memo.source !== 'web'">来自{{ props.memo.source }}</div>
   </div>
   <div class="flex items-center justify-center my-4" v-if="route.path !== '/' && !userinfo.token">
     <n-button type="primary" class="px-6" @click="router.push('/')">回首页</n-button>
