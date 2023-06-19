@@ -141,6 +141,9 @@
               {{ img.fileName }}
             </div>
             <div class="deleteBtn" @click="deleteResource(img.publicId)"></div>
+            <div class="progress-bar" v-if="img.progress && img.progress > 0 && img.progress !== 100">
+              <n-progress type="line" :percentage="img.progress" :indicator-placement="'inside'" processing />
+            </div>
           </div>
         </n-space>
       </n-image-group>
@@ -184,6 +187,7 @@ interface UploadItem {
   storageType: string
   fileType: string
   fileName: string
+  progress?: number
 }
 
 const disbaled = ref(false)
@@ -209,7 +213,6 @@ onKeyStroke(true, (e) => {
 
 onMounted(async () => {
   memoSaveParam.visibility = userinfo.value.defaultVisibility || 'PUBLIC'
-  console.log(userinfo.value.defaultEnableComment)
   memoSaveParam.enableComment = userinfo.value.defaultEnableComment === 'true' ? '1' : '0'
   const { data, error } = await useMyFetch('/api/tag/list').post().json()
   if (error.value) return
@@ -234,8 +237,11 @@ const appendValue = (content: string) => {
 }
 
 const paste = async (e: any) => {
-  if (e.clipboardData.files[0]) {
-    await upload(e.clipboardData.files[0])
+  if (e.clipboardData.files && e.clipboardData.files.length > 0) {
+    const files = e.clipboardData.files
+    for (const file of files) {
+      await customRequest({ file: { file } } as any)
+    }
   }
 }
 
@@ -257,6 +263,13 @@ const emojiClicked = async (event: { detail: any }) => {
 }
 
 const saveMemo = async () => {
+  const { message } = createDiscreteApi(['message'])
+
+  const uploading = uploadFiles.value.filter((r) => r.progress && r.progress < 100)
+  if (uploading.length > 0) {
+    message.error('图片还没上传完.')
+    return
+  }
   disbaled.value = true
   window.setTimeout(() => {
     disbaled.value = false
@@ -299,34 +312,62 @@ const exitEdit = () => {
 
 const userinfo = useStorage('userinfo', { token: '', defaultVisibility: 'PUBLIC', defaultEnableComment: 'false' })
 
-const upload = async (file: File) => {
+const upload = async (file: File, fileObj: UploadItem) => {
   const uploadUrl = `${import.meta.env.VITE_BASE_URL}/api/resource/upload`
-  const uploadHeaders = {
-    token: userinfo.value.token,
-  }
-  const formData = new FormData()
-  formData.append('files', file)
-
-  const { data, error } = await useMyFetch(uploadUrl, {
-    body: formData,
-    headers: uploadHeaders,
-  })
-    .post()
-    .json()
-  if (!error.value) {
-    data.value.forEach((item: any) => {
-      if (item.storageType === 'LOCAL') {
-        item.url = import.meta.env.VITE_BASE_URL + item.url
-      }
-    })
-    uploadFiles.value.push(...data.value)
-    memoSaveParam.publicIds = uploadFiles.value.map((r) => r.publicId)
+  const result = (await uploadFilesWithProgress(uploadUrl, file, (loaded: number, total: number) => {
+    const idx = uploadFiles.value.findIndex((r) => r.publicId === fileObj.publicId)
+    if (idx >= 0) {
+      const item = Object.assign({}, fileObj, {
+        progress: parseInt(((loaded / total) * 100).toFixed(0)),
+      })
+      uploadFiles.value.splice(idx, 1, item)
+    }
+  })) as { status: number; body: string }
+  if (result.status === 200) {
+    const data = JSON.parse(result.body)
+    memoSaveParam.publicIds?.push(data.data[0].publicId)
     uploadRef.value?.clear()
   }
 }
 
+const uploadFilesWithProgress = (url: string, file: File, onProgress: Function) =>
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.upload.addEventListener('progress', (e) => onProgress(e.loaded, e.total))
+    xhr.addEventListener('load', () => resolve({ status: xhr.status, body: xhr.responseText }))
+    xhr.addEventListener('error', () => reject(new Error('File upload failed')))
+    xhr.addEventListener('abort', () => reject(new Error('File upload aborted')))
+    xhr.open('POST', url, true)
+    const formData = new FormData()
+    formData.append('files', file)
+    xhr.setRequestHeader('token', userinfo.value.token)
+    xhr.send(formData)
+  })
+
+const getRandomNum = (Min: number, Max: number) => {
+  var Range = Max - Min
+  var Rand = Math.random()
+  return Min + Math.round(Rand * Range)
+}
+
 const customRequest = async ({ file }: UploadCustomRequestOptions) => {
-  await upload(file.file as File)
+  const reader = new FileReader()
+  const id = new Date().getTime() + '' + getRandomNum(10000, 200000)
+  let fileObj = {
+    url: '',
+    fileType: 'image/png',
+    progress: 0,
+    publicId: id,
+    suffix: '',
+    storageType: '',
+    fileName: '',
+  }
+  reader.onload = function (event) {
+    fileObj.url = event.target?.result as string
+    uploadFiles.value.push(fileObj as any)
+  }
+  reader.readAsDataURL(file.file as File)
+  await upload(file.file as File, fileObj)
 }
 
 const deleteResource = (publicId: string) => {
@@ -351,6 +392,9 @@ const deleteResource = (publicId: string) => {
   @apply i-carbon:close-filled text-red-700 hover:text-red-400 cursor-pointer absolute top-0 right--2 fw-500 z-99;
 }
 
+.progress-bar {
+  @apply absolute bottom-2 left-1 w-9/10;
+}
 emoji-picker {
   width: 400px;
   height: 300px;
