@@ -318,7 +318,9 @@ const saveConfig = async () => {
   if (!error.value) {
     const { message } = createDiscreteApi(['message'])
     message.success('保存系统配置成功!')
-    window.location.reload()
+    setTimeout(() => {
+      window.location.reload()
+    }, 1500)
   }
 }
 

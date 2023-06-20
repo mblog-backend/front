@@ -53,11 +53,11 @@
       <div
         class="i-carbon:moon hover:text-gray-7 cursor-pointer"
         @click="toggleTheme('dark')"
-        v-if="themeModelVal.theme === 'day'"
+        v-if="themeModelVal.theme === 'light'"
       ></div>
       <div
         class="i-carbon:sun text-yellow-5 text-lg hover:text-yellow-4 cursor-pointer"
-        @click="toggleTheme('day')"
+        @click="toggleTheme('light')"
         v-if="themeModelVal.theme === 'dark'"
       ></div>
       <a
@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-const themeModelVal = useLocalStorage('themeModel', { theme: 'day' })
+const themeModelVal = useLocalStorage('themeModel', { theme: 'light' })
 const version = import.meta.env.VITE_MBLOG_VERSION
 const computedVersion = computed(() => {
   if (version) {
@@ -103,6 +103,7 @@ const navTo = (path: string) => {
 const userinfo = useStorage('userinfo', { username: '', token: '' })
 const toggleTheme = (theme: string) => {
   themeChangeBus.emit({ theme })
+  themeModelVal.value.theme = theme
 }
 const logout = () => {
   userinfo.value = {} as any

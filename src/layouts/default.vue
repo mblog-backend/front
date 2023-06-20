@@ -31,12 +31,13 @@
 
 <script setup lang="ts">
 const preferredColor = usePreferredColorScheme()
+const userinfo = useStorage('userinfo', { username: '', token: '' })
+const themeModelVal = useLocalStorage('themeModel', { theme: 'light' })
 
 themeChangeBus.emit({
-  theme: preferredColor.value,
+  theme: themeModelVal.value.theme || preferredColor.value,
 })
 
-const userinfo = useStorage('userinfo', { username: '', token: '' })
 const showDrawer = ref(false)
 const route = useRoute()
 closeDrawerBus.on(() => {
