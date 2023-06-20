@@ -112,13 +112,13 @@
             </n-form-item>
           </n-collapse-item>
           <n-collapse-item title="Webhook设置" name="webhook">
-            <n-form-item label="推送到官方广场">
+            <!-- <n-form-item label="推送到官方广场">
               <n-radio-group v-model:value="formValue.PUSH_OFFICIAL_SQUARE" name="radiobuttongroup1">
                 <n-radio-button value="true" label="是" />
                 <n-radio-button value="false" label="否" />
               </n-radio-group>
               <a href="https://square.coo.st" target="_blank" class="ml-4">square.coo.st</a>
-            </n-form-item>
+            </n-form-item> -->
             <n-form-item label="Webhook地址:">
               <n-input
                 v-model:value="formValue.WEB_HOOK_URL"
