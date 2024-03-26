@@ -122,3 +122,15 @@ html.dark .n-tabs-nav--bar-type {
   border: 1px solid #dedede;
   color: #cccccc;
 }
+
+.friend-md *{
+}
+
+.friend-md p{
+  margin: 0 0 0.25rem 0;
+  
+}
+
+.friend-md a{
+ text-decoration: none;
+}
