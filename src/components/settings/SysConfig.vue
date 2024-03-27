@@ -22,6 +22,12 @@
             <n-form-item label="单个记录长度">
               <n-input v-model:value="formValue.MEMO_MAX_LENGTH" placeholder="默认高度300,超出自动折叠" />px
             </n-form-item>
+            <n-form-item label="主题">
+              <n-radio-group v-model:value="formValue.DEFAULT_THEME" name="radiobuttongroup1">
+                <n-radio-button value="default" label="默认" />
+                <n-radio-button value="friends" label="朋友圈" />
+              </n-radio-group>
+            </n-form-item>
           </n-collapse-item>
 
           <n-collapse-item title="功能设置" name="functional">
@@ -270,6 +276,10 @@ const saveConfig = async () => {
   items.push({
     key: 'USER_MODEL',
     value: formValue.USER_MODEL,
+  })
+  items.push({
+    key: 'DEFAULT_THEME',
+    value: formValue.DEFAULT_THEME,
   })
   items.push({
     key: 'MEMO_MAX_LENGTH',

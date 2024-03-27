@@ -1,4 +1,4 @@
-@import 'https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.7.0/lxgwwenkaiscreen.min.css';
+/* @import 'https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.7.0/lxgwwenkaiscreen.min.css'; */
 
 html {
   height: 100%;
@@ -11,7 +11,8 @@ html.dark {
 }
 
 * {
-  font-family: LXGW WenKai Screen, sans-serif;
+  /* font-family: LXGW WenKai Screen, sans-serif; */
+  font-family:  sans-serif;
 }
 
 .md-content {
@@ -127,10 +128,10 @@ html.dark .n-tabs-nav--bar-type {
 }
 
 .friend-md p{
-  margin: 0 0 0.25rem 0;
-  
+  margin: 0 0 0.25rem 0;  
 }
 
 .friend-md a{
  text-decoration: none;
+ color:#576b95;
 }

@@ -16,6 +16,9 @@ export const useMyFetch = createFetch({
     },
     async afterFetch(ctx) {
       if (ctx.response.status !== 200 || ctx.data.code !== 0) {
+        if (ctx.data.code === 3) {
+          localStorage.clear()
+        }
         return Promise.reject(new Error(ctx.data?.msg || '系统异常'))
       }
       return Promise.resolve({ data: ctx.data.data })
