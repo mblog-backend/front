@@ -1,11 +1,39 @@
 <template>
 
-  <div class="fr gap-4 p-4  text-sm border-x-0">
+  <div class="fr gap-4 p-4 border-x-0">
     <img src="https://images.kingwrcy.cn/memo/20240386211829TtcOUOMaXyITlTkxhSjp" class="w-9 h-9 rounded">
     <div class="fc gap-.5 flex-1">
       <div class="text-[#576b95] cursor-default font-bold">{{ props.memo.authorName }}</div>
-      <div v-html="props.memo && props.memo.content && marked.parse(props.memo.content)" class="text-sm friend-md "
+      <div v-html="props.memo && props.memo.content && marked.parse(props.memo.content)" class="text-sm friend-md"
         ref="el">
+      </div>
+      <div class="">
+
+        <n-image-group>
+          <n-space>
+            <n-image v-for="(img, index) in imgs" class="rd hover:shadow-2xl" :key="index" :width="thumbnailWidth"
+              :height="thumbnailHeight" lazy object-fit="cover"
+              :src="img.url + (img.fileType.includes('webp') ? '' : img.suffix || '')" :fallback-src="img.url"
+              :preview-src="img.url" :intersection-observer-options="{
+        root: '#image-scroll-container',
+      }">
+              <template #placeholder>
+                <div style="
+                  width: 100px;
+                  height: 100px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  background-color: #0001;
+                ">
+                  加载中...
+                </div>
+              </template>
+            </n-image>
+          </n-space>
+        </n-image-group>
+
+
       </div>
       <div class="text-[#576b95] cursor-pointer" v-if="hh > 96 && !showAll" @click="showMore">全文</div>
       <div class="text-[#576b95] cursor-pointer " v-if="showAll" @click="showLess">收起</div>
@@ -35,15 +63,15 @@
         <template v-if="commentResp.list && commentResp.list.length > 0">
           <div class="p-4">
             <div class="fc gap-2 text-sm" v-for="(comment, index) in commentResp.list" :key="comment.id">
-            <div class="fr">
-              <div class="text-[#576b95] text-nowrap">{{ comment.userName }}</div>
-              <div class="mx-1">:</div>
-              <div class="break-all cursor-pointer" @click="toggleUserComment(index)">{{
+              <div class="fr">
+                <div class="text-[#576b95] ws-nowrap">{{ comment.userName }}</div>
+                <div class="mx-1">:</div>
+                <div class="break-all cursor-pointer" @click="toggleUserComment(index)">{{
         comment.content }}</div>
+              </div>
+              <FriendsCommentInput :memoId="props.memo.id" :commentId="comment.id" :reply="comment.userName"
+                v-if="showUserCommentArray[index]" />
             </div>
-            <FriendsCommentInput :memoId="props.memo.id" :commentId="comment.id" :reply="comment.userName"
-              v-if="showUserCommentArray[index]" />
-          </div>
           </div>
         </template>
 
@@ -61,6 +89,7 @@ import 'dayjs/locale/zh-cn';
 import { marked } from 'marked'
 import { mangle } from 'marked-mangle'
 import { gfmHeadingId } from 'marked-gfm-heading-id'
+import type { QueryCommentResponse } from '@/types/comment';
 
 dayjs.extend(relativeTime)
 
@@ -106,7 +135,19 @@ const showLess = () => {
   showAll.value = false
   el.value.classList.add('line-clamp-4')
 }
+const sessionStorage = useSessionStorage('config', {
+  THUMBNAIL_SIZE: '100,100',
+})
+const thumbnailWidth = computed(() => {
+  return sessionStorage.value.THUMBNAIL_SIZE.split(',')[0]
+})
+const thumbnailHeight = computed(() => {
+  return sessionStorage.value.THUMBNAIL_SIZE.split(',')[1]
+})
 
+const imgs = computed(() => {
+  return props.memo.resources?.filter((r) => r.fileType.includes('image'))
+})
 
 
 watchOnce(height, () => {
@@ -132,79 +173,6 @@ const loadComments = async () => {
 onMounted(async () => {
   await loadComments()
 })
-
-
-// interface State {
-//   memos: Array<MemoDTO>
-//   search: MemoSearchParam
-//   total: number
-//   totalPage: number
-// }
-
-// const state: State = reactive({
-//   memos: [],
-//   search: {
-//     page: 1,
-//     size: 20,
-//     begin: dayjs().subtract(20, 'year').startOf('d').toDate(),
-//     end: dayjs().endOf('d').toDate(),
-//   },
-//   total: 0,
-//   totalPage: 0,
-// })
-// let user = ref<Partial<User>>({})
-
-// onMounted(async () => {
-//   await reload()
-
-//   const { data, error } = await useMyFetch('/api/user/current').post().json()
-//   if (!error.value) {
-//     user.value = data.value
-//   }
-// })
-
-
-
-// const reload = async () => {
-//   const { data, error } = await useMyFetch('/api/memo/list').post(state.search).json()
-//   if (!error.value) {
-//     const response = data.value as ListMemoResponse
-//     if (state.search.page > 1) {
-//       state.memos.push(...response.items)
-//     } else {
-//       state.memos = response.items
-//     }
-//     state.memos.forEach((memo) => {
-//       memo.resources.forEach((item) => {
-//         if (item.storageType === 'LOCAL' && item.url.startsWith('/')) {
-//           item.url = import.meta.env.VITE_BASE_URL + item.url
-//         }
-//       })
-//     })
-//     state.total = response.total
-//     state.totalPage = response.totalPage
-//   }
-// }
-
-function countLines(target: HTMLElement) {
-  var style = window.getComputedStyle(target, null);
-  var height = parseInt(style.getPropertyValue("height"));
-  var font_size = parseInt(style.getPropertyValue("font-size"));
-  var line_height = parseInt(style.getPropertyValue("line-height"));
-  var box_sizing = style.getPropertyValue("box-sizing");
-
-  if (isNaN(line_height)) line_height = font_size * 1.2;
-
-  if (box_sizing == 'border-box') {
-    var padding_top = parseInt(style.getPropertyValue("padding-top"));
-    var padding_bottom = parseInt(style.getPropertyValue("padding-bottom"));
-    var border_top = parseInt(style.getPropertyValue("border-top-width"));
-    var border_bottom = parseInt(style.getPropertyValue("border-bottom-width"));
-    height = height - padding_top - padding_bottom - border_top - border_bottom
-  }
-  var lines = Math.ceil(height / line_height);
-  return lines;
-}
 </script>
 
 <style scoped>

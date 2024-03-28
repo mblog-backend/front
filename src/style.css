@@ -1,10 +1,16 @@
 /* @import 'https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.7.0/lxgwwenkaiscreen.min.css'; */
 
+
+@font-face {
+  font-family: MiSans;
+  src: url('https://yoyo.s3.bitiful.net/misan-normal.ttf');
+}
 html {
   height: 100%;
   background-color: #f4f4f5;
   font-size: 16px;
 }
+
 
 html.dark {
   background-color: #000 !important;
@@ -12,7 +18,7 @@ html.dark {
 
 * {
   /* font-family: LXGW WenKai Screen, sans-serif; */
-  font-family:  sans-serif;
+  font-family: MiSans, sans-serif;
 }
 
 .md-content {
